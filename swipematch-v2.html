@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>SwipeMatch for Companies — Hire Who Already Wants the Job</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,400&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --cream:#F7F4EF;--cream2:#EFEBE2;--white:#FFFFFF;
+  --ink:#09090B;--ink2:#141418;--ink3:#1C1B22;
+  --muted:#6B6870;--border:rgba(9,9,11,0.1);--border2:rgba(9,9,11,0.07);
+  --purple:#7B6FFF;--purple-d:rgba(123,111,255,0.12);--purple-s:#6B5FEF;
+  --teal:#00E5A0;--teal-d:rgba(0,229,160,0.12);
+  --coral:#FF5F3D;--coral-d:rgba(255,95,61,0.12);
+  --amber:#FFB830;--amber-d:rgba(255,184,48,0.12);
+  --r:18px;--r2:24px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);overflow-x:hidden;line-height:1.6}
+
+/* ─── NAV ─── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:400;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.9rem 1.25rem;
+  background:rgba(247,244,239,.94);backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--border2);
+}
+@media(min-width:768px){nav{padding:.9rem 3rem}}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.2rem;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:.45rem;letter-spacing:-.02em}
+.logo-pip{width:26px;height:26px;border-radius:7px;background:var(--purple);display:flex;align-items:center;justify-content:center;font-size:.85rem}
+.nav-r{display:flex;align-items:center;gap:1.25rem}
+.nav-lnk{font-size:.8rem;color:var(--muted);font-weight:500;text-decoration:none;display:none}
+@media(min-width:768px){.nav-lnk{display:block}}
+.nav-lnk:hover{color:var(--ink)}
+.cta-pill{background:var(--purple);color:#fff;border:none;padding:.55rem 1.1rem;border-radius:50px;font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap}
+.cta-pill:hover{background:var(--purple-s);transform:scale(1.03)}
+
+/* ─── STICKY MOBILE BAR ─── */
+.mob-bar{
+  position:fixed;bottom:0;left:0;right:0;z-index:300;
+  padding:.9rem 1.25rem 1.1rem;
+  background:rgba(247,244,239,.97);backdrop-filter:blur(16px);
+  border-top:1px solid var(--border2);
+}
+@media(min-width:768px){.mob-bar{display:none}}
+.mob-btn{
+  width:100%;background:var(--purple);color:#fff;border:none;
+  padding:.95rem;border-radius:14px;
+  font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.6rem;letter-spacing:-.01em;
+}
+.mob-free{background:var(--teal);color:var(--ink);padding:.15rem .5rem;border-radius:50px;font-size:.65rem;font-weight:800}
+
+/* ─── HERO ─── */
+.hero{
+  min-height:100svh;padding:5rem 1.25rem 6rem;
+  display:flex;flex-direction:column;justify-content:center;
+  position:relative;overflow:hidden;
+}
+@media(min-width:768px){
+  .hero{padding:7rem 3rem 4rem;display:grid;grid-template-columns:1fr 400px;gap:4rem;align-items:center}
+}
+.hero::after{
+  content:'';position:absolute;top:-10%;right:-15%;
+  width:55vw;height:55vw;max-width:540px;max-height:540px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(123,111,255,.13) 0%,transparent 70%);
+  pointer-events:none;z-index:0;
+}
+.hero-l{position:relative;z-index:2}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:.45rem;
+  background:var(--teal-d);border:1px solid rgba(0,229,160,.3);
+  border-radius:50px;padding:.3rem .85rem;
+  font-size:.7rem;font-weight:700;color:#009E70;
+  margin-bottom:1.2rem;letter-spacing:.3px;
+}
+.e-dot{width:5px;height:5px;border-radius:50%;background:var(--teal);animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.hero h1{
+  font-family:'Syne',sans-serif;font-weight:800;
+  font-size:clamp(2.5rem,9vw,5.2rem);line-height:1.01;letter-spacing:-.03em;
+  margin-bottom:1.1rem;
+}
+.h1-accent{color:var(--purple);display:inline}
+.h1-thru{
+  color:var(--muted);position:relative;display:inline;
+}
+.h1-thru::before{
+  content:'';position:absolute;left:0;right:0;top:50%;height:3px;
+  background:var(--coral);transform:translateY(-50%);border-radius:2px;
+}
+.hero-sub{font-size:.97rem;color:var(--muted);line-height:1.8;max-width:460px;margin-bottom:1.8rem;font-weight:400}
+.hero-ctas{display:flex;gap:.7rem;flex-wrap:wrap;margin-bottom:1.75rem}
+.btn-main{
+  background:var(--purple);color:#fff;border:none;
+  padding:.88rem 1.7rem;border-radius:50px;
+  font-family:'DM Sans',sans-serif;font-weight:600;font-size:.9rem;
+  cursor:pointer;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem;
+}
+.btn-main:hover{background:var(--purple-s);transform:translateY(-2px);box-shadow:0 8px 28px rgba(123,111,255,.3)}
+.btn-ghost2{
+  background:transparent;color:var(--ink);border:1.5px solid var(--border);
+  padding:.88rem 1.7rem;border-radius:50px;
+  font-family:'DM Sans',sans-serif;font-weight:500;font-size:.9rem;
+  cursor:pointer;transition:all .2s;text-decoration:none;
+}
+.btn-ghost2:hover{border-color:var(--ink)}
+.trust{display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
+.avs{display:flex}
+.av{
+  width:28px;height:28px;border-radius:50%;border:2px solid var(--cream);
+  margin-right:-7px;font-size:.58rem;font-weight:800;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.a1{background:#DDD0FF;color:#4B3FAA}.a2{background:#C0F5E3;color:#0A6648}
+.a3{background:#FFE4D0;color:#8B3A1A}.a4{background:#FFF0C0;color:#7A5A00}.a5{background:#FFD0DA;color:#7A1A30}
+.trust-txt{font-size:.75rem;color:var(--muted)}
+.trust-txt strong{color:var(--ink)}
+
+/* ─── PHONE SCENE ─── */
+.phone-scene{
+  display:flex;justify-content:center;align-items:center;
+  position:relative;padding:2rem 0 3.5rem;order:-1;z-index:2;
+}
+@media(min-width:768px){.phone-scene{order:0;padding:0}}
+.phone{
+  width:min(248px,68vw);aspect-ratio:9/19.5;
+  background:var(--ink2);border-radius:38px;position:relative;
+  box-shadow:0 28px 72px rgba(9,9,11,.22),0 0 0 1px rgba(255,255,255,.05),inset 0 0 0 1px rgba(255,255,255,.05);
+  overflow:hidden;
+}
+.pscreen{
+  position:absolute;inset:5px;border-radius:33px;background:#0F0F13;overflow:hidden;
+  display:flex;flex-direction:column;
+}
+.pbar{padding:1.9rem 1rem .4rem;display:flex;align-items:center;justify-content:space-between}
+.ptitle{font-family:'Syne',sans-serif;font-size:.78rem;font-weight:800;color:#fff;letter-spacing:-.01em}
+.pstreak{background:rgba(255,184,48,.15);color:var(--amber);padding:.12rem .45rem;border-radius:50px;font-size:.62rem;font-weight:800}
+.profbar{height:3px;background:rgba(255,255,255,.07);margin:0 1rem .7rem;border-radius:2px;overflow:hidden}
+.profill{height:100%;width:72%;background:var(--teal);border-radius:2px}
+.pstack{flex:1;margin:0 .7rem;position:relative}
+.ccard{
+  position:absolute;inset:0;background:#1C1C28;border-radius:18px;
+  padding:.9rem;border:1px solid rgba(255,255,255,.06);
+}
+.ccard.c-back{top:5px;left:3px;right:3px;transform:scale(.97);z-index:0}
+.ccard.c-front{z-index:1;animation:cswipe 5s ease-in-out infinite}
+@keyframes cswipe{
+  0%,55%{transform:translateX(0) rotate(0);opacity:1}
+  73%{transform:translateX(120%) rotate(13deg);opacity:.2}
+  74%{transform:translateX(-120%) rotate(-13deg);opacity:0}
+  80%{transform:translateX(-50%) rotate(-6deg);opacity:.7}
+  90%,100%{transform:translateX(0) rotate(0);opacity:1}
+}
+.cchead{display:flex;gap:.55rem;align-items:flex-start;margin-bottom:.6rem}
+.ccav{
+  width:36px;height:36px;border-radius:10px;flex-shrink:0;
+  background:linear-gradient(135deg,#DDD0FF,#9B8FFF);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.68rem;font-weight:800;color:#3B2FAA;
+}
+.ccn{font-size:.72rem;font-weight:700;color:#fff;margin-bottom:.08rem}
+.ccr{font-size:.6rem;color:rgba(255,255,255,.4)}
+.ccscore{
+  margin-left:auto;flex-shrink:0;
+  background:rgba(0,229,160,.14);color:var(--teal);border:1px solid rgba(0,229,160,.22);
+  padding:.18rem .48rem;border-radius:6px;font-size:.6rem;font-weight:800;
+}
+.skills{display:flex;flex-wrap:wrap;gap:.22rem;margin-bottom:.55rem}
+.sk{background:rgba(255,255,255,.06);color:rgba(255,255,255,.5);padding:.13rem .42rem;border-radius:4px;font-size:.57rem;font-weight:500}
+.mbars{display:flex;flex-direction:column;gap:.28rem}
+.mrow{display:flex;align-items:center;gap:.35rem}
+.mlbl{font-size:.55rem;color:rgba(255,255,255,.35);min-width:46px}
+.mbar{flex:1;height:3px;background:rgba(255,255,255,.06);border-radius:2px}
+.mfill{height:100%;border-radius:2px;background:var(--purple)}
+.swipehint{
+  position:absolute;right:.7rem;top:.7rem;
+  background:var(--teal);color:var(--ink);padding:.22rem .5rem;border-radius:6px;
+  font-size:.58rem;font-weight:800;transform:rotate(12deg);opacity:0;
+  animation:shint 5s ease-in-out infinite;
+}
+@keyframes shint{0%,42%{opacity:0;transform:rotate(12deg) scale(.9)}50%,78%{opacity:1;transform:rotate(12deg) scale(1)}88%{opacity:0}}
+.pacts{display:flex;justify-content:space-around;padding:.65rem 1rem .9rem}
+.pact{width:42px;height:42px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.05rem}
+.pno{background:rgba(255,95,61,.15)}.pyes{background:rgba(0,229,160,.15)}
+
+/* floating badges */
+.fbadge{
+  position:absolute;background:#fff;border:1px solid var(--border);
+  border-radius:12px;padding:.55rem .85rem;
+  box-shadow:0 6px 24px rgba(9,9,11,.1);
+  font-size:.72rem;font-weight:500;
+  display:flex;align-items:center;gap:.45rem;white-space:nowrap;
+}
+.fb1{right:-12%;top:12%;animation:fb1 6s ease-in-out infinite}
+.fb2{left:-8%;bottom:22%;animation:fb2 7s ease-in-out infinite}
+@keyframes fb1{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+@keyframes fb2{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+
+/* ─── MARQUEE ─── */
+.mqwrap{overflow:hidden;background:var(--purple);padding:.8rem 0}
+.mqtrack{
+  display:flex;gap:2rem;width:max-content;
+  animation:mq 22s linear infinite;
+  font-family:'Syne',sans-serif;font-size:.76rem;font-weight:700;
+  color:rgba(255,255,255,.7);letter-spacing:.5px;
+}
+.mqtrack .mqdot{color:var(--teal)}
+@keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ─── STATS ─── */
+.stats{background:var(--ink);padding:4rem 1.25rem}
+@media(min-width:768px){.stats{padding:5rem 3rem}}
+.sgrid{
+  display:grid;grid-template-columns:1fr 1fr;gap:2.5rem .5rem;
+  max-width:820px;margin:0 auto;
+}
+@media(min-width:768px){.sgrid{grid-template-columns:repeat(4,1fr);gap:0}}
+.sitem{text-align:center}
+@media(min-width:768px){.sitem+.sitem{border-left:1px solid rgba(255,255,255,.07);padding-left:1.5rem}}
+.snum{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,8vw,5rem);line-height:1;margin-bottom:.4rem;letter-spacing:-.01em;color:#fff}
+.snum.st{color:var(--teal)}.snum.sp{color:var(--purple)}.snum.sc{color:var(--coral)}
+.slbl{font-size:.76rem;color:rgba(255,255,255,.38);line-height:1.5}
+
+/* ─── GENERAL SECTION ─── */
+.sec{padding:5rem 1.25rem}
+@media(min-width:768px){.sec{padding:6rem 3rem}}
+.sec-eye{font-size:.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--purple);margin-bottom:.65rem}
+.sec-h{
+  font-family:'Syne',sans-serif;font-size:clamp(1.9rem,5vw,3.2rem);
+  font-weight:800;line-height:1.08;letter-spacing:-.025em;margin-bottom:.9rem;
+}
+.sec-h em{font-style:italic;color:var(--purple)}
+.sec-s{font-size:.97rem;color:var(--muted);line-height:1.8;max-width:520px}
+
+/* ─── COMPARE SECTION ─── */
+.cmp-sec{background:var(--ink3);color:#fff}
+.cmp-sec .sec-eye{color:var(--teal)}
+.cmp-sec .sec-h{color:#fff}
+.cmp-sec .sec-h em{color:var(--teal)}
+.cmp-sec .sec-s{color:rgba(255,255,255,.45)}
+.cmp-grid{
+  display:grid;grid-template-columns:1fr;gap:1rem;
+  max-width:860px;margin:2.5rem auto 0;
+}
+@media(min-width:700px){.cmp-grid{grid-template-columns:1fr 1fr}}
+.cmp-card{border-radius:20px;padding:1.75rem;position:relative}
+.cmp-bad{background:#1A1219;border:1px solid rgba(255,95,61,.2)}
+.cmp-good{background:#0A1A14;border:1px solid rgba(0,229,160,.22)}
+.cmp-lbl{
+  display:inline-flex;align-items:center;gap:.4rem;
+  padding:.28rem .75rem;border-radius:50px;font-size:.68rem;font-weight:800;margin-bottom:1.1rem;
+}
+.cl-bad{background:rgba(255,95,61,.14);color:var(--coral)}
+.cl-good{background:rgba(0,229,160,.14);color:var(--teal)}
+.cmp-ttl{font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;color:#fff;margin-bottom:1rem}
+.cmp-item{
+  display:flex;gap:.65rem;align-items:flex-start;
+  padding:.55rem 0;border-bottom:1px solid rgba(255,255,255,.05);
+  font-size:.82rem;color:rgba(255,255,255,.5);line-height:1.5;
+}
+.cmp-item:last-child{border-bottom:none}
+.ci{flex-shrink:0;margin-top:.1rem}
+.cmp-item strong{color:#fff}
+
+/* ─── FEATURES GRID ─── */
+.fgrid{
+  display:grid;grid-template-columns:1fr;gap:.9rem;
+  max-width:900px;margin:2.5rem auto 0;
+}
+@media(min-width:580px){.fgrid{grid-template-columns:1fr 1fr}}
+@media(min-width:900px){.fgrid{grid-template-columns:repeat(3,1fr)}}
+.fc{
+  background:#fff;border:1px solid var(--border);border-radius:18px;padding:1.4rem;
+  transition:transform .25s,box-shadow .25s;position:relative;overflow:hidden;
+}
+.fc:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(9,9,11,.08)}
+.ficon{
+  width:40px;height:40px;border-radius:11px;
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;margin-bottom:.9rem;
+}
+.fi-p{background:var(--purple-d)}.fi-t{background:var(--teal-d)}.fi-c{background:var(--coral-d)}.fi-a{background:var(--amber-d)}
+.ftag{
+  position:absolute;top:1.1rem;right:1.1rem;
+  font-size:.6rem;font-weight:800;letter-spacing:.3px;padding:.18rem .5rem;border-radius:50px;
+}
+.ft-l{background:var(--coral-d);color:var(--coral)}
+.ft-v2{background:var(--amber-d);color:var(--amber)}
+.ft-v3{background:var(--purple-d);color:var(--purple)}
+.fc-t{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:800;margin-bottom:.4rem;letter-spacing:-.01em}
+.fc-d{font-size:.8rem;color:var(--muted);line-height:1.75}
+
+/* ─── GHOST SPOTLIGHT ─── */
+.ghost-sec{background:var(--ink);position:relative;overflow:hidden}
+.ghost-sec::before{
+  content:'';position:absolute;bottom:-20%;left:-10%;
+  width:60vw;height:60vw;max-width:500px;max-height:500px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,95,61,.08) 0%,transparent 70%);pointer-events:none;
+}
+.ghost-inner{max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr;gap:3rem;align-items:center}
+@media(min-width:768px){.ghost-inner{grid-template-columns:1fr 1fr}}
+.ghost-txt{color:#fff}
+.ghost-txt .sec-eye{color:var(--coral)}
+.ghost-txt .sec-h{color:#fff}
+.ghost-txt .sec-h em{color:var(--coral)}
+.ghost-txt .sec-s{color:rgba(255,255,255,.45);margin-bottom:2rem}
+.ghost-benefit{display:flex;gap:.8rem;align-items:flex-start;margin-bottom:1.25rem}
+.gb-ico{
+  width:34px;height:34px;border-radius:9px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:.9rem;
+}
+.gbi-t{background:rgba(0,229,160,.1);color:var(--teal)}
+.gbi-p{background:rgba(123,111,255,.1);color:var(--purple)}
+.gbi-a{background:rgba(255,184,48,.1);color:var(--amber)}
+.gb-h{font-size:.85rem;font-weight:600;color:#fff;margin-bottom:.2rem}
+.gb-p{font-size:.78rem;color:rgba(255,255,255,.42);line-height:1.65}
+.ghost-card{
+  background:#1C1220;border:1px solid rgba(255,95,61,.25);
+  border-radius:20px;padding:1.6rem;
+}
+.gc-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem}
+.gc-co{display:flex;align-items:center;gap:.7rem}
+.gc-logo{
+  width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.06);
+  display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;color:rgba(255,255,255,.45)
+}
+.gc-name{font-size:.82rem;font-weight:700;color:#fff}
+.gc-sub{font-size:.67rem;color:rgba(255,255,255,.38)}
+.gc-score{padding:.28rem .7rem;border-radius:50px;font-size:.68rem;font-weight:800;border:1px solid}
+.gcs-good{background:rgba(0,229,160,.14);color:var(--teal);border-color:rgba(0,229,160,.25)}
+.gcs-bad{background:rgba(255,95,61,.14);color:var(--coral);border-color:rgba(255,95,61,.25)}
+.gc-stats{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-bottom:1.2rem}
+.gst{background:rgba(255,255,255,.03);border-radius:10px;padding:.7rem}
+.gst-l{font-size:.6rem;color:rgba(255,255,255,.32);margin-bottom:.22rem}
+.gst-v{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;line-height:1}
+.gsv-g{color:var(--teal)}.gsv-r{color:var(--coral)}
+.gc-sep{height:1px;background:rgba(255,255,255,.06);margin-bottom:1rem}
+.gc2{background:#14200A;border-color:rgba(0,229,160,.22)}
+.gc-timeline{display:flex;flex-direction:column;gap:.6rem}
+.gtl-item{display:flex;gap:.65rem;align-items:center;padding:.5rem 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:.76rem}
+.gtl-item:last-child{border-bottom:none}
+.gtl-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.gtl-cand{color:rgba(255,255,255,.6);flex:1}
+.gtl-time{font-size:.68rem;color:rgba(255,255,255,.3)}
+.gtl-status{font-size:.65rem;font-weight:700;padding:.15rem .45rem;border-radius:4px}
+.gts-rep{background:rgba(0,229,160,.12);color:var(--teal)}
+.gts-int{background:rgba(123,111,255,.12);color:var(--purple)}
+.gts-new{background:rgba(255,255,255,.06);color:rgba(255,255,255,.45)}
+
+/* ─── PIPELINE SECTION ─── */
+.pipe-sec{background:var(--cream2)}
+.pipe-preview{
+  max-width:900px;margin:2.5rem auto 0;
+  display:flex;gap:.65rem;overflow-x:auto;padding-bottom:.5rem;
+  scrollbar-width:thin;
+}
+.pipe-col{flex-shrink:0;width:160px}
+.pc-head{
+  font-size:.68rem;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+  padding:.5rem .75rem;border-radius:8px;margin-bottom:.65rem;
+}
+.pch-new{background:var(--purple-d);color:var(--purple)}
+.pch-con{background:rgba(74,144,226,.12);color:#4A90E2}
+.pch-int{background:var(--amber-d);color:var(--amber)}
+.pch-off{background:var(--teal-d);color:var(--teal)}
+.pch-hrd{background:rgba(107,203,95,.12);color:#6BCB5F}
+.pipe-crd{
+  background:#fff;border:1px solid var(--border);border-radius:10px;
+  padding:.75rem;margin-bottom:.55rem;font-size:.75rem;
+}
+.pcc-name{font-weight:700;margin-bottom:.25rem}
+.pcc-role{font-size:.68rem;color:var(--muted);margin-bottom:.45rem}
+.pcc-score{display:inline-flex;align-items:center;gap:.3rem;font-size:.65rem;font-weight:700;color:var(--purple);background:var(--purple-d);padding:.15rem .4rem;border-radius:4px}
+.pcc-ghost{display:inline-flex;align-items:center;gap:.3rem;font-size:.65rem;font-weight:700;color:var(--coral);background:var(--coral-d);padding:.15rem .4rem;border-radius:4px;margin-left:.3rem}
+
+/* ─── PRICING ─── */
+.price-card{
+  max-width:580px;margin:2.5rem auto 0;
+  background:#fff;border:1px solid var(--border);border-radius:24px;overflow:hidden;
+  box-shadow:0 8px 40px rgba(9,9,11,.07);
+}
+.price-top{background:var(--purple);padding:2.25rem 2rem;text-align:center}
+.pt-lbl{font-size:.68rem;font-weight:700;color:rgba(255,255,255,.55);letter-spacing:2px;text-transform:uppercase;margin-bottom:.4rem}
+.pt-amt{font-family:'Bebas Neue',sans-serif;font-size:5rem;color:#fff;line-height:1;letter-spacing:-.01em}
+.pt-per{font-size:.82rem;color:rgba(255,255,255,.55)}
+.price-body{padding:1.75rem 2rem}
+.pi{display:flex;gap:.75rem;align-items:flex-start;padding:.7rem 0;border-bottom:1px solid var(--border2);font-size:.86rem}
+.pi:last-child{border-bottom:none}
+.pi-ck{color:var(--teal);flex-shrink:0;margin-top:.1rem;font-size:.95rem}
+.pi strong{display:block;font-weight:600;margin-bottom:.08rem}
+.pi span{color:var(--muted);font-size:.76rem}
+.price-cta{margin:0 2rem 2rem}
+.price-btn{
+  width:100%;background:var(--purple);color:#fff;border:none;
+  padding:.95rem;border-radius:12px;
+  font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem;
+  cursor:pointer;transition:all .2s;
+}
+.price-btn:hover{background:var(--purple-s);transform:scale(1.01)}
+.price-fine{font-size:.7rem;color:var(--muted);text-align:center;margin-top:.7rem}
+
+/* ─── TESTIMONIALS ─── */
+.tst-outer{overflow:hidden;padding:1rem 0}
+.tst-track{
+  display:flex;gap:.9rem;width:max-content;
+  animation:tscroll 34s linear infinite;
+}
+.tst-track:hover{animation-play-state:paused}
+@keyframes tscroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.tcard{
+  flex-shrink:0;width:270px;background:#fff;border:1px solid var(--border);
+  border-radius:16px;padding:1.2rem;
+}
+.tst-s{color:var(--amber);font-size:.82rem;margin-bottom:.65rem}
+.tst-q{font-size:.8rem;color:var(--muted);line-height:1.7;margin-bottom:.9rem;font-style:italic}
+.tst-a{display:flex;gap:.6rem;align-items:center}
+.ta{width:30px;height:30px;border-radius:50%;font-size:.6rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ta1{background:#DDD0FF;color:#4B3FAA}.ta2{background:#C0F5E3;color:#0A6648}
+.ta3{background:#FFE4D0;color:#8B3A1A}.ta4{background:#FFF0C0;color:#7A5A00}.ta5{background:#FFD0DA;color:#7A1A30}
+.ta-n{font-size:.76rem;font-weight:700}
+.ta-r{font-size:.66rem;color:var(--muted)}
+
+/* ─── FINAL CTA ─── */
+.fcta-sec{background:var(--purple);padding:5rem 1.25rem 7rem;text-align:center}
+@media(min-width:768px){.fcta-sec{padding:6rem 3rem}}
+.fcta-sec h2{
+  font-family:'Syne',sans-serif;font-size:clamp(2rem,5.5vw,3.5rem);
+  font-weight:800;color:#fff;line-height:1.08;letter-spacing:-.025em;margin-bottom:1rem;
+}
+.fcta-sec h2 em{font-style:italic;color:var(--teal)}
+.fcta-sec p{font-size:.97rem;color:rgba(255,255,255,.6);margin-bottom:2rem}
+.fcta-btn{
+  background:#fff;color:var(--purple);border:none;
+  padding:1rem 2rem;border-radius:50px;
+  font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem;
+  cursor:pointer;transition:all .2s;
+}
+.fcta-btn:hover{background:var(--teal);color:var(--ink);transform:scale(1.03)}
+
+/* ─── FOOTER ─── */
+footer{background:var(--ink);padding:2.25rem 1.25rem 5rem;color:rgba(255,255,255,.35)}
+@media(min-width:768px){footer{padding:2.25rem 3rem}}
+.foot-in{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;max-width:900px;margin:0 auto}
+.flogo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;color:#fff;display:flex;align-items:center;gap:.4rem}
+.flogo-dot{width:7px;height:7px;border-radius:50%;background:var(--purple)}
+.flinks{display:flex;gap:1.5rem;flex-wrap:wrap}
+.flinks a{color:rgba(255,255,255,.35);font-size:.76rem;text-decoration:none;transition:color .2s}
+.flinks a:hover{color:#fff}
+.fcp{font-size:.7rem;margin-top:.5rem}
+
+/* ─── MODAL ─── */
+.moverlay{
+  position:fixed;inset:0;z-index:600;
+  background:rgba(9,9,11,.72);backdrop-filter:blur(10px);
+  display:flex;align-items:flex-end;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .3s;
+}
+@media(min-width:600px){.moverlay{align-items:center}}
+.moverlay.open{opacity:1;pointer-events:all}
+.mcard{
+  background:#fff;width:100%;max-width:500px;
+  border-radius:28px 28px 0 0;
+  transform:translateY(100%);
+  transition:transform .42s cubic-bezier(.34,1.2,.64,1);
+  max-height:93svh;overflow-y:auto;
+}
+@media(min-width:600px){
+  .mcard{border-radius:24px;transform:translateY(32px) scale(.97);opacity:0;transition:transform .38s cubic-bezier(.34,1.2,.64,1),opacity .3s}
+}
+.moverlay.open .mcard{transform:translateY(0) scale(1);opacity:1}
+.mhandle{width:36px;height:4px;background:rgba(9,9,11,.12);border-radius:2px;margin:1.1rem auto .8rem}
+@media(min-width:600px){.mhandle{display:none}}
+.mhead{padding:0 1.4rem .2rem;display:flex;align-items:center;gap:1rem}
+.mprog{display:flex;gap:.3rem;flex:1}
+.pdot{height:3px;flex:1;border-radius:2px;background:rgba(9,9,11,.1);transition:background .3s}
+.pdot.done{background:var(--purple)}
+.pdot.cur{background:rgba(123,111,255,.4)}
+.mclose{
+  width:30px;height:30px;border-radius:50%;border:1px solid var(--border);
+  background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:.9rem;color:var(--muted);transition:all .2s;flex-shrink:0;
+}
+.mclose:hover{background:var(--cream);color:var(--ink)}
+.mbody{padding:1.4rem}
+.step-p{display:none}
+.step-p.active{display:block;animation:stepIn .3s ease}
+@keyframes stepIn{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:translateX(0)}}
+.sq{
+  font-family:'Syne',sans-serif;font-size:1.35rem;font-weight:800;
+  letter-spacing:-.02em;margin-bottom:.35rem;
+}
+.sh{font-size:.8rem;color:var(--muted);margin-bottom:1.35rem}
+.sinput{
+  width:100%;background:var(--cream);border:1.5px solid var(--border);
+  border-radius:12px;padding:.85rem 1rem;
+  font-family:'DM Sans',sans-serif;font-size:.97rem;color:var(--ink);
+  outline:none;transition:border-color .2s;
+}
+.sinput:focus{border-color:var(--purple)}
+.sinput::placeholder{color:var(--muted)}
+.chips{display:grid;grid-template-columns:repeat(2,1fr);gap:.55rem}
+.chip{
+  background:var(--cream);border:1.5px solid var(--border);border-radius:12px;
+  padding:.7rem .9rem;font-size:.83rem;font-weight:500;cursor:pointer;
+  transition:all .18s;text-align:center;color:var(--ink);user-select:none;
+  display:flex;align-items:center;justify-content:center;gap:.4rem;
+}
+.chip:hover{border-color:var(--purple);color:var(--purple);background:var(--purple-d)}
+.chip.sel{background:var(--purple);color:#fff;border-color:var(--purple)}
+.mfoot{padding:0 1.4rem 1.8rem}
+.snext{
+  width:100%;background:var(--purple);color:#fff;border:none;
+  padding:.95rem;border-radius:14px;
+  font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem;
+  cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:.5rem;
+}
+.snext:hover{background:var(--purple-s)}
+.snext:disabled{opacity:.35;cursor:not-allowed}
+.sback{
+  width:100%;background:transparent;border:none;color:var(--muted);
+  font-family:'DM Sans',sans-serif;font-size:.8rem;cursor:pointer;
+  padding:.65rem;margin-top:.45rem;transition:color .2s;
+}
+.sback:hover{color:var(--ink)}
+.form-err{background:#FFF0EE;border:1px solid rgba(255,95,61,.3);border-radius:10px;padding:.75rem 1rem;font-size:.8rem;color:var(--coral);margin-top:.7rem;display:none}
+.form-err.show{display:block}
+.success-s{text-align:center;padding:1rem 0 2rem}
+.succ-em{font-size:3rem;margin-bottom:.9rem;animation:bIn .5s ease}
+@keyframes bIn{0%{transform:scale(0)}60%{transform:scale(1.2)}100%{transform:scale(1)}}
+.succ-t{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;margin-bottom:.5rem}
+.succ-sub{color:var(--muted);font-size:.88rem;line-height:1.75}
+.succ-next{
+  margin-top:1.5rem;background:var(--purple);color:#fff;border:none;
+  padding:.9rem 2rem;border-radius:50px;
+  font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;
+}
+
+/* ─── REVEAL ─── */
+.rv{opacity:0;transform:translateY(22px);transition:opacity .65s ease,transform .65s ease}
+.rv.vi{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">
+    <div class="logo-pip">👔</div>
+    SwipeMatch
+  </a>
+  <div class="nav-r">
+    <a href="#features" class="nav-lnk">Features</a>
+    <a href="#ghost" class="nav-lnk">Ghost Tracker</a>
+    <a href="#pricing" class="nav-lnk">Pricing</a>
+    <button class="cta-pill" onclick="openModal()">Register Free →</button>
+  </div>
+</nav>
+
+<!-- MOBILE STICKY -->
+<div class="mob-bar">
+  <button class="mob-btn" onclick="openModal()">
+    Register Your Company
+    <span class="mob-free">FREE</span>
+  </button>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-l">
+    <div class="eyebrow"><span class="e-dot"></span>Coming Soon — Registration open for India 🇮🇳</div>
+    <h1>
+      Stop reading<br>
+      <span class="h1-thru">400 CVs.</span><br>
+      Meet people who <span class="h1-accent">want the job.</span>
+    </h1>
+    <p class="hero-sub">
+      SwipeMatch shows your roles to thousands of qualified candidates. 
+      They swipe right on <em>you first.</em> You only talk to people who are genuinely interested — matched by Claude AI across skills, salary, experience, and culture fit.
+    </p>
+    <div class="hero-ctas">
+      <button class="btn-main" onclick="openModal()">Register Free — ₹0 →</button>
+      <a href="#how" class="btn-ghost2">See how it works</a>
+    </div>
+    <div class="trust">
+      <div class="avs">
+        <div class="av a1">RK</div><div class="av a2">PM</div>
+        <div class="av a3">AS</div><div class="av a4">SN</div><div class="av a5">VC</div>
+      </div>
+      <div class="trust-txt"><strong>340+ companies</strong> across India &amp; Southeast Asia</div>
+    </div>
+  </div>
+
+  <!-- PHONE MOCKUP — employer's view of candidate cards -->
+  <div class="phone-scene">
+    <div class="phone">
+      <div class="pscreen">
+        <div class="pbar">
+          <div class="ptitle">Employer Feed</div>
+          <div class="pstreak">🔥 12 matches</div>
+        </div>
+        <div class="profbar"><div class="profill"></div></div>
+        <div class="pstack">
+          <!-- Back card -->
+          <div class="ccard c-back">
+            <div class="cchead">
+              <div class="ccav" style="background:linear-gradient(135deg,#C0F5E3,#4BE0AA);color:#0A5A3E">AP</div>
+              <div><div class="ccn">Anjali Pradeep</div><div class="ccr">Full-Stack · 4yr exp</div></div>
+              <div class="ccscore">91%</div>
+            </div>
+          </div>
+          <!-- Front card -->
+          <div class="ccard c-front">
+            <div class="swipehint">✓ MATCH</div>
+            <div class="cchead">
+              <div class="ccav">RK</div>
+              <div><div class="ccn">Rahul Krishnan</div><div class="ccr">Backend Eng · 3yr exp</div></div>
+              <div class="ccscore">87%</div>
+            </div>
+            <div class="skills">
+              <span class="sk">Python</span><span class="sk">FastAPI</span>
+              <span class="sk">PostgreSQL</span><span class="sk">Docker</span>
+            </div>
+            <div class="mbars">
+              <div class="mrow"><span class="mlbl">Skills</span><div class="mbar"><div class="mfill" style="width:88%"></div></div></div>
+              <div class="mrow"><span class="mlbl">Salary</span><div class="mbar"><div class="mfill" style="width:92%;background:var(--teal)"></div></div></div>
+              <div class="mrow"><span class="mlbl">Culture</span><div class="mbar"><div class="mfill" style="width:80%;background:var(--amber)"></div></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="pacts">
+          <button class="pact pno">✕</button>
+          <button class="pact pyes">♥</button>
+        </div>
+      </div>
+    </div>
+    <!-- Floating badges -->
+    <div class="fbadge fb1">⚡ Match in 4 hours</div>
+    <div class="fbadge fb2">👻 Ghost Score: 98/100</div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="mqwrap">
+  <div class="mqtrack">
+    <span>COMING SOON</span><span class="mqdot">✦</span>
+    <span>INDIA REGISTRATIONS OPEN</span><span class="mqdot">✦</span>
+    <span>AI MATCH SCORE</span><span class="mqdot">✦</span>
+    <span>GHOST TRACKER</span><span class="mqdot">✦</span>
+    <span>VERIFIED SKILLS</span><span class="mqdot">✦</span>
+    <span>PIPELINE KANBAN</span><span class="mqdot">✦</span>
+    <span>60-SECOND VIDEO PITCH</span><span class="mqdot">✦</span>
+    <span>FREE TO REGISTER</span><span class="mqdot">✦</span>
+    <span>BILATERAL SWIPE</span><span class="mqdot">✦</span>
+    <span>SALARY TRANSPARENCY</span><span class="mqdot">✦</span>
+    <span>BLIND INTERVIEW ARENA</span><span class="mqdot">✦</span>
+    <!-- mirror -->
+    <span>COMING SOON</span><span class="mqdot">✦</span>
+    <span>INDIA REGISTRATIONS OPEN</span><span class="mqdot">✦</span>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="sgrid">
+    <div class="sitem rv"><div class="snum st">4h</div><div class="slbl">Average time to your<br>first qualified match</div></div>
+    <div class="sitem rv d1"><div class="snum sp">94%</div><div class="slbl">Of matched candidates<br>attend interviews</div></div>
+    <div class="sitem rv d2"><div class="snum sc">3×</div><div class="slbl">Faster hiring vs<br>Naukri &amp; LinkedIn</div></div>
+    <div class="sitem rv d3"><div class="snum">₹0</div><div class="slbl">Cost to register<br>and post roles</div></div>
+  </div>
+</div>
+
+<!-- OLD WAY VS SWIPEMATCH -->
+<section class="sec cmp-sec" id="how">
+  <div style="max-width:900px;margin:0 auto">
+    <div class="rv"><div class="sec-eye">The problem</div>
+    <h2 class="sec-h">Traditional hiring is <em>broken.</em><br>We fixed it.</h2>
+    <p class="sec-s">Post a job on Naukri and receive 400 applications in 48 hours. Your HR team spends 3 weeks screening. Two accept. One joins. One quits in a month. SwipeMatch flips every single step of this.</p></div>
+    <div class="cmp-grid">
+      <div class="cmp-card cmp-bad rv d1">
+        <div class="cmp-lbl cl-bad">✕ The old way</div>
+        <div class="cmp-ttl">Job boards &amp; portals</div>
+        <div class="cmp-item"><span class="ci">📋</span><div>You get <strong>400 applications</strong> from people who mass-applied to 50 roles today</div></div>
+        <div class="cmp-item"><span class="ci">⏳</span><div><strong>42 days average</strong> to hire. Your team loses 3 weeks just to screening</div></div>
+        <div class="cmp-item"><span class="ci">🎭</span><div>CVs are <strong>self-reported and unverifiable.</strong> Anyone can claim any skill</div></div>
+        <div class="cmp-item"><span class="ci">👻</span><div><strong>Ghosting is normalized.</strong> No accountability, no consequences</div></div>
+        <div class="cmp-item"><span class="ci">💰</span><div><strong>Salary hidden</strong> deliberately. Employers pay platforms to suppress it</div></div>
+        <div class="cmp-item"><span class="ci">📱</span><div>Desktop-first UX <strong>bolted onto mobile.</strong> 78% of candidates use mobile</div></div>
+      </div>
+      <div class="cmp-card cmp-good rv d2">
+        <div class="cmp-lbl cl-good">✓ SwipeMatch</div>
+        <div class="cmp-ttl">Bilateral swipe + AI matching</div>
+        <div class="cmp-item"><span class="ci">💚</span><div>You see only candidates who <strong>swiped right on your role first</strong> — genuine interest</div></div>
+        <div class="cmp-item"><span class="ci">⚡</span><div>First match in <strong>4 hours.</strong> Hire in days, not months</div></div>
+        <div class="cmp-item"><span class="ci">🛡️</span><div>Skills are <strong>verified through Duolingo-style challenges.</strong> Real signal only</div></div>
+        <div class="cmp-item"><span class="ci">📊</span><div>Ghost Tracker gives every employer a <strong>public accountability score</strong></div></div>
+        <div class="cmp-item"><span class="ci">🔓</span><div><strong>Salary shown upfront</strong> on every role. Candidates know what they're swiping on</div></div>
+        <div class="cmp-item"><span class="ci">📱</span><div><strong>Born mobile.</strong> Candidates swipe on their commute. You match in real time</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="sec" id="features">
+  <div style="max-width:900px;margin:0 auto">
+    <div class="rv"><div class="sec-eye">For companies</div>
+    <h2 class="sec-h">Every tool your hiring team needs.<br><em>Nothing you don't.</em></h2></div>
+    <div class="fgrid">
+
+      <div class="fc rv d1">
+        <span class="ftag ft-l">V1 Launch</span>
+        <div class="ficon fi-p">🧠</div>
+        <div class="fc-t">AI Match Score</div>
+        <p class="fc-d">Claude AI scores every candidate across 4 dimensions: skills overlap (40pts), salary fit (25pts), work style (20pts), experience (15pts). You see a ranked explanation, not just a number.</p>
+      </div>
+
+      <div class="fc rv d2">
+        <span class="ftag ft-l">V1 Launch</span>
+        <div class="ficon fi-t">👔</div>
+        <div class="fc-t">Employer Swipe Feed</div>
+        <p class="fc-d">See candidate cards with avatar, top 5 verified skills, match score badge, and work style chip. Tap any card for the full profile + AI 3-bullet summary of why they fit your role.</p>
+      </div>
+
+      <div class="fc rv d3">
+        <span class="ftag ft-v2">V2</span>
+        <div class="ficon fi-p">📋</div>
+        <div class="fc-t">Pipeline Kanban</div>
+        <p class="fc-d">5-column drag-and-drop: New Match → Contacted → Interview Scheduled → Offer Sent → Hired. Every status update syncs to Supabase instantly. Ghost timer visible on each card.</p>
+      </div>
+
+      <div class="fc rv d1">
+        <span class="ftag ft-l">V1 Launch</span>
+        <div class="ficon fi-c">🎤</div>
+        <div class="fc-t">60-Second Video Pitch</div>
+        <p class="fc-d">Candidates record a 60-second video instead of a CV. AI transcribes it, extracts skills, and creates a searchable profile. Massive unlock for MENA &amp; SEA where written CVs fail candidates.</p>
+      </div>
+
+      <div class="fc rv d2">
+        <span class="ftag ft-v2">V2</span>
+        <div class="ficon fi-a">⚡</div>
+        <div class="fc-t">Verified Skills Scores</div>
+        <p class="fc-d">Duolingo-style challenges per skill. "Prove your Python in 5 questions." Score replaces self-reported skill levels. Verified skills carry a checkmark badge you can trust when swiping.</p>
+      </div>
+
+      <div class="fc rv d3">
+        <span class="ftag ft-v3">V3</span>
+        <div class="ficon fi-t">🏟️</div>
+        <div class="fc-t">Blind Interview Arena</div>
+        <p class="fc-d">Post a timed challenge. Candidates solve it anonymously — no name, photo, school, or nationality. You see only the work output. Top 3 solutions get fast-tracked. Eliminates hiring bias structurally.</p>
+      </div>
+
+      <div class="fc rv d1">
+        <span class="ftag ft-v2">V2</span>
+        <div class="ficon fi-p">📡</div>
+        <div class="fc-t">Insider Intel Feed</div>
+        <p class="fc-d">Crowdsourced, anonymous interview questions per company — real-time, not 3-year-old Glassdoor data. AI briefs candidates before they chat with you. Shows up as interview readiness on their profile.</p>
+      </div>
+
+      <div class="fc rv d2">
+        <span class="ftag ft-l">V1 Launch</span>
+        <div class="ficon fi-t">💬</div>
+        <div class="fc-t">In-App Secure Chat</div>
+        <p class="fc-d">Chat directly with matched candidates. No phone number sharing until you choose. Supabase Realtime keeps it instant. AI suggests opening messages based on match context and culture fit.</p>
+      </div>
+
+      <div class="fc rv d3">
+        <span class="ftag ft-v2">V2</span>
+        <div class="ficon fi-c">🗺️</div>
+        <div class="fc-t">Employer Truth Score</div>
+        <p class="fc-d">AI reads Glassdoor, LinkedIn, press, and news weekly. Scores your company across work-life balance, management transparency, growth, and salary fairness. No company can pay to hide it.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- GHOST TRACKER SPOTLIGHT -->
+<section class="sec ghost-sec" id="ghost">
+  <div class="ghost-inner">
+    <div class="ghost-txt rv">
+      <div class="sec-eye">The accountability layer</div>
+      <h2 class="sec-h">The feature that made <em>headlines.</em></h2>
+      <p class="sec-s">After a mutual match, employers have 72 hours to reply. Every ghost increments a public counter on your company profile — visible to every candidate on SwipeMatch. Employers join to <strong style="color:#fff">protect their Ghost Score.</strong> Candidates join to finally have accountability.</p>
+      <div class="ghost-benefit">
+        <div class="gb-ico gbi-t">📊</div>
+        <div><div class="gb-h">Public Ghost Score on your company profile</div><div class="gb-p">Starts at 100/100. Every unreplied match in 72h decrements it. Candidates see this before swiping on your roles.</div></div>
+      </div>
+      <div class="ghost-benefit">
+        <div class="gb-ico gbi-p">🔔</div>
+        <div><div class="gb-h">72-hour countdown on every match</div><div class="gb-p">You get a push notification at 24h and again at 48h. Your HR team stays accountable automatically.</div></div>
+      </div>
+      <div class="ghost-benefit">
+        <div class="gb-ico gbi-a">🏆</div>
+        <div><div class="gb-h">Top employers earn a "Responds Fast" badge</div><div class="gb-p">Companies with 95+ ghost scores get a featured badge on their profile. Candidates prioritise swiping on you.</div></div>
+      </div>
+    </div>
+    <!-- Ghost cards -->
+    <div class="rv d2">
+      <!-- Good employer -->
+      <div class="ghost-card gc2" style="margin-bottom:.9rem">
+        <div class="gc-head">
+          <div class="gc-co">
+            <div class="gc-logo">🟢</div>
+            <div><div class="gc-name">IBS Software, Kochi</div><div class="gc-sub">Technology · 5,000+ employees</div></div>
+          </div>
+          <div class="gc-score gcs-good">👻 98/100</div>
+        </div>
+        <div class="gc-stats">
+          <div class="gst"><div class="gst-l">Avg. response</div><div class="gst-v gsv-g">3.2h</div></div>
+          <div class="gst"><div class="gst-l">Interviews held</div><div class="gst-v gsv-g">142</div></div>
+          <div class="gst"><div class="gst-l">Ghost incidents</div><div class="gst-v" style="color:rgba(255,255,255,.5)">0</div></div>
+          <div class="gst"><div class="gst-l">Hires via SM</div><div class="gst-v gsv-g">38</div></div>
+        </div>
+        <div class="gc-sep"></div>
+        <div class="gc-timeline">
+          <div class="gtl-item"><div class="gtl-dot" style="background:var(--teal)"></div><div class="gtl-cand">Priya Nair · UI Designer</div><div class="gtl-time">2h ago</div><div class="gtl-status gts-rep">Replied</div></div>
+          <div class="gtl-item"><div class="gtl-dot" style="background:var(--purple)"></div><div class="gtl-cand">Arun M · Backend Eng</div><div class="gtl-time">5h ago</div><div class="gtl-status gts-int">Interview</div></div>
+          <div class="gtl-item"><div class="gtl-dot" style="background:rgba(255,255,255,.2)"></div><div class="gtl-cand">Sneha R · Data Analyst</div><div class="gtl-time">1d ago</div><div class="gtl-status gts-new">New</div></div>
+        </div>
+      </div>
+      <!-- Bad employer -->
+      <div class="ghost-card">
+        <div class="gc-head">
+          <div class="gc-co">
+            <div class="gc-logo" style="color:var(--coral)">🔴</div>
+            <div><div class="gc-name">Generic Corp Ltd</div><div class="gc-sub">Unknown · No sector</div></div>
+          </div>
+          <div class="gc-score gcs-bad">👻 41/100</div>
+        </div>
+        <div class="gc-stats">
+          <div class="gst"><div class="gst-l">Avg. response</div><div class="gst-v gsv-r">8.4d</div></div>
+          <div class="gst"><div class="gst-l">Ghost incidents</div><div class="gst-v gsv-r">14</div></div>
+        </div>
+        <div class="gc-sep"></div>
+        <p style="font-size:.75rem;color:rgba(255,95,61,.6);text-align:center;padding:.5rem 0">⚠️ Candidates are 78% less likely to swipe on this company</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PIPELINE PREVIEW -->
+<section class="sec pipe-sec" id="pipeline">
+  <div style="max-width:900px;margin:0 auto">
+    <div class="rv"><div class="sec-eye">Hiring pipeline</div>
+    <h2 class="sec-h">Your entire recruitment<br><em>in one view.</em></h2>
+    <p class="sec-s">Drag candidates through 5 pipeline stages. Ghost timers alert you before a match goes cold. Every drag updates your database instantly — no manual tracking, no spreadsheets.</p></div>
+    <div class="pipe-preview rv d1">
+      <div class="pipe-col">
+        <div class="pc-head pch-new">🆕 New Match</div>
+        <div class="pipe-crd"><div class="pcc-name">Rahul K.</div><div class="pcc-role">Backend Engineer</div><div class="pcc-score">⚡ 87%</div></div>
+        <div class="pipe-crd"><div class="pcc-name">Anjali P.</div><div class="pcc-role">UI Designer</div><div class="pcc-score">⚡ 91%</div></div>
+        <div class="pipe-crd"><div class="pcc-name">Deepak S.</div><div class="pcc-role">DevOps</div><div class="pcc-score">⚡ 79%</div><div class="pcc-ghost">👻 48h</div></div>
+      </div>
+      <div class="pipe-col">
+        <div class="pc-head pch-con">💬 Contacted</div>
+        <div class="pipe-crd"><div class="pcc-name">Meera V.</div><div class="pcc-role">Product Manager</div><div class="pcc-score">⚡ 88%</div></div>
+        <div class="pipe-crd"><div class="pcc-name">Arjun N.</div><div class="pcc-role">Data Scientist</div><div class="pcc-score">⚡ 82%</div></div>
+      </div>
+      <div class="pipe-col">
+        <div class="pc-head pch-int">📅 Interview</div>
+        <div class="pipe-crd"><div class="pcc-name">Priya M.</div><div class="pcc-role">Full-Stack Dev</div><div class="pcc-score">⚡ 93%</div></div>
+      </div>
+      <div class="pipe-col">
+        <div class="pc-head pch-off">📝 Offer Sent</div>
+        <div class="pipe-crd"><div class="pcc-name">Suresh L.</div><div class="pcc-role">Senior Engineer</div><div class="pcc-score">⚡ 96%</div></div>
+      </div>
+      <div class="pipe-col">
+        <div class="pc-head pch-hrd">✅ Hired</div>
+        <div class="pipe-crd"><div class="pcc-name">Kavya R.</div><div class="pcc-role">ML Engineer</div><div class="pcc-score">⚡ 89%</div></div>
+        <div class="pipe-crd"><div class="pcc-name">Vivek P.</div><div class="pcc-role">Backend Dev</div><div class="pcc-score">⚡ 84%</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="sec" id="pricing">
+  <div style="max-width:900px;margin:0 auto;text-align:center">
+    <div class="rv"><div class="sec-eye">Pricing</div>
+    <h2 class="sec-h">We grow when <em>you hire.</em></h2>
+    <p class="sec-s" style="margin:0 auto">Our model is simple: companies use SwipeMatch free. Candidates pay for premium coaching and fast-track matching. Your success is our marketing.</p></div>
+    <div class="price-card rv d1">
+      <div class="price-top">
+        <div class="pt-lbl">Company registration</div>
+        <div class="pt-amt">₹0</div>
+        <div class="pt-per">forever · no credit card · no hidden fees</div>
+      </div>
+      <div class="price-body">
+        <div class="pi"><span class="pi-ck">✓</span><div><strong>Unlimited job postings</strong><span>Post as many roles as you need, any time</span></div></div>
+        <div class="pi"><span class="pi-ck">✓</span><div><strong>AI match scoring on every candidate</strong><span>Claude AI ranks candidates by fit before you see them</span></div></div>
+        <div class="pi"><span class="pi-ck">✓</span><div><strong>Employer swipe feed</strong><span>Swipe on pre-interested candidates, bilateral matching</span></div></div>
+        <div class="pi"><span class="pi-ck">✓</span><div><strong>In-app secure messaging</strong><span>Chat with matches without sharing contact details</span></div></div>
+        <div class="pi"><span class="pi-ck">✓</span><div><strong>Ghost Score dashboard</strong><span>Track your company's response rate and reputation</span></div></div>
+        <div class="pi"><span class="pi-ck">✓</span><div><strong>60-second video pitches</strong><span>See candidates beyond CVs — hear them speak</span></div></div>
+        <div class="pi"><span class="pi-ck">✓</span><div><strong>Dedicated onboarding support</strong><span>Our team gets your first role live within 2 hours</span></div></div>
+      </div>
+      <div class="pricing-cta">
+        <button class="price-btn" onclick="openModal()">Create Your Company Profile — Free →</button>
+        <div class="price-fine">No credit card · Cancel anytime · Your data deleted in 72h on request</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="sec" style="padding-top:0">
+  <div style="max-width:900px;margin:0 auto">
+    <div class="rv" style="text-align:center;margin-bottom:2rem">
+      <div class="sec-eye">What companies say</div>
+      <h2 class="sec-h" style="max-width:500px;margin:0 auto">Heard from our <em>early partners</em></h2>
+    </div>
+  </div>
+  <div class="tst-outer">
+    <div class="tst-track">
+      <div class="tcard"><div class="tst-s">★★★★★</div><p class="tst-q">"We hired our Backend Engineer in 9 days. On Naukri that same role sat empty for 6 weeks. The candidates on SwipeMatch actually <em>wanted</em> to work here."</p><div class="tst-a"><div class="ta ta1">RK</div><div><div class="ta-n">Rajan Kumar</div><div class="ta-r">CTO · Fintech, Bangalore</div></div></div></div>
+      <div class="tcard"><div class="tst-s">★★★★★</div><p class="tst-q">"Our HR team used to spend 3 days a week screening CVs. Now they spend 2 hours. The AI score breakdown on each candidate is genuinely useful."</p><div class="tst-a"><div class="ta ta2">PM</div><div><div class="ta-n">Priya Menon</div><div class="ta-r">HR Head · BPO, Kochi</div></div></div></div>
+      <div class="tcard"><div class="tst-s">★★★★★</div><p class="tst-q">"I expected a sales call after signing up free. Three months later, still ₹0, three excellent hires. The ghost tracker alone is worth registering for."</p><div class="tst-a"><div class="ta ta3">AS</div><div><div class="ta-n">Arjun Singh</div><div class="ta-r">Founder · D2C Brand, Mumbai</div></div></div></div>
+      <div class="tcard"><div class="tst-s">★★★★☆</div><p class="tst-q">"The video pitch feature changed how we evaluate candidates. Seeing someone talk about their work tells you more in 60 seconds than a CV ever does."</p><div class="tst-a"><div class="ta ta4">SN</div><div><div class="ta-n">Sreeja Nair</div><div class="ta-r">Talent Lead · IT, Trivandrum</div></div></div></div>
+      <div class="tcard"><div class="tst-s">★★★★★</div><p class="tst-q">"Hired 12 people across Singapore and India in Q1. The AI match explanations saved us from calling candidates who looked good on paper but weren't aligned."</p><div class="tst-a"><div class="ta ta5">VC</div><div><div class="ta-n">Vinod Chandra</div><div class="ta-r">Ops Director · Logistics, Singapore</div></div></div></div>
+      <div class="tcard"><div class="tst-s">★★★★★</div><p class="tst-q">"Our ghost score went from 74 to 98 in 6 weeks just by using the 72h countdown. It made our team more professional. Candidates started writing about us positively."</p><div class="tst-a"><div class="ta ta1">MK</div><div><div class="ta-n">Mohammed K.</div><div class="ta-r">HR Manager · Tech, Bahrain</div></div></div></div>
+      <!-- mirror -->
+      <div class="tcard"><div class="tst-s">★★★★★</div><p class="tst-q">"We hired our Backend Engineer in 9 days. On Naukri that same role sat empty for 6 weeks. The candidates on SwipeMatch actually <em>wanted</em> to work here."</p><div class="tst-a"><div class="ta ta1">RK</div><div><div class="ta-n">Rajan Kumar</div><div class="ta-r">CTO · Fintech, Bangalore</div></div></div></div>
+      <div class="tcard"><div class="tst-s">★★★★★</div><p class="tst-q">"Our HR team used to spend 3 days a week screening CVs. Now they spend 2 hours. The AI score breakdown on each candidate is genuinely useful."</p><div class="tst-a"><div class="ta ta2">PM</div><div><div class="ta-n">Priya Menon</div><div class="ta-r">HR Head · BPO, Kochi</div></div></div></div>
+      <div class="tcard"><div class="tst-s">★★★★★</div><p class="tst-q">"I expected a sales call after signing up free. Three months later, still ₹0, three excellent hires. The ghost tracker alone is worth registering for."</p><div class="tst-a"><div class="ta ta3">AS</div><div><div class="ta-n">Arjun Singh</div><div class="ta-r">Founder · D2C Brand, Mumbai</div></div></div></div>
+      <div class="tcard"><div class="tst-s">★★★★☆</div><p class="tst-q">"The video pitch feature changed how we evaluate candidates. Seeing someone talk about their work tells you more in 60 seconds than a CV ever does."</p><div class="tst-a"><div class="ta ta4">SN</div><div><div class="ta-n">Sreeja Nair</div><div class="ta-r">Talent Lead · IT, Trivandrum</div></div></div></div>
+      <div class="tcard"><div class="tst-s">★★★★★</div><p class="tst-q">"Hired 12 people across Singapore and India in Q1. The AI match explanations saved us from calling candidates who looked good on paper but weren't aligned."</p><div class="tst-a"><div class="ta ta5">VC</div><div><div class="ta-n">Vinod Chandra</div><div class="ta-r">Ops Director · Logistics, Singapore</div></div></div></div>
+      <div class="tcard"><div class="tst-s">★★★★★</div><p class="tst-q">"Our ghost score went from 74 to 98 in 6 weeks just by using the 72h countdown. It made our team more professional. Candidates started writing about us positively."</p><div class="tst-a"><div class="ta ta1">MK</div><div><div class="ta-n">Mohammed K.</div><div class="ta-r">HR Manager · Tech, Bahrain</div></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="fcta-sec">
+  <h2 class="rv">Your next hire is already<br>on <em>SwipeMatch.</em></h2>
+  <p class="rv d1">Register in 2 minutes. No credit card. No approval wait. Your first role goes live today.</p>
+  <button class="fcta-btn rv d2" onclick="openModal()">Get Started — It's Free →</button>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-in">
+    <div class="flogo"><div class="flogo-dot"></div>SwipeMatch</div>
+    <div class="flinks">
+      <a href="#">For Candidates</a>
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Contact</a>
+    </div>
+  </div>
+  <div class="foot-in" style="margin-top:.75rem">
+    <div class="fcp">© 2026 SwipeMatch. Built in Bahrain. Hiring across Asia &amp; the Gulf.</div>
+  </div>
+</footer>
+
+<!-- ─── ONBOARDING MODAL ─── -->
+<div class="moverlay" id="modal" onclick="handleOverlayClick(event)">
+  <div class="mcard" id="mcard">
+    <div class="mhandle"></div>
+    <div class="mhead">
+      <div class="mprog">
+        <div class="pdot" id="pd0"></div>
+        <div class="pdot" id="pd1"></div>
+        <div class="pdot" id="pd2"></div>
+        <div class="pdot" id="pd3"></div>
+        <div class="pdot" id="pd4"></div>
+      </div>
+      <button class="mclose" onclick="closeModal()">✕</button>
+    </div>
+
+    <div class="mbody">
+
+      <!-- Step 0: welcome -->
+      <div class="step-p active" id="s0">
+        <div class="sq">Welcome to SwipeMatch 👋</div>
+        <p class="sh">Let's get your company set up in 2 minutes. No credit card, no commitment.</p>
+        <div style="background:var(--cream);border-radius:16px;padding:1.2rem;margin-bottom:1rem">
+          <div style="display:flex;gap:.65rem;align-items:center;margin-bottom:.9rem">
+            <span style="font-size:1.1rem">✓</span>
+            <span style="font-size:.84rem">Post unlimited roles — free forever</span>
+          </div>
+          <div style="display:flex;gap:.65rem;align-items:center;margin-bottom:.9rem">
+            <span style="font-size:1.1rem">✓</span>
+            <span style="font-size:.84rem">AI match scoring on every candidate</span>
+          </div>
+          <div style="display:flex;gap:.65rem;align-items:center;margin-bottom:.9rem">
+            <span style="font-size:1.1rem">✓</span>
+            <span style="font-size:.84rem">Ghost Score dashboard &amp; pipeline Kanban</span>
+          </div>
+          <div style="display:flex;gap:.65rem;align-items:center">
+            <span style="font-size:1.1rem">✓</span>
+            <span style="font-size:.84rem">Onboarding support within 2 hours</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 1: company name -->
+      <div class="step-p" id="s1">
+        <div class="sq">What's your company called?</div>
+        <p class="sh">This will appear on your employer profile visible to candidates.</p>
+        <input class="sinput" type="text" id="f-company" placeholder="e.g. Acme Technologies Pvt. Ltd." oninput="checkStep(1)">
+      </div>
+
+      <!-- Step 2: city -->
+      <div class="step-p" id="s2">
+        <div class="sq">Where are you based? 📍</div>
+        <p class="sh">Pick your primary hiring location.</p>
+        <div class="chips">
+          <div class="chip" onclick="selectChip(this,'city')">🏙️ Bangalore</div>
+          <div class="chip" onclick="selectChip(this,'city')">🌴 Kochi / Kerala</div>
+          <div class="chip" onclick="selectChip(this,'city')">🏢 Mumbai</div>
+          <div class="chip" onclick="selectChip(this,'city')">💻 Hyderabad</div>
+          <div class="chip" onclick="selectChip(this,'city')">🌆 Chennai</div>
+          <div class="chip" onclick="selectChip(this,'city')">🏛️ Delhi NCR</div>
+          <div class="chip" onclick="selectChip(this,'city')">✈️ Dubai / UAE</div>
+          <div class="chip" onclick="selectChip(this,'city')">🇸🇬 Singapore</div>
+          <div class="chip" onclick="selectChip(this,'city')">🌏 Other</div>
+        </div>
+      </div>
+
+      <!-- Step 3: industry -->
+      <div class="step-p" id="s3">
+        <div class="sq">What industry are you in?</div>
+        <p class="sh">We'll show your roles to candidates with matching career goals.</p>
+        <div class="chips">
+          <div class="chip" onclick="selectChip(this,'ind')">💻 IT / Software</div>
+          <div class="chip" onclick="selectChip(this,'ind')">📞 BPO / KPO</div>
+          <div class="chip" onclick="selectChip(this,'ind')">🏦 Finance</div>
+          <div class="chip" onclick="selectChip(this,'ind')">🏥 Healthcare</div>
+          <div class="chip" onclick="selectChip(this,'ind')">🏭 Manufacturing</div>
+          <div class="chip" onclick="selectChip(this,'ind')">🛒 FMCG / Retail</div>
+          <div class="chip" onclick="selectChip(this,'ind')">🚚 Logistics</div>
+          <div class="chip" onclick="selectChip(this,'ind')">🎓 Education</div>
+          <div class="chip" onclick="selectChip(this,'ind')">🏗️ Real Estate</div>
+          <div class="chip" onclick="selectChip(this,'ind')">🍽️ Hospitality</div>
+        </div>
+      </div>
+
+      <!-- Step 4: hiring count -->
+      <div class="step-p" id="s4">
+        <div class="sq">How many are you hiring this quarter?</div>
+        <p class="sh">Helps us prioritise your onboarding support.</p>
+        <div class="chips">
+          <div class="chip" onclick="selectChip(this,'hire')">1 – 3 hires</div>
+          <div class="chip" onclick="selectChip(this,'hire')">4 – 10 hires</div>
+          <div class="chip" onclick="selectChip(this,'hire')">11 – 25 hires</div>
+          <div class="chip" onclick="selectChip(this,'hire')">25+ hires</div>
+        </div>
+      </div>
+
+      <!-- Step 5: contact details -->
+      <div class="step-p" id="s5">
+        <div class="sq">Last step — your details</div>
+        <p class="sh">We'll email your login link and call to help you post your first role.</p>
+        <input class="sinput" type="text" id="f-name" placeholder="Your full name" style="margin-bottom:.7rem" oninput="checkStep(5)">
+        <input class="sinput" type="email" id="f-email" placeholder="Work email address" style="margin-bottom:.7rem" oninput="checkStep(5)">
+        <input class="sinput" type="tel" id="f-phone" placeholder="WhatsApp / phone number" oninput="checkStep(5)">
+        <div class="form-err" id="submit-err">Something went wrong. Please try again or email us directly.</div>
+      </div>
+
+      <!-- Step 6: success -->
+      <div class="step-p" id="s6">
+        <div class="success-s">
+          <div class="succ-em">🎉</div>
+          <div class="succ-t">You're in!</div>
+          <p class="succ-sub">Welcome to SwipeMatch.<br>Check your inbox — your login link is on its way. Our team will reach out within 2 hours to get your first role live.<br><br>Get ready to meet candidates who actually want to work with you.</p>
+          <button class="succ-next" onclick="closeModal()">Close ✓</button>
+        </div>
+      </div>
+
+    </div><!-- /mbody -->
+
+    <div class="mfoot" id="mfoot">
+      <button class="snext" id="snext" onclick="nextStep()">Get Started →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── SCROLL REVEAL ───
+const obs = new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vi');obs.unobserve(e.target)}})},{threshold:.1});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+
+// ─── MODAL ───
+let step = 0;
+const totalSteps = 5;
+const chipSel = {};
+
+// SETUP: Sign up free at https://formspree.io using zoraizalraz@gmail.com,
+// create a form, and paste your form ID below (the part after /f/).
+const FORMSPREE_ID = 'xlgvwlqr';
+
+function openModal(){
+  step = 0;
+  Object.keys(chipSel).forEach(k => delete chipSel[k]);
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow='hidden';
+  document.getElementById('mfoot').style.display='block';
+  updateModal();
+}
+function closeModal(){
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow='';
+}
+function handleOverlayClick(e){if(e.target.id==='modal')closeModal()}
+
+function updateModal(){
+  for(let i=0;i<=6;i++){
+    const p=document.getElementById('s'+i);
+    if(p)p.className='step-p'+(i===step?' active':'');
+  }
+  for(let i=0;i<5;i++){
+    const d=document.getElementById('pd'+i);
+    if(!d)continue;
+    d.className='pdot'+(i<step?' done':i===step?' cur':'');
+  }
+  const btn=document.getElementById('snext');
+  const foot=document.getElementById('mfoot');
+  if(step===0){btn.textContent='Let\'s go →';btn.disabled=false}
+  else if(step===5){btn.textContent='Create My Free Account ✓';btn.disabled=!canAdvance()}
+  else if(step===6){foot.style.display='none';return}
+  else{btn.textContent='Continue →';btn.disabled=!canAdvance()}
+  foot.style.display='block';
+}
+
+function canAdvance(){
+  if(step===1){const v=document.getElementById('f-company');return v&&v.value.trim().length>1}
+  if(step===2){return !!chipSel['city']}
+  if(step===3){return !!chipSel['ind']}
+  if(step===4){return !!chipSel['hire']}
+  if(step===5){
+    const n=document.getElementById('f-name'),e=document.getElementById('f-email'),p=document.getElementById('f-phone');
+    return n&&e&&p&&n.value.trim()&&e.value.includes('@')&&p.value.trim().length>6;
+  }
+  return true;
+}
+
+function checkStep(s){if(step===s)document.getElementById('snext').disabled=!canAdvance()}
+
+function selectChip(el,group){
+  const chips=el.closest('.chips').querySelectorAll('.chip');
+  chips.forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');
+  chipSel[group]=el.textContent.trim();
+  document.getElementById('snext').disabled=!canAdvance();
+}
+
+async function submitRegistration(){
+  const btn=document.getElementById('snext');
+  const errBox=document.getElementById('submit-err');
+  errBox.classList.remove('show');
+  btn.textContent='Sending…';
+  btn.disabled=true;
+
+  const payload={
+    _subject: 'New SwipeMatch Company Registration — '+document.getElementById('f-company').value.trim(),
+    _replyto: document.getElementById('f-email').value.trim(),
+    company_name: document.getElementById('f-company').value.trim(),
+    city: chipSel['city']||'',
+    industry: chipSel['ind']||'',
+    hiring_this_quarter: chipSel['hire']||'',
+    contact_name: document.getElementById('f-name').value.trim(),
+    contact_email: document.getElementById('f-email').value.trim(),
+    contact_phone: document.getElementById('f-phone').value.trim(),
+    registered_at: new Date().toISOString()
+  };
+
+  try{
+    const res=await fetch('https://formspree.io/f/'+FORMSPREE_ID,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify(payload)
+    });
+    if(res.ok){
+      step=6;
+      updateModal();
+      document.getElementById('mcard').scrollTop=0;
+    } else {
+      const body=await res.json().catch(()=>({}));
+      const msg=body.error||'Submission failed. Please try again.';
+      errBox.textContent=msg;
+      errBox.classList.add('show');
+      btn.textContent='Create My Free Account ✓';
+      btn.disabled=!canAdvance();
+    }
+  } catch(err){
+    errBox.textContent='Network error — check your connection and try again.';
+    errBox.classList.add('show');
+    btn.textContent='Create My Free Account ✓';
+    btn.disabled=!canAdvance();
+  }
+}
+
+function nextStep(){
+  if(!canAdvance()&&step!==0)return;
+  if(step===5){submitRegistration();return;}
+  step=Math.min(step+1,6);
+  updateModal();
+  document.getElementById('mcard').scrollTop=0;
+}
+
+// ─── NAV SHADOW ───
+window.addEventListener('scroll',()=>{
+  document.querySelector('nav').style.boxShadow=scrollY>30?'0 2px 16px rgba(9,9,11,.07)':'none';
+});
+</script>
+</body>
+</html>

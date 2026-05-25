@@ -1,0 +1,3 @@
+{
+  "rewrites": [{ "source": "/", "destination": "/swipematch-v2.html" }]
+}

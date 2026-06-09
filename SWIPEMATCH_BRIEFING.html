@@ -1,0 +1,1573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SwipeMatch — Master Product Briefing for Claude Code</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Syne:wght@400;500;700;800&display=swap');
+
+  :root {
+    --bg: #0A0A0A;
+    --surface: #111111;
+    --surface2: #181818;
+    --border: #222222;
+    --border2: #2E2E2E;
+    --text: #F0EEE8;
+    --muted: #888880;
+    --purple: #7B6FFF;
+    --purple-dim: #2A2550;
+    --teal: #00E5A0;
+    --teal-dim: #003D2C;
+    --coral: #FF5F3D;
+    --coral-dim: #3D1A0F;
+    --amber: #FFB830;
+    --amber-dim: #3D2C00;
+    --blue: #4DA6FF;
+    --blue-dim: #0A2540;
+    --pink: #FF6EB4;
+    --pink-dim: #3D1030;
+    --green: #6BCB5F;
+    --green-dim: #0F2E0C;
+    --red: #FF4757;
+    --red-dim: #3D0F15;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Syne', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    font-size: 15px;
+  }
+
+  /* ── LAYOUT ── */
+  .sidebar {
+    position: fixed;
+    left: 0; top: 0; bottom: 0;
+    width: 240px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    z-index: 100;
+    padding: 2rem 0 2rem;
+  }
+
+  .sidebar-logo {
+    padding: 0 1.5rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 1rem;
+  }
+
+  .sidebar-logo .app-name {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--purple);
+    letter-spacing: -0.02em;
+  }
+
+  .sidebar-logo .app-sub {
+    font-size: 11px;
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+    margin-top: 2px;
+  }
+
+  .nav-section {
+    padding: 0 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .nav-label {
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    padding: 0.5rem 0.5rem 0.25rem;
+  }
+
+  .nav-item {
+    display: block;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    color: var(--muted);
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .nav-item:hover { background: var(--surface2); color: var(--text); }
+  .nav-item.active { background: var(--purple-dim); color: var(--purple); }
+
+  .main {
+    margin-left: 240px;
+    max-width: 900px;
+    padding: 3rem 3rem 6rem;
+  }
+
+  /* ── SECTIONS ── */
+  .section {
+    margin-bottom: 4rem;
+    scroll-margin-top: 2rem;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-num {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: var(--purple-dim);
+    border: 1px solid var(--purple);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--purple);
+    flex-shrink: 0;
+  }
+
+  .section-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.02em;
+  }
+
+  .section-desc {
+    font-size: 13px;
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+    margin-top: 2px;
+  }
+
+  /* ── CODE BLOCKS ── */
+  .code-block {
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 1rem 0;
+  }
+
+  .code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+  }
+
+  .code-filename {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--teal);
+  }
+
+  .code-lang {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    background: var(--bg);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+
+  .code-body {
+    padding: 1.25rem 1.5rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: #B8D4FF;
+    white-space: pre-wrap;
+    overflow-x: auto;
+  }
+
+  .code-body .c { color: var(--muted); }
+  .code-body .k { color: var(--purple); }
+  .code-body .s { color: var(--teal); }
+  .code-body .n { color: var(--amber); }
+
+  /* ── CARDS ── */
+  .grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 12px; margin: 1rem 0; }
+  .grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 1rem 0; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: 12px;
+    padding: 1.25rem;
+  }
+
+  .card-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .card-icon {
+    width: 34px; height: 34px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .card-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+  .card-desc { font-size: 13px; color: var(--muted); line-height: 1.55; }
+
+  .badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 500;
+    font-family: 'IBM Plex Mono', monospace;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-top: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── FEATURE ROWS ── */
+  .feature-row {
+    display: flex;
+    gap: 14px;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .feature-row:last-child { border-bottom: none; }
+
+  .f-num {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .f-body { flex: 1; }
+  .f-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+  .f-desc { font-size: 13px; color: var(--muted); line-height: 1.55; }
+
+  .f-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+  .f-tag {
+    font-size: 11px;
+    font-family: 'IBM Plex Mono', monospace;
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--border2);
+    color: var(--muted);
+  }
+
+  /* ── PRIORITY TABLE ── */
+  .priority-table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+  .priority-table th {
+    font-size: 11px;
+    font-weight: 500;
+    font-family: 'IBM Plex Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border2);
+  }
+  .priority-table td {
+    padding: 10px 12px;
+    font-size: 13px;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .priority-table tr:hover td { background: var(--surface2); }
+  .p-v1 { color: var(--teal); font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; }
+  .p-v2 { color: var(--amber); font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; }
+  .p-v3 { color: var(--purple); font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; }
+
+  /* ── INLINE UTILS ── */
+  .divider { height: 1px; background: var(--border); margin: 2rem 0; }
+  .mono { font-family: 'IBM Plex Mono', monospace; }
+  .highlight { color: var(--purple); font-weight: 700; }
+  .teal { color: var(--teal); }
+  .amber { color: var(--amber); }
+  .coral { color: var(--coral); }
+  .muted { color: var(--muted); }
+
+  .alert {
+    border-left: 3px solid var(--coral);
+    background: var(--coral-dim);
+    border-radius: 0 8px 8px 0;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    font-size: 13px;
+    color: #FFB8A8;
+  }
+
+  .note {
+    border-left: 3px solid var(--purple);
+    background: var(--purple-dim);
+    border-radius: 0 8px 8px 0;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    font-size: 13px;
+    color: #C8C0FF;
+  }
+
+  .step-list { list-style: none; }
+  .step-list li {
+    display: flex;
+    gap: 10px;
+    padding: 8px 0;
+    font-size: 13px;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+  .step-list li:last-child { border-bottom: none; }
+  .step-list .step-n {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--purple);
+    min-width: 24px;
+    margin-top: 2px;
+  }
+  .step-list .step-t { color: var(--text); font-weight: 500; margin-bottom: 2px; }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+  /* ── PRINT FRIENDLY ── */
+  @media print {
+    .sidebar { display: none; }
+    .main { margin-left: 0; padding: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR NAV -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="app-name">SwipeMatch</div>
+    <div class="app-sub">// master product brief</div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Foundation</div>
+    <a class="nav-item active" href="#overview">App overview</a>
+    <a class="nav-item" href="#stack">Tech stack</a>
+    <a class="nav-item" href="#schema">Database schema</a>
+    <a class="nav-item" href="#ai">AI architecture</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Product</div>
+    <a class="nav-item" href="#screens">Core screens</a>
+    <a class="nav-item" href="#killers">Killer features</a>
+    <a class="nav-item" href="#psychology">Psychology engine</a>
+    <a class="nav-item" href="#retention">Retention mechanics</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Strategy</div>
+    <a class="nav-item" href="#linkedin">Vs LinkedIn</a>
+    <a class="nav-item" href="#gtm">Go-to-market</a>
+    <a class="nav-item" href="#revenue">Revenue model</a>
+    <a class="nav-item" href="#risks">Risks</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Build</div>
+    <a class="nav-item" href="#claude-md">CLAUDE.md</a>
+    <a class="nav-item" href="#prompt">Claude Code prompt</a>
+    <a class="nav-item" href="#priority">Build priority</a>
+  </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+  <!-- ══ OVERVIEW ══ -->
+  <section class="section" id="overview">
+    <div class="section-header">
+      <div class="section-num">01</div>
+      <div>
+        <div class="section-title">App overview</div>
+        <div class="section-desc">// what we are building and why</div>
+      </div>
+    </div>
+
+    <p style="font-size:15px; color:var(--muted); line-height:1.7; margin-bottom:1.5rem;">
+      SwipeMatch is a bilateral swipe-based job matching mobile app built in Flutter. Candidates swipe on jobs, employers swipe on candidates, and Claude AI scores and explains every match. The goal is to replace the outdated form-based job board paradigm (LinkedIn, Indeed, ZipRecruiter) with a mobile-first, dopamine-driven, AI-powered experience that feels like Tinder but delivers LinkedIn-level career outcomes.
+    </p>
+
+    <div class="grid3">
+      <div class="card">
+        <div class="card-title" style="color:var(--teal);">$17.5B</div>
+        <div class="card-desc">Online job market in 2026, growing at 12.9% CAGR. Incumbents use 2005-era UX.</div>
+      </div>
+      <div class="card">
+        <div class="card-title" style="color:var(--purple);">Bilateral swipe</div>
+        <div class="card-desc">Both sides swipe. Double the DAUs, double the revealed preference data, better AI.</div>
+      </div>
+      <div class="card">
+        <div class="card-title" style="color:var(--amber);">Mobile-first</div>
+        <div class="card-desc">78% of job searching happens on mobile. LinkedIn was bolted onto mobile. We were born there.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ TECH STACK ══ -->
+  <section class="section" id="stack">
+    <div class="section-header">
+      <div class="section-num">02</div>
+      <div>
+        <div class="section-title">Tech stack</div>
+        <div class="section-desc">// do not deviate from this</div>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <div class="card-title" style="margin-bottom:10px;">Core</div>
+        <ul class="step-list">
+          <li><span class="step-n">APP</span><div><div class="step-t">Flutter + Dart</div>One codebase for iOS + Android. Null-safe, latest stable.</div></li>
+          <li><span class="step-n">STATE</span><div><div class="step-t">Riverpod + flutter_hooks</div>flutter_riverpod, hooks_riverpod, flutter_hooks.</div></li>
+          <li><span class="step-n">NAV</span><div><div class="step-t">go_router</div>Declarative routing, deep linking, auth guards.</div></li>
+          <li><span class="step-n">HTTP</span><div><div class="step-t">dio</div>For calling Supabase Edge Functions.</div></li>
+          <li><span class="step-n">CODE</span><div><div class="step-t">freezed + json_serializable</div>Immutable models, copyWith, fromJson, toJson.</div></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title" style="margin-bottom:10px;">Backend + AI</div>
+        <ul class="step-list">
+          <li><span class="step-n">DB</span><div><div class="step-t">Supabase</div>Postgres + Auth + Realtime + Storage + Edge Functions.</div></li>
+          <li><span class="step-n">AI</span><div><div class="step-t">Claude API (claude-sonnet-4-20250514)</div>Called ONLY from Edge Functions. Never from Flutter directly.</div></li>
+          <li><span class="step-n">PUSH</span><div><div class="step-t">firebase_messaging</div>FCM push + Supabase DB triggers.</div></li>
+          <li><span class="step-n">CACHE</span><div><div class="step-t">hive_flutter</div>Local data cache.</div></li>
+          <li><span class="step-n">SEC</span><div><div class="step-t">flutter_secure_storage</div>Auth tokens. Never plain SharedPreferences.</div></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">pubspec.yaml — required packages</span>
+        <span class="code-lang">yaml</span>
+      </div>
+      <div class="code-body">dependencies:
+  supabase_flutter: ^2.0.0
+  flutter_riverpod: ^2.0.0
+  hooks_riverpod: ^2.0.0
+  flutter_hooks: ^0.20.0
+  go_router: ^13.0.0
+  flutter_card_swiper: ^7.0.0    # swipe gesture engine
+  rive: ^0.13.0                   # match reveal animation
+  lottie: ^3.0.0                  # confetti / celebration
+  hive_flutter: ^1.1.0
+  flutter_secure_storage: ^9.0.0
+  cached_network_image: ^3.3.0
+  shimmer: ^3.0.0                 # loading skeletons
+  firebase_core: ^3.0.0
+  firebase_messaging: ^15.0.0
+  fl_chart: ^0.68.0               # match score breakdown chart
+  dio: ^5.0.0
+  freezed_annotation: ^2.4.0
+  json_annotation: ^4.8.0
+  intl: ^0.19.0
+
+dev_dependencies:
+  build_runner: ^2.4.0
+  freezed: ^2.4.0
+  json_serializable: ^6.7.0</div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">lib/ — folder structure (never deviate)</span>
+        <span class="code-lang">tree</span>
+      </div>
+      <div class="code-body">lib/
+  main.dart
+  app.dart
+  router/
+    app_router.dart
+  features/
+    auth/
+      data/auth_repository.dart
+      domain/auth_state.dart
+      domain/user_model.dart
+      presentation/login_screen.dart
+      presentation/role_selector_screen.dart
+    onboarding/
+      data/onboarding_repository.dart
+      domain/onboarding_state.dart
+      presentation/candidate_onboarding_screen.dart
+      presentation/employer_onboarding_screen.dart
+      presentation/widgets/onboarding_card.dart
+    feed/
+      data/feed_repository.dart
+      domain/job_model.dart
+      domain/swipe_model.dart
+      domain/feed_state.dart
+      presentation/feed_screen.dart
+      presentation/widgets/job_card.dart
+      presentation/widgets/deck_empty_state.dart
+    match/
+      data/match_repository.dart
+      domain/match_model.dart
+      domain/match_reason_model.dart
+      presentation/match_reveal_screen.dart
+      presentation/match_list_screen.dart
+      presentation/match_detail_screen.dart
+    chat/
+      data/chat_repository.dart
+      domain/message_model.dart
+      presentation/chat_screen.dart
+    employer/
+      data/employer_repository.dart
+      domain/candidate_card_model.dart
+      domain/company_model.dart
+      presentation/employer_feed_screen.dart
+      presentation/pipeline_screen.dart
+    ai_coach/
+      data/coach_repository.dart
+      presentation/coach_panel.dart
+    profile/
+      data/profile_repository.dart
+      domain/profile_model.dart
+      presentation/profile_screen.dart
+      presentation/widgets/completion_bar.dart
+    notifications/
+      data/notification_repository.dart
+  shared/
+    theme/
+      app_colors.dart
+      app_text_styles.dart
+      app_spacing.dart
+      app_theme.dart
+    widgets/
+      primary_button.dart
+      swipe_action_button.dart
+      skill_tag.dart
+      match_score_badge.dart
+      streak_badge.dart
+      loading_skeleton.dart
+    utils/
+      date_utils.dart
+      currency_utils.dart
+      haptics.dart
+    constants/
+      app_constants.dart
+      supabase_constants.dart
+
+supabase/
+  functions/
+    match-score/index.ts
+    ai-coach/index.ts
+    daily-deck/index.ts
+    push-notifications/index.ts
+  migrations/
+    001_initial_schema.sql
+    002_rls_policies.sql
+    003_seed_data.sql</div>
+    </div>
+  </section>
+
+  <!-- ══ DATABASE SCHEMA ══ -->
+  <section class="section" id="schema">
+    <div class="section-header">
+      <div class="section-num">03</div>
+      <div>
+        <div class="section-title">Database schema</div>
+        <div class="section-desc">// supabase postgres — all tables and relations</div>
+      </div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">supabase/migrations/001_initial_schema.sql</span>
+        <span class="code-lang">sql</span>
+      </div>
+      <div class="code-body">-- profiles: both candidates and employers
+create table profiles (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references auth.users not null unique,
+  role text not null check (role in ('candidate', 'employer')),
+  name text,
+  avatar_url text,
+  bio text,
+  skills text[],
+  salary_min int,
+  salary_max int,
+  currency text default 'USD',
+  work_style text check (work_style in ('remote', 'hybrid', 'onsite')),
+  culture_tags text[],
+  experience_years int,
+  streak_count int default 0,
+  last_active_date date,
+  passive_mode boolean default false,
+  profile_completion int default 0,
+  video_pitch_url text,
+  created_at timestamptz default now()
+);
+
+-- companies: employer-side profiles
+create table companies (
+  id uuid primary key default gen_random_uuid(),
+  employer_id uuid references profiles not null,
+  name text not null,
+  logo_url text,
+  size text,
+  culture_tags text[],
+  tech_stack text[],
+  description text,
+  website text,
+  ghost_score int default 100,   -- drops when employer ghosts candidates
+  truth_score jsonb,             -- AI-computed culture/rating breakdown
+  created_at timestamptz default now()
+);
+
+-- jobs: listings created by employers
+create table jobs (
+  id uuid primary key default gen_random_uuid(),
+  company_id uuid references companies not null,
+  title text not null,
+  description text,
+  required_skills text[],
+  salary_min int,
+  salary_max int,
+  work_style text check (work_style in ('remote', 'hybrid', 'onsite')),
+  experience_years int,
+  is_active boolean default true,
+  expires_at timestamptz default now() + interval '30 days',
+  created_at timestamptz default now()
+);
+
+-- swipes: every left/right swipe from both sides
+create table swipes (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references profiles not null,
+  target_id uuid not null,
+  target_type text check (target_type in ('job', 'candidate')),
+  direction text check (direction in ('left', 'right', 'super')),
+  created_at timestamptz default now(),
+  unique(user_id, target_id)
+);
+
+-- matches: bilateral right-swipes
+create table matches (
+  id uuid primary key default gen_random_uuid(),
+  candidate_id uuid references profiles not null,
+  job_id uuid references jobs not null,
+  company_id uuid references companies not null,
+  match_score int check (match_score between 0 and 100),
+  match_reason jsonb,
+  status text default 'new'
+    check (status in ('new','contacted','interview','offer','hired','closed')),
+  ghosted_at timestamptz,
+  created_at timestamptz default now()
+);
+
+-- messages: in-match chat
+create table messages (
+  id uuid primary key default gen_random_uuid(),
+  match_id uuid references matches not null,
+  sender_id uuid references profiles not null,
+  content text not null,
+  ai_assisted boolean default false,
+  created_at timestamptz default now()
+);
+
+-- salary_reports: crowdsourced verified salary data
+create table salary_reports (
+  id uuid primary key default gen_random_uuid(),
+  reporter_id uuid references profiles not null,
+  company_name text not null,
+  role_title text not null,
+  salary int not null,
+  currency text default 'USD',
+  city text,
+  country text,
+  verified boolean default false,
+  created_at timestamptz default now()
+);
+
+-- interview_intel: crowdsourced interview questions
+create table interview_intel (
+  id uuid primary key default gen_random_uuid(),
+  reporter_id uuid references profiles not null,
+  company_id uuid references companies,
+  company_name text not null,
+  role_title text,
+  question text not null,
+  stage text check (stage in ('phone','technical','culture','final')),
+  created_at timestamptz default now()
+);
+
+-- skills_scores: verified skill battle results
+create table skills_scores (
+  id uuid primary key default gen_random_uuid(),
+  candidate_id uuid references profiles not null,
+  skill_name text not null,
+  score int check (score between 0 and 100),
+  verified boolean default false,
+  taken_at timestamptz default now(),
+  unique(candidate_id, skill_name)
+);
+
+-- indexes
+create index on swipes(user_id, target_id);
+create index on matches(candidate_id, job_id);
+create index on jobs(company_id);
+create index on messages(match_id, created_at);
+create index on salary_reports(company_name, role_title);</div>
+    </div>
+  </section>
+
+  <!-- ══ AI ARCHITECTURE ══ -->
+  <section class="section" id="ai">
+    <div class="section-header">
+      <div class="section-num">04</div>
+      <div>
+        <div class="section-title">AI architecture</div>
+        <div class="section-desc">// claude API — never call from flutter directly</div>
+      </div>
+    </div>
+
+    <div class="alert">
+      Critical rule: Flutter NEVER calls the Claude API directly. All AI calls go through Supabase Edge Functions. This keeps the API key off the device and allows server-side caching and rate limiting.
+    </div>
+
+    <p style="color:var(--muted); font-size:13px; margin-bottom:1rem;">Flow: Flutter → Supabase Edge Function (Deno/TypeScript) → Claude API → response to Flutter</p>
+
+    <div class="grid2">
+      <div class="card">
+        <div class="card-title" style="margin-bottom:8px;">Match scoring (match-score function)</div>
+        <div class="card-desc" style="margin-bottom:10px;">Called after every right-swipe. Returns structured JSON immediately.</div>
+        <table style="width:100%; font-size:12px; font-family:'IBM Plex Mono',monospace;">
+          <tr><td style="color:var(--muted); padding:3px 0;">Skills overlap</td><td style="color:var(--teal); text-align:right;">40 pts</td></tr>
+          <tr><td style="color:var(--muted); padding:3px 0;">Salary compatibility</td><td style="color:var(--teal); text-align:right;">25 pts</td></tr>
+          <tr><td style="color:var(--muted); padding:3px 0;">Work style fit</td><td style="color:var(--teal); text-align:right;">20 pts</td></tr>
+          <tr><td style="color:var(--muted); padding:3px 0;">Experience level</td><td style="color:var(--teal); text-align:right;">15 pts</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-title" style="margin-bottom:8px;">Expected Claude JSON response</div>
+        <div class="code-body" style="padding:0; font-size:11.5px; background:transparent;">{
+  "overall_score": 87,
+  "dimensions": {
+    "skills":      { "score": 36, "reason": "string" },
+    "salary":      { "score": 22, "reason": "string" },
+    "work_style":  { "score": 18, "reason": "string" },
+    "experience":  { "score": 11, "reason": "string" }
+  },
+  "coaching_tip": "string",
+  "match_summary": "2 sentences max"
+}</div>
+      </div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">supabase/functions/match-score/index.ts</span>
+        <span class="code-lang">typescript</span>
+      </div>
+      <div class="code-body">import Anthropic from "npm:@anthropic-ai/sdk";
+
+const client = new Anthropic({ apiKey: Deno.env.get("ANTHROPIC_API_KEY") });
+
+Deno.serve(async (req) => {
+  const { candidate, job } = await req.json();
+
+  try {
+    const response = await client.messages.create({
+      model: "claude-sonnet-4-20250514",
+      max_tokens: 1024,
+      system: `You are a job matching AI. Score the compatibility between a 
+candidate and a job. Return ONLY valid JSON, no markdown, no explanation.`,
+      messages: [{
+        role: "user",
+        content: `Candidate: ${JSON.stringify(candidate)}
+Job: ${JSON.stringify(job)}
+
+Score these dimensions (total must not exceed 100):
+- skills_score (0-40): skill overlap quality
+- salary_score (0-25): salary range compatibility
+- work_style_score (0-20): remote/hybrid/onsite + culture tags
+- experience_score (0-15): years of experience fit
+
+Return this exact JSON:
+{
+  "overall_score": <sum>,
+  "dimensions": {
+    "skills": { "score": <int>, "reason": "<one sentence>" },
+    "salary": { "score": <int>, "reason": "<one sentence>" },
+    "work_style": { "score": <int>, "reason": "<one sentence>" },
+    "experience": { "score": <int>, "reason": "<one sentence>" }
+  },
+  "coaching_tip": "<one actionable improvement for the candidate>",
+  "match_summary": "<two sentences explaining why this is a good match>"
+}`
+      }]
+    });
+
+    const text = response.content[0].type === 'text' ? response.content[0].text : '';
+    const result = JSON.parse(text);
+    return new Response(JSON.stringify(result), {
+      headers: { "Content-Type": "application/json" }
+    });
+
+  } catch {
+    // Fallback: keyword overlap scoring if Claude fails
+    const sharedSkills = candidate.skills?.filter(
+      (s: string) => job.required_skills?.includes(s)
+    ) ?? [];
+    const fallbackScore = Math.min(40, sharedSkills.length * 8);
+    return new Response(JSON.stringify({
+      overall_score: fallbackScore,
+      dimensions: {
+        skills: { score: fallbackScore, reason: `${sharedSkills.length} skills in common` },
+        salary: { score: 0, reason: "Could not compute" },
+        work_style: { score: 0, reason: "Could not compute" },
+        experience: { score: 0, reason: "Could not compute" }
+      },
+      coaching_tip: "Complete your profile for a better match score.",
+      match_summary: "Partial match based on skills overlap."
+    }), { headers: { "Content-Type": "application/json" } });
+  }
+});</div>
+    </div>
+
+    <div class="note">
+      The ai-coach Edge Function uses SSE streaming — Flutter receives the response progressively via dio. The daily-deck function ranks all unseen jobs by match_score and caches the top 15. The push-notifications function runs via Supabase cron at 6pm per user timezone.
+    </div>
+  </section>
+
+  <!-- ══ CORE SCREENS ══ -->
+  <section class="section" id="screens">
+    <div class="section-header">
+      <div class="section-num">05</div>
+      <div>
+        <div class="section-title">Core screens</div>
+        <div class="section-desc">// every screen and what it must do</div>
+      </div>
+    </div>
+
+    <div class="feature-row">
+      <div class="f-num" style="background:var(--purple-dim); color:var(--purple);">01</div>
+      <div class="f-body">
+        <div class="f-title">Login screen (/auth)</div>
+        <div class="f-desc">Email magic link only + Google OAuth. No password ever. On auth success: check if profile exists — if no, go to /onboarding/role. If yes, go to /feed or /employer/feed based on role.</div>
+        <div class="f-tags"><span class="f-tag">supabase auth</span><span class="f-tag">magic link</span><span class="f-tag">google oauth</span></div>
+      </div>
+    </div>
+
+    <div class="feature-row">
+      <div class="f-num" style="background:var(--purple-dim); color:var(--purple);">02</div>
+      <div class="f-body">
+        <div class="f-title">Candidate onboarding (5-step wizard)</div>
+        <div class="f-desc">PageView with 5 full-screen cards. Save each step to Supabase immediately on advance. Step 1: role categories (grid of tappable cards). Step 2: skills (searchable chip input, min 3). Step 3: status (actively looking / open / exploring). Step 4: salary range slider. Step 5: work style + culture tags (max 5).</div>
+        <div class="f-tags"><span class="f-tag">pageview</span><span class="f-tag">progressive save</span><span class="f-tag">range slider</span></div>
+      </div>
+    </div>
+
+    <div class="feature-row">
+      <div class="f-num" style="background:var(--purple-dim); color:var(--purple);">03</div>
+      <div class="f-body">
+        <div class="f-title">Swipe feed — MOST IMPORTANT SCREEN (/feed)</div>
+        <div class="f-desc">flutter_card_swiper stack showing 15 daily cards. Profile completion bar always at top. Streak badge in AppBar. JobCard: company logo + role title + salary range (always visible) + 3 match reason tags pulled from pre-computed match_reason. Tap to flip card and show full description. Swipe right = write to swipes table + call match-score Edge Function in background + check bilateral match. Deck empty state: countdown to 8am.</div>
+        <div class="f-tags"><span class="f-tag">flutter_card_swiper</span><span class="f-tag">animatedflipcard</span><span class="f-tag">realtime match check</span></div>
+      </div>
+    </div>
+
+    <div class="feature-row">
+      <div class="f-num" style="background:var(--purple-dim); color:var(--purple);">04</div>
+      <div class="f-body">
+        <div class="f-title">Match reveal (full-screen modal)</div>
+        <div class="f-desc">Choreographed sequence: 0ms overlay, 200ms HapticFeedback.heavyImpact(), 300ms lottie confetti, 500ms both avatars slide in from opposite sides, 800ms pulse in center, 1000ms "It's a Match!" text, 1200ms score counter animates 0→final, 1800ms "Why you matched" fl_chart bars slide up. Two buttons: "Send a message" and "Keep swiping".</div>
+        <div class="f-tags"><span class="f-tag">lottie</span><span class="f-tag">fl_chart</span><span class="f-tag">haptic feedback</span><span class="f-tag">animation controller</span></div>
+      </div>
+    </div>
+
+    <div class="feature-row">
+      <div class="f-num" style="background:var(--purple-dim); color:var(--purple);">05</div>
+      <div class="f-body">
+        <div class="f-title">Chat screen (/match/:id/chat)</div>
+        <div class="f-desc">Realtime messages via Supabase Realtime subscription. Candidate bubbles right (purple), employer left (grey). "Get AI help" button opens CoachPanel bottom sheet — calls ai-coach Edge Function with streaming via dio, shows progressive text in 3 sections: what to say first, their culture in 3 points, your strongest selling point. Tapping a suggestion copies it to the input.</div>
+        <div class="f-tags"><span class="f-tag">supabase realtime</span><span class="f-tag">sse streaming</span><span class="f-tag">bottom sheet</span></div>
+      </div>
+    </div>
+
+    <div class="feature-row">
+      <div class="f-num" style="background:var(--purple-dim); color:var(--purple);">06</div>
+      <div class="f-body">
+        <div class="f-title">Employer feed (/employer/feed)</div>
+        <div class="f-desc">Mirror of candidate feed but shows CandidateCards: avatar, name, headline, top 5 skills as tags, match score badge, work style chip. Same swipe mechanic, same bilateral match detection. Tap to expand: full profile + AI 3-bullet summary + "why this candidate" explanation.</div>
+        <div class="f-tags"><span class="f-tag">same swipe engine</span><span class="f-tag">ai summary</span></div>
+      </div>
+    </div>
+
+    <div class="feature-row">
+      <div class="f-num" style="background:var(--purple-dim); color:var(--purple);">07</div>
+      <div class="f-body">
+        <div class="f-title">Pipeline Kanban (/employer/pipeline)</div>
+        <div class="f-desc">5 columns: New Match → Contacted → Interview Scheduled → Offer Sent → Hired. Drag-and-drop with @dnd-kit equivalent in Flutter. Each card shows candidate name + role + match score. Dragging updates matches.status in Supabase instantly. Ghost timer visible on each card if no reply in 48h.</div>
+        <div class="f-tags"><span class="f-tag">drag and drop</span><span class="f-tag">kanban</span><span class="f-tag">ghost timer</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ KILLER FEATURES ══ -->
+  <section class="section" id="killers">
+    <div class="section-header">
+      <div class="section-num">06</div>
+      <div>
+        <div class="section-title">Killer features</div>
+        <div class="section-desc">// features that will make people delete linkedin</div>
+      </div>
+    </div>
+
+    <div class="grid2">
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:var(--red-dim);">💰</div>
+          <div>
+            <div class="card-title">Salary truth screen</div>
+            <span class="badge" style="background:var(--red-dim); color:var(--red);">V1 — LAUNCH CRITICAL</span>
+          </div>
+        </div>
+        <div class="card-desc">Crowdsourced, verified salaries per role + company. Not ranges — actual numbers, verified by employment contract upload and anonymized. A dedicated screen in the app. Also used to power weekly "you are undervalued by $X" push notifications to employed users. LinkedIn hides this data deliberately. You make it your homepage feature.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:var(--purple-dim);">👻</div>
+          <div>
+            <div class="card-title">Ghost tracker</div>
+            <span class="badge" style="background:var(--red-dim); color:var(--red);">V1 — LAUNCH CRITICAL</span>
+          </div>
+        </div>
+        <div class="card-desc">After a bilateral match, a 72-hour response countdown starts. If the employer doesn't reply, a "ghosted" stat increments on their public company profile. This stat is visible to all candidates. Employers are terrified of this. Candidates love it. This feature alone will generate massive earned media. Implement ghost_score on companies table, decrement on ghost, show prominently on company cards.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:var(--teal-dim);">🛡️</div>
+          <div>
+            <div class="card-title">Employer truth score</div>
+            <span class="badge" style="background:var(--amber-dim); color:var(--amber);">V2</span>
+          </div>
+        </div>
+        <div class="card-desc">AI reads every Glassdoor review, LinkedIn post, press release, and news article about the company. Generates a live score across dimensions: Work-life balance / Management transparency / Growth opportunities / Salary fairness. Updated weekly. No sponsored polish, no company can pay to hide it. Stored as truth_score JSONB on companies table.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:var(--amber-dim);">🏟️</div>
+          <div>
+            <div class="card-title">Blind interview arena</div>
+            <span class="badge" style="background:var(--purple-dim); color:var(--purple);">V3</span>
+          </div>
+        </div>
+        <div class="card-desc">Employer posts a timed challenge. Candidates solve it anonymously — no name, photo, school, or nationality shown. Employer sees only the work output. Top 3 solutions get fast-tracked to interview. Eliminates bias structurally. Employers discover talent they would never have found through CV screening. This is the long-term moat.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:var(--blue-dim);">🗺️</div>
+          <div>
+            <div class="card-title">Career trajectory map</div>
+            <span class="badge" style="background:var(--purple-dim); color:var(--purple);">V3</span>
+          </div>
+        </div>
+        <div class="card-desc">AI shows exactly what jobs people with your exact profile ended up in 3, 5, and 10 years later. "People with your React + Node skills in Bahrain who joined a startup at 28 — 67% became VP within 6 years." Built from anonymized match and hire data. LinkedIn has the data but never shows it this way.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:var(--pink-dim);">🤝</div>
+          <div>
+            <div class="card-title">Referral network screen</div>
+            <span class="badge" style="background:var(--amber-dim); color:var(--amber);">V2</span>
+          </div>
+        </div>
+        <div class="card-desc">Shows which contacts work at every company you swipe on, up to 3 degrees of separation. One tap sends a warm intro request with a pre-drafted AI message. Warm referrals get hired 4x more often than cold applications. This converts passive swipers into active candidates with real pipeline.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:var(--teal-dim);">🎤</div>
+          <div>
+            <div class="card-title">60-second pitch card</div>
+            <span class="badge" style="background:var(--red-dim); color:var(--red);">V1 — LAUNCH CRITICAL</span>
+          </div>
+        </div>
+        <div class="card-desc">Instead of a CV, record a 60-second video pitch. AI auto-transcribes it, extracts key skills, and creates a searchable profile from the spoken content. No writing required. Levels the playing field for non-native English speakers and anyone who struggles with written CVs. Massive unlock for MENA, SEA, and African markets where LinkedIn is inaccessible due to language barriers.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:var(--coral-dim);">⚡</div>
+          <div>
+            <div class="card-title">Skills battle mode</div>
+            <span class="badge" style="background:var(--amber-dim); color:var(--amber);">V2</span>
+          </div>
+        </div>
+        <div class="card-desc">Duolingo-style micro-challenges per skill. "Prove your Python in 5 questions." Score replaces self-reported skill level on the profile. Verified skills get a checkmark badge that employers trust. Candidates are obsessively motivated to level up their scores. Store results in skills_scores table. Eventually a credential that schools and bootcamps partner with.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:var(--purple-dim);">🔍</div>
+          <div>
+            <div class="card-title">Insider intel feed</div>
+            <span class="badge" style="background:var(--amber-dim); color:var(--amber);">V2</span>
+          </div>
+        </div>
+        <div class="card-desc">Crowdsourced, anonymous interview questions per company. "Google asked me this in my SWE interview last week." Real-time, not Glassdoor's stale 3-year-old data. Before every match chat opens, AI briefs the candidate: "Their last 12 candidates were asked these 5 questions." Store in interview_intel table. Immediate virality — every interviewed candidate wants to contribute.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:var(--green-dim);">📡</div>
+          <div>
+            <div class="card-title">Passive market pulse</div>
+            <span class="badge" style="background:var(--amber-dim); color:var(--amber);">V2</span>
+          </div>
+        </div>
+        <div class="card-desc">Weekly push: "You are in the top 8% of React developers in the Gulf. Based on market demand, you are undervalued by ~$18K/year." Sent to ALL users including employed ones in passive_mode. This single feature keeps employed users opening the app every week even when they're not actively job hunting. It is the most powerful retention weapon for the top of the funnel.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══ PSYCHOLOGY ENGINE ══ -->
+  <section class="section" id="psychology">
+    <div class="section-header">
+      <div class="section-num">07</div>
+      <div>
+        <div class="section-title">Psychology engine</div>
+        <div class="section-desc">// every behavioral mechanic and the science behind it</div>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <div class="card-title" style="margin-bottom:6px;">Variable reward schedule</div>
+        <div class="card-desc">Skinner (1957). Slot machine mechanic — users don't know if the next card is their dream job. This unpredictable reward schedule is the most powerful driver of compulsive behavior ever documented. Every swipe is a micro-gamble. Implement by never showing a preview of the next card.</div>
+        <div style="margin-top:8px; font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--muted);">→ Used by: slot machines, Tinder, Instagram feed</div>
+      </div>
+      <div class="card">
+        <div class="card-title" style="margin-bottom:6px;">Loss aversion (FOMO)</div>
+        <div class="card-desc">Kahneman (1979). Fear of missing a match is more motivating than hope of finding one. Implement via: cards expire after 24h, "3 employers viewed your profile today" push at 6pm, "This role closes in 4 hours" expiry chip on job cards. The countdown is not decorative — it is the mechanic.</div>
+        <div style="margin-top:8px; font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--muted);">→ Used by: Booking.com, Snapchat, stock trading apps</div>
+      </div>
+      <div class="card">
+        <div class="card-title" style="margin-bottom:6px;">Identity-anchored streaks</div>
+        <div class="card-desc">Duolingo-proven. Streaks shift the behavior from external (finding a job) to internal identity ("I am a person who shows up every day"). Identity is stickier than goals. Track last_active_date, show 🔥 N in bottom nav. Missing a streak feels like a personal failure, not just a missed task.</div>
+        <div style="margin-top:8px; font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--muted);">→ Used by: Duolingo, Snapchat, GitHub contribution graph</div>
+      </div>
+      <div class="card">
+        <div class="card-title" style="margin-bottom:6px;">Investment escalation (Ikea effect)</div>
+        <div class="card-desc">Norton et al. (2012). Things we build, we value. The more a user builds their profile (video pitch, portfolio, skills, culture tags), the more invested they feel and the harder it is to leave. Every profile improvement is both a sunk cost and a future asset. The profile completion bar makes this visible and exploits it continuously.</div>
+        <div style="margin-top:8px; font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--muted);">→ Used by: LinkedIn profile strength, dating apps</div>
+      </div>
+      <div class="card">
+        <div class="card-title" style="margin-bottom:6px;">Social proof loops</div>
+        <div class="card-desc">"847 people in your city applied to similar roles this week." "Your profile is in the top 12% of candidates in your field." Anchoring to peer behavior creates competitive urgency without explicit pressure. People calibrate their behavior against visible social proof automatically.</div>
+        <div style="margin-top:8px; font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--muted);">→ Used by: Airbnb, Booking.com, social media follower counts</div>
+      </div>
+      <div class="card">
+        <div class="card-title" style="margin-bottom:6px;">Reciprocity bias</div>
+        <div class="card-desc">Cialdini (1984). After the AI gives a candidate free coaching, a salary insight, or a resume analysis, they feel an invisible obligation to give something back — which manifests as upgrading to premium. The free gift creates a debt. Every freemium business that works exploits this. Give generously before asking.</div>
+        <div style="margin-top:8px; font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--muted);">→ Used by: every successful freemium SaaS product</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ RETENTION ══ -->
+  <section class="section" id="retention">
+    <div class="section-header">
+      <div class="section-num">08</div>
+      <div>
+        <div class="section-title">Retention mechanics</div>
+        <div class="section-desc">// implementation details for every habit loop</div>
+      </div>
+    </div>
+
+    <div class="feature-row">
+      <div class="f-num" style="background:var(--teal-dim); color:var(--teal);">D1</div>
+      <div class="f-body">
+        <div class="f-title">Day 1–7: Activation</div>
+        <div class="f-desc">The "aha moment" must happen within 48 hours. The AI must surface at least 1 highly relevant match in the first session. Seed employer side aggressively before launch — a candidate who swipes 10 times and gets no matches will never return. Pre-load 50 employers before opening to candidates.</div>
+      </div>
+    </div>
+    <div class="feature-row">
+      <div class="f-num" style="background:var(--amber-dim); color:var(--amber);">D7</div>
+      <div class="f-body">
+        <div class="f-title">Week 2–4: Habit formation</div>
+        <div class="f-desc">Daily deck + streak system + push notification at the same time every day (8am for new deck, 6pm for profile views). Anchor the app open to a specific time. "Your fresh deck is ready ☕" at 8am local time is the trigger. The deck expiry at midnight is the urgency. Together they create a daily ritual.</div>
+      </div>
+    </div>
+    <div class="feature-row">
+      <div class="f-num" style="background:var(--purple-dim); color:var(--purple);">M2</div>
+      <div class="f-body">
+        <div class="f-title">Month 2+: Community lock-in</div>
+        <div class="f-desc">Salary transparency boards, insider interview intel, career trajectory maps, skills battle leaderboards — these community-generated data assets can't be exported. The more a user contributes, the more they are locked in. Exit cost becomes enormous. This is the anti-churn moat that LinkedIn cannot replicate quickly.</div>
+      </div>
+    </div>
+    <div class="feature-row">
+      <div class="f-num" style="background:var(--green-dim); color:var(--green);">∞</div>
+      <div class="f-body">
+        <div class="f-title">Even after hiring: passive mode</div>
+        <div class="f-desc">70% of employed people are open to new roles. Toggle passive_mode = true and they stay in the database, visible to employers, receiving only "exceptional match" notifications. Employers love access to passive candidates. Users love the weekly market pulse. This creates a perpetual pool that makes the network more valuable to everyone.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ VS LINKEDIN ══ -->
+  <section class="section" id="linkedin">
+    <div class="section-header">
+      <div class="section-num">09</div>
+      <div>
+        <div class="section-title">How we beat LinkedIn</div>
+        <div class="section-desc">// their weaknesses are our attack surface</div>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <div class="card-title" style="margin-bottom:10px; color:var(--coral);">LinkedIn's exploitable weaknesses</div>
+        <ul class="step-list">
+          <li><span class="step-n">✗</span><div><div class="step-t">Salary data deliberately hidden</div>Employers pay to suppress it. Our salary truth screen makes transparency a brand value.</div></li>
+          <li><span class="step-n">✗</span><div><div class="step-t">Ghosting is normalized</div>Zero accountability. Our ghost tracker flips the power dynamic instantly.</div></li>
+          <li><span class="step-n">✗</span><div><div class="step-t">Feed is corporate theater</div>People hate it but can't leave. Our feed is only relevant jobs. Zero noise.</div></li>
+          <li><span class="step-n">✗</span><div><div class="step-t">Skills are self-reported and meaningless</div>Anyone claims anything. Our verified skills give employers real signal.</div></li>
+          <li><span class="step-n">✗</span><div><div class="step-t">Resume bias is massive</div>Harvard vs state school. Our blind arena removes it structurally.</div></li>
+          <li><span class="step-n">✗</span><div><div class="step-t">English-centric and Western</div>Excludes billions. Our video pitch card unlocks MENA, SEA, Africa.</div></li>
+          <li><span class="step-n">✗</span><div><div class="step-t">Desktop-first, mobile-adapted</div>78% of job searching is on mobile. We were born there.</div></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title" style="margin-bottom:10px; color:var(--teal);">Our structural advantages</div>
+        <ul class="step-list">
+          <li><span class="step-n">✓</span><div><div class="step-t">Bilateral revealed preference data</div>Every mutual swipe is signal LinkedIn will never have. Our AI compounds.</div></li>
+          <li><span class="step-n">✓</span><div><div class="step-t">Dopamine vs utility</div>LinkedIn is a chore. Our app is fun. DAU is the moat. Tinder: 10 opens/day. LinkedIn: 1/week.</div></li>
+          <li><span class="step-n">✓</span><div><div class="step-t">We can move fast</div>LinkedIn has 20,000 employees and 1B users to protect. Ghost tracking or salary truth would require a boardroom war for them.</div></li>
+          <li><span class="step-n">✓</span><div><div class="step-t">Community data that can't leave</div>Salary reports, interview intel, skills scores — contributed by users, owned by the network. Exit cost is enormous.</div></li>
+          <li><span class="step-n">✓</span><div><div class="step-t">Emerging market access</div>MENA, SEA, Africa — billions of workers LinkedIn structurally excludes. We are mobile-first, multilingual, and video-native.</div></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ GO-TO-MARKET ══ -->
+  <section class="section" id="gtm">
+    <div class="section-header">
+      <div class="section-num">10</div>
+      <div>
+        <div class="section-title">Go-to-market strategy</div>
+        <div class="section-desc">// how to get the first 100K users</div>
+      </div>
+    </div>
+
+    <div class="feature-row">
+      <div class="f-num" style="background:var(--teal-dim); color:var(--teal);">P1</div>
+      <div class="f-body">
+        <div class="f-title">City-by-city blitz (Phase 1)</div>
+        <div class="f-desc">Launch in ONE city. Own it completely. Tinder launched at USC. Uber launched in SF. Pick a city with high unemployment + high SME density (Manama, Dubai, Cairo, or Manila). Dense network = more matches = better product = word of mouth. Resist the temptation to launch everywhere.</div>
+      </div>
+    </div>
+    <div class="feature-row">
+      <div class="f-num" style="background:var(--teal-dim); color:var(--teal);">P2</div>
+      <div class="f-body">
+        <div class="f-title">Short-form video content — highest ROI channel</div>
+        <div class="f-desc">TikTok + Reels. Content angles: "I got a job in 3 swipes" success stories. "Things your recruiter never tells you." "The salary at [company] is actually $X." Interview prep tips. $0 distribution cost. Compounding organic reach. This is where your audience lives.</div>
+        <div class="f-tags"><span class="f-tag">TikTok</span><span class="f-tag">Instagram Reels</span><span class="f-tag">YouTube Shorts</span></div>
+      </div>
+    </div>
+    <div class="feature-row">
+      <div class="f-num" style="background:var(--teal-dim); color:var(--teal);">P3</div>
+      <div class="f-body">
+        <div class="f-title">PR — "We solved ghosting in hiring"</div>
+        <div class="f-desc">The ghost tracker is a press magnet. "App that publicly shames employers who ghost candidates" will be covered by Forbes, TechCrunch, and every regional business publication for free. Candidates flood in. Employers join to protect their ghost score. Submit to ProductHunt on launch day.</div>
+        <div class="f-tags"><span class="f-tag">earned media</span><span class="f-tag">ProductHunt</span></div>
+      </div>
+    </div>
+    <div class="feature-row">
+      <div class="f-num" style="background:var(--teal-dim); color:var(--teal);">P4</div>
+      <div class="f-body">
+        <div class="f-title">University + bootcamp partnerships</div>
+        <div class="f-desc">20-year-olds are perpetually job hunting. Partner with student unions — free access for students, exclusive early employer listings for their alumni network. Campus ambassador program: one student per university, give them a referral code that unlocks premium features for both sides.</div>
+        <div class="f-tags"><span class="f-tag">campus ambassadors</span><span class="f-tag">bootcamp tie-ins</span></div>
+      </div>
+    </div>
+    <div class="feature-row">
+      <div class="f-num" style="background:var(--teal-dim); color:var(--teal);">P5</div>
+      <div class="f-body">
+        <div class="f-title">HR influencer seeding</div>
+        <div class="f-desc">Hundreds of micro-influencers in the HR/recruiting space (50K–500K followers) review tools on LinkedIn and TikTok. Give them free premium employer access. One organic post = thousands of employers. They post because the ghost tracker and salary truth screen give them genuinely interesting content.</div>
+        <div class="f-tags"><span class="f-tag">HR influencers</span><span class="f-tag">recruiter communities</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ REVENUE ══ -->
+  <section class="section" id="revenue">
+    <div class="section-header">
+      <div class="section-num">11</div>
+      <div>
+        <div class="section-title">Revenue model</div>
+        <div class="section-desc">// how to monetize without destroying trust</div>
+      </div>
+    </div>
+
+    <div class="grid3">
+      <div class="card">
+        <div class="card-title" style="color:var(--teal); margin-bottom:6px;">Employer subscription (B2B)</div>
+        <div class="card-desc">$99–299/mo per recruiter seat. Unlimited matches, advanced filters, candidate analytics, ATS export, ghost score dashboard. This is the primary revenue engine. One SME with 3 recruiters = $300–900/mo ARR.</div>
+        <span class="badge" style="background:var(--teal-dim); color:var(--teal);">PRIMARY REVENUE</span>
+      </div>
+      <div class="card">
+        <div class="card-title" style="color:var(--purple); margin-bottom:6px;">Candidate premium (freemium)</div>
+        <div class="card-desc">Free to swipe. Premium at $9.99/mo unlocks: who viewed your profile, unlimited super-likes, AI coach, salary negotiation tool, full career trajectory map. Priced below Netflix deliberately.</div>
+        <span class="badge" style="background:var(--purple-dim); color:var(--purple);">SECONDARY REVENUE</span>
+      </div>
+      <div class="card">
+        <div class="card-title" style="color:var(--amber); margin-bottom:6px;">Success fee (V3+)</div>
+        <div class="card-desc">Once hire data is tracked, charge employers a one-time success fee of 1–5% of first-year salary for confirmed hires. High margin, perfectly aligned incentives. Only possible after you have verified hiring data.</div>
+        <span class="badge" style="background:var(--amber-dim); color:var(--amber);">FUTURE REVENUE</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ RISKS ══ -->
+  <section class="section" id="risks">
+    <div class="section-header">
+      <div class="section-num">12</div>
+      <div>
+        <div class="section-title">Risks to plan for</div>
+        <div class="section-desc">// know these before you build, not after</div>
+      </div>
+    </div>
+
+    <div class="feature-row">
+      <div class="f-num" style="background:var(--red-dim); color:var(--red);">!</div>
+      <div class="f-body">
+        <div class="f-title">Cold start problem</div>
+        <div class="f-desc">Without employers, candidates leave. Without candidates, employers leave. Solution: pre-seed 50 committed employers before any public launch. Never open to candidates with an empty shelf. The first session must produce at least one good match or the user is gone forever.</div>
+      </div>
+    </div>
+    <div class="feature-row">
+      <div class="f-num" style="background:var(--red-dim); color:var(--red);">!</div>
+      <div class="f-body">
+        <div class="f-title">AI bias liability</div>
+        <div class="f-desc">AI matching can perpetuate gender, ethnicity, age, and school bias at scale. Employment discrimination law is strict in most markets. You need explainable AI scores (we already have this — the match_reason JSON), regular bias audits, and legal counsel before scaling to regulated markets like EU or USA.</div>
+      </div>
+    </div>
+    <div class="feature-row">
+      <div class="f-num" style="background:var(--amber-dim); color:var(--amber);">~</div>
+      <div class="f-body">
+        <div class="f-title">Incumbent response</div>
+        <div class="f-desc">LinkedIn could add swipe. Indeed could copy the UI. Your moat is: bilateral match data (they can't replicate the signal), brand ("the one that's honest"), community data (salary reports, intel — users won't re-contribute elsewhere), and the ghost tracker (LinkedIn would never build this — employers are their biggest customers).</div>
+      </div>
+    </div>
+    <div class="feature-row">
+      <div class="f-num" style="background:var(--amber-dim); color:var(--amber);">~</div>
+      <div class="f-body">
+        <div class="f-title">Gamification fatigue</div>
+        <div class="f-desc">Jobs are high-stakes. Some users will resist treating job search like a game. Balance: the AI value must be real and tangible, not cosmetic. The match explanation, coaching tip, and salary intelligence are genuine utility. The confetti and streaks are the wrapper. Utility first, dopamine second.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ CLAUDE.MD ══ -->
+  <section class="section" id="claude-md">
+    <div class="section-header">
+      <div class="section-num">13</div>
+      <div>
+        <div class="section-title">CLAUDE.md</div>
+        <div class="section-desc">// put this file at your flutter project root</div>
+      </div>
+    </div>
+
+    <div class="note">This file is read by Claude Code at the start of every session. It is your persistent memory. Update the "Current status" section after each build session.</div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">CLAUDE.md</span>
+        <span class="code-lang">markdown</span>
+      </div>
+      <div class="code-body"># SwipeMatch — Flutter Mobile App
+
+## What we are building
+A bilateral swipe-based job matching mobile app. Candidates swipe on jobs,
+employers swipe on candidates, AI scores and explains every match.
+One Flutter codebase for iOS + Android.
+
+## Tech stack — do not deviate
+- Mobile: Flutter + Dart (null-safe, latest stable)
+- State: Riverpod (flutter_riverpod + hooks_riverpod + flutter_hooks)
+- Backend: Supabase (Postgres + Auth + Realtime + Storage + Edge Functions)
+- AI: Claude API (claude-sonnet-4-20250514) ONLY from Supabase Edge Functions
+- Navigation: go_router
+- Local cache: hive_flutter
+- Secure storage: flutter_secure_storage
+- Push: firebase_messaging + Supabase DB triggers
+- Animations: flutter built-in + rive (match reveal) + lottie (confetti)
+- Charts: fl_chart (match score breakdown)
+- HTTP: dio (for Edge Function calls)
+- Code gen: freezed + json_serializable + build_runner
+
+## Folder structure — see SWIPEMATCH_BRIEFING.html section 02
+
+## Database schema — see SWIPEMATCH_BRIEFING.html section 03
+
+## AI architecture — critical
+Flutter NEVER calls Claude API directly.
+Flow: Flutter → Supabase Edge Function → Claude API → Flutter
+Reason: keeps API key off device, enables server-side caching.
+
+## Code rules
+- All Supabase calls in data/ repositories only, never in widgets
+- All state in Riverpod AsyncNotifier providers in domain/ layer
+- Every model uses freezed (immutable, copyWith, fromJson, toJson)
+- Use flutter_hooks + HookConsumerWidget for all stateful UI
+- Screens are thin — only layout and calling providers
+- Every loading state shows shimmer skeleton (never a blank screen)
+- Every error state shows an actionable error widget with retry button
+- Haptic feedback on: swipe right, swipe left, match reveal, button tap
+- Dark mode supported from day one
+- Run build_runner after every model change
+
+## Psychology mechanics — never remove these
+1. Daily deck: 15 cards max, refreshed at 8am user local time, expire 24h
+2. Match reveal: Lottie confetti + HapticFeedback.heavyImpact() + score counter
+3. Streak: track last_active_date, show fire emoji + count in bottom nav
+4. Push at 6pm: "N employers viewed your profile today"
+5. Profile completion bar: always visible at top of feed screen
+6. Passive mode: employed users stay in pool, receive weekly market pulse
+
+## Killer features — build in priority order
+V1 LAUNCH: swipe feed, AI match score, match reveal, ghost tracker,
+            salary truth screen, 60-second video pitch card
+V2: skills battle mode, employer truth score, referral network,
+    insider intel feed, AI coach panel, pipeline kanban
+V3: blind interview arena, career trajectory map, passive market pulse
+
+## Current status
+[Update this section after each build session]</div>
+    </div>
+  </section>
+
+  <!-- ══ CLAUDE CODE PROMPT ══ -->
+  <section class="section" id="prompt">
+    <div class="section-header">
+      <div class="section-num">14</div>
+      <div>
+        <div class="section-title">Claude Code prompt</div>
+        <div class="section-desc">// paste this at the start of your first session</div>
+      </div>
+    </div>
+
+    <div class="alert">Paste the entire block below as your first message in Claude Code. Do not modify it. The step gates ("wait for my approval") are intentional — they prevent Claude from running 500 lines ahead and making architecture decisions you should make.</div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">First session kickoff prompt — paste into Claude Code</span>
+        <span class="code-lang">prompt</span>
+      </div>
+      <div class="code-body">Read CLAUDE.md and SWIPEMATCH_BRIEFING.html fully before writing any code.
+
+We are building SwipeMatch — a Flutter mobile app, Tinder for jobs with
+AI matching. Follow all architecture decisions, folder structure, and
+code rules exactly as specified. Build step by step. After each step,
+tell me what was created and wait for my approval before continuing.
+
+STEP 1 — Flutter project + dependencies
+Create the Flutter project. Set up pubspec.yaml with all packages from
+the briefing. Create the complete folder structure with placeholder
+files so the project compiles from day one. Create .env.example with:
+SUPABASE_URL=, SUPABASE_ANON_KEY=, ANTHROPIC_API_KEY=
+Set up app_colors.dart with dark-first color system:
+  primary: #6C63FF (purple), background: #0F0F0F, surface: #1A1A1A,
+  card: #242424, accent: #00E5A0 (teal), text: #FFFFFF,
+  muted: #9E9E9E, danger: #FF4757
+Set up app_text_styles.dart and app_spacing.dart.
+
+STEP 2 — Supabase schema
+Write all three SQL migration files exactly as specified in the briefing.
+Include: profiles, companies, jobs, swipes, matches, messages,
+salary_reports, interview_intel, skills_scores tables.
+RLS: users access only their own data. Jobs and companies readable
+by all authenticated users. Matches readable by both parties.
+Seed data: 5 companies, 15 jobs, 3 candidate profiles.
+
+STEP 3 — Auth + routing
+Set up go_router with all routes from the briefing.
+Build LoginScreen: email magic link + Google OAuth, no password.
+On auth success: check profile → route to onboarding or feed by role.
+middleware: protect all dashboard routes, redirect to /auth.
+
+STEP 4 — Candidate onboarding wizard
+5-step PageView. Save each step to Supabase immediately on advance.
+Step 1: role category grid. Step 2: skills chip input (min 3).
+Step 3: status selector. Step 4: salary range slider.
+Step 5: work style toggle + culture tags (max 5, preset list).
+Progress dots at bottom. On completion navigate to /feed.
+
+STEP 5 — Swipe feed (most important screen)
+FeedScreen + JobCard widget. flutter_card_swiper stack, 15 cards.
+Profile completion bar always at top. Streak badge in AppBar.
+JobCard: company logo, role title, salary (always visible),
+3 match reason tags. Tap to flip (AnimatedFlipCard) showing full desc.
+On right swipe: write to swipes, call match-score Edge Function
+in background, check bilateral match.
+Deck empty state: countdown timer to 8am + reminder button.
+
+STEP 6 — Match reveal
+Full-screen modal with choreographed animation sequence:
+0ms overlay, 200ms haptic, 300ms lottie confetti, 500ms avatars
+slide in from sides, 800ms pulse, 1000ms match text fades in,
+1200ms score counter animates, 1800ms match reason bars slide up.
+fl_chart horizontal bars for 4 dimensions. Two action buttons.
+
+STEP 7 — Chat + AI coach
+ChatScreen with Supabase Realtime subscription.
+CoachPanel bottom sheet calling ai-coach Edge Function with SSE
+streaming via dio. 3 sections with progressive text reveal.
+Tapping a suggestion copies it to message input.
+
+STEP 8 — Supabase Edge Functions
+Write all 4 Edge Functions in TypeScript (Deno runtime):
+match-score: scores candidate vs job, returns structured JSON,
+  has keyword-overlap fallback if Claude API fails.
+ai-coach: fetches match context, streams Claude response via SSE.
+daily-deck: ranks unseen jobs by score, returns top 15, caches result.
+push-notifications: Supabase cron at 6pm, counts profile views,
+  sends FCM push if count > 0.
+
+STEP 9 — Employer side
+EmployerFeedScreen: CandidateCard widget with same swipe mechanic.
+PipelineScreen: 5-column Kanban with drag-and-drop.
+Ghost timer visible on each card. Status updates to Supabase on drag.
+
+STEP 10 — Retention mechanics
+Streak: check last_active_date on app open, increment or reset.
+Profile completion: compute % from 8 fields, show LinearProgressIndicator.
+Passive mode toggle on ProfileScreen.
+Daily deck countdown in empty state.
+
+After each step: run flutter analyze, fix all warnings, show me the
+file tree of everything created. Wait for my approval before proceeding.</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-filename">Every subsequent session — paste this first</span>
+        <span class="code-lang">prompt</span>
+      </div>
+      <div class="code-body">Read CLAUDE.md and SWIPEMATCH_BRIEFING.html fully.
+
+We are continuing SwipeMatch, a Flutter mobile app.
+Today we are working on: [describe what you want].
+
+Before writing any code:
+1. Tell me which files you will create or modify
+2. Tell me if anything conflicts with CLAUDE.md or the briefing
+3. Wait for my go-ahead
+
+After finishing: run flutter analyze, fix all issues,
+show me the updated file tree.</div>
+    </div>
+  </section>
+
+  <!-- ══ PRIORITY TABLE ══ -->
+  <section class="section" id="priority">
+    <div class="section-header">
+      <div class="section-num">15</div>
+      <div>
+        <div class="section-title">Build priority</div>
+        <div class="section-desc">// what to ship and when</div>
+      </div>
+    </div>
+
+    <table class="priority-table">
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Version</th>
+          <th>Why this order</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Swipe feed + job cards</td><td><span class="p-v1">V1 — LAUNCH</span></td><td style="color:var(--muted);">Core mechanic. Nothing else matters without this.</td></tr>
+        <tr><td>AI match score + reason</td><td><span class="p-v1">V1 — LAUNCH</span></td><td style="color:var(--muted);">The "why" is the product differentiation. Day 1.</td></tr>
+        <tr><td>Match reveal animation</td><td><span class="p-v1">V1 — LAUNCH</span></td><td style="color:var(--muted);">The dopamine moment. Sets emotional tone of the app.</td></tr>
+        <tr><td>Ghost tracker</td><td><span class="p-v1">V1 — LAUNCH</span></td><td style="color:var(--muted);">Primary PR hook. Goes viral. Must be live on day 1.</td></tr>
+        <tr><td>Salary truth screen</td><td><span class="p-v1">V1 — LAUNCH</span></td><td style="color:var(--muted);">Second PR hook. Category-defining transparency.</td></tr>
+        <tr><td>60-second video pitch</td><td><span class="p-v1">V1 — LAUNCH</span></td><td style="color:var(--muted);">Emerging market unlock. Replaces CV for MENA users.</td></tr>
+        <tr><td>Streak + push notifications</td><td><span class="p-v1">V1 — LAUNCH</span></td><td style="color:var(--muted);">Retention from week 2. Must ship with launch.</td></tr>
+        <tr><td>AI coach panel</td><td><span class="p-v2">V2</span></td><td style="color:var(--muted);">High value, but users need matches first to need coaching.</td></tr>
+        <tr><td>Skills battle mode</td><td><span class="p-v2">V2</span></td><td style="color:var(--muted);">Needs a user base to make leaderboards meaningful.</td></tr>
+        <tr><td>Employer truth score</td><td><span class="p-v2">V2</span></td><td style="color:var(--muted);">Needs data collection period before scores are meaningful.</td></tr>
+        <tr><td>Referral network screen</td><td><span class="p-v2">V2</span></td><td style="color:var(--muted);">Requires contact graph. Needs user base first.</td></tr>
+        <tr><td>Insider intel feed</td><td><span class="p-v2">V2</span></td><td style="color:var(--muted);">Crowdsourced — needs users before content exists.</td></tr>
+        <tr><td>Pipeline Kanban</td><td><span class="p-v2">V2</span></td><td style="color:var(--muted);">Employer-side feature. Needed for retention after launch.</td></tr>
+        <tr><td>Blind interview arena</td><td><span class="p-v3">V3</span></td><td style="color:var(--muted);">Complex moderation needed. Long-term moat feature.</td></tr>
+        <tr><td>Career trajectory map</td><td><span class="p-v3">V3</span></td><td style="color:var(--muted);">Requires 6-12 months of hire outcome data to be credible.</td></tr>
+        <tr><td>Passive market pulse</td><td><span class="p-v3">V3</span></td><td style="color:var(--muted);">Requires large enough dataset for meaningful benchmarks.</td></tr>
+        <tr><td>Success fee billing</td><td><span class="p-v3">V3</span></td><td style="color:var(--muted);">Requires verified hire tracking. Premium feature.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+</main>
+
+<script>
+  const navItems = document.querySelectorAll('.nav-item');
+  const sections = document.querySelectorAll('.section');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        navItems.forEach(item => {
+          item.classList.toggle('active', item.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+
+  navItems.forEach(item => {
+    item.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(item.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+# Local agent / editor config
+.claude/
+
+# Node / Vercel tooling (landing page)
+node_modules/
+.vercel/
+
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Flutter build artifacts are handled by swipematch/.gitignore

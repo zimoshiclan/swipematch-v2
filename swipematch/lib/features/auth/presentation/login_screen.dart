@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -56,8 +57,14 @@ class LoginScreen extends HookConsumerWidget {
               child: TabBarView(
                 controller: tabController,
                 children: [
-                  _LoginTab(onSwitchToSignUp: () => tabController.animateTo(1)),
-                  _SignUpTab(onSwitchToLogin: () => tabController.animateTo(0)),
+                  AutofillGroup(
+                    child: _LoginTab(
+                        onSwitchToSignUp: () => tabController.animateTo(1)),
+                  ),
+                  AutofillGroup(
+                    child: _SignUpTab(
+                        onSwitchToLogin: () => tabController.animateTo(0)),
+                  ),
                 ],
               ),
             ),
@@ -172,6 +179,10 @@ class _LoginTab extends HookConsumerWidget {
         errorMsg.value = 'Please enter your email and password.';
         return;
       }
+      if (!_isValidEmail(email)) {
+        errorMsg.value = 'Enter a valid email address.';
+        return;
+      }
       AppHaptics.buttonTap();
       isLoading.value = true;
       errorMsg.value = null;
@@ -180,6 +191,8 @@ class _LoginTab extends HookConsumerWidget {
               email: email,
               password: password,
             );
+        // Let the OS password manager offer to save these credentials.
+        TextInput.finishAutofillContext();
         if (rememberMe.value) {
           await _credStorage.save(email: email, password: password);
         } else {
@@ -340,6 +353,10 @@ class _SignUpTab extends HookConsumerWidget {
         errorMsg.value = 'Please fill in all fields.';
         return;
       }
+      if (!_isValidEmail(email)) {
+        errorMsg.value = 'Enter a valid email address.';
+        return;
+      }
       if (password != confirm) {
         errorMsg.value = 'Passwords do not match.';
         return;
@@ -358,6 +375,8 @@ class _SignUpTab extends HookConsumerWidget {
               email: email,
               password: password,
             );
+        // Let the OS password manager offer to save the new credentials.
+        TextInput.finishAutofillContext();
         // Supabase sends a confirmation email — show success or auto-login
         successMsg.value =
             'Account created! Check your email to confirm, then log in.';
@@ -391,6 +410,7 @@ class _SignUpTab extends HookConsumerWidget {
             obscure: obscure.value,
             onToggle: () => obscure.value = !obscure.value,
             onSubmit: () => FocusScope.of(context).nextFocus(),
+            autofillHints: const [AutofillHints.newPassword],
           ),
           const SizedBox(height: AppSpacing.xs),
           Text(
@@ -407,6 +427,7 @@ class _SignUpTab extends HookConsumerWidget {
             onToggle: () => obscureConfirm.value = !obscureConfirm.value,
             onSubmit: signUp,
             hint: 'Re-enter your password',
+            autofillHints: const [AutofillHints.newPassword],
           ),
           if (errorMsg.value != null) ...[
             const SizedBox(height: AppSpacing.sm),
@@ -599,9 +620,14 @@ class _FieldLabel extends StatelessWidget {
 }
 
 class _EmailField extends StatelessWidget {
-  const _EmailField({required this.controller, required this.onSubmit});
+  const _EmailField({
+    required this.controller,
+    required this.onSubmit,
+    this.autofillHints = const [AutofillHints.email],
+  });
   final TextEditingController controller;
   final VoidCallback onSubmit;
+  final Iterable<String> autofillHints;
 
   @override
   Widget build(BuildContext context) {
@@ -609,6 +635,7 @@ class _EmailField extends StatelessWidget {
       controller: controller,
       keyboardType: TextInputType.emailAddress,
       autocorrect: false,
+      autofillHints: autofillHints,
       textInputAction: TextInputAction.next,
       onSubmitted: (_) => onSubmit(),
       style: AppTextStyles.bodyMd,
@@ -628,6 +655,7 @@ class _PasswordField extends StatelessWidget {
     required this.onToggle,
     required this.onSubmit,
     this.hint = 'Your password',
+    this.autofillHints = const [AutofillHints.password],
   });
 
   final TextEditingController controller;
@@ -635,12 +663,14 @@ class _PasswordField extends StatelessWidget {
   final VoidCallback onToggle;
   final VoidCallback onSubmit;
   final String hint;
+  final Iterable<String> autofillHints;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
       obscureText: obscure,
+      autofillHints: autofillHints,
       textInputAction: TextInputAction.done,
       onSubmitted: (_) => onSubmit(),
       style: AppTextStyles.bodyMd,
@@ -720,6 +750,10 @@ class _ErrorText extends StatelessWidget {
 // ─────────────────────────────────────────────────────────
 // Error message helper
 // ─────────────────────────────────────────────────────────
+
+final _emailRegex = RegExp(r'^[\w.+-]+@[\w-]+\.[\w.-]+$');
+
+bool _isValidEmail(String email) => _emailRegex.hasMatch(email);
 
 String _friendlyAuthError(String raw) {
   final lower = raw.toLowerCase();

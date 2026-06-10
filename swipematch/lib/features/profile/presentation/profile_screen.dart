@@ -474,7 +474,7 @@ class _PreferencesSection extends StatelessWidget {
                 subtitle: 'New connections and community activity',
                 trailing: const Icon(Icons.chevron_right_rounded,
                     color: AppColors.textSecondary),
-                onTap: () {},
+                onTap: () => context.push('/notifications'),
               ),
               const Divider(color: AppColors.card, height: 1, indent: 52),
               _PreferenceRow(

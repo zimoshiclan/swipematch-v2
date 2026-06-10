@@ -10,6 +10,7 @@ import '../features/chat/presentation/chat_screen.dart';
 import '../features/home/presentation/main_shell.dart';
 import '../features/match/presentation/match_detail_screen.dart';
 import '../features/match/presentation/match_reveal_screen.dart';
+import '../features/notifications/presentation/notifications_screen.dart';
 import '../features/onboarding/presentation/candidate_onboarding_screen.dart';
 import '../features/onboarding/presentation/employer_onboarding_screen.dart';
 import '../features/onboarding/presentation/onboarding_welcome_screen.dart';
@@ -27,6 +28,7 @@ class AppRoutes {
   static const String chat = '/match/:id/chat';
   static const String matchDetail = '/match/:id/detail';
   static const String salary = '/salary';
+  static const String notifications = '/notifications';
 
   // Legacy aliases — all navigate back to the shell
   static const String feed = home;
@@ -129,6 +131,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.salary,
         builder: (context, state) => const SalaryTruthScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.notifications,
+        builder: (context, state) => const NotificationsScreen(),
       ),
       GoRoute(
         path: '/match/:id',

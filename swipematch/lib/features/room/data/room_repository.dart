@@ -40,16 +40,14 @@ class RoomRepository {
   }
 
   // Record the swipe via the SECURITY DEFINER RPC and return whether a
-  // mutual connection was created.
+  // mutual connection was created. The swiper's identity is derived
+  // server-side from auth.uid() — never trusted from the client (see
+  // migration 017), so only the target and direction are sent.
   Future<({bool connected, String? matchId})> recordSwipe({
-    required String swiperUserId,
-    required String swiperProfileId,
     required String targetProfileId,
     required String direction, // 'right' | 'left' | 'super'
   }) async {
     final result = await _supabase.rpc('record_person_swipe', params: {
-      'p_swiper_user_id':    swiperUserId,
-      'p_swiper_profile_id': swiperProfileId,
       'p_target_profile_id': targetProfileId,
       'p_direction':         direction,
     }) as Map<String, dynamic>;

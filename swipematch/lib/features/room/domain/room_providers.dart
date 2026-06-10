@@ -34,8 +34,6 @@ class RoomNotifier extends AutoDisposeAsyncNotifier<RoomState> {
     if (profile == null) return;
     AppHaptics.swipeRight();
     final result = await ref.read(roomRepositoryProvider).recordSwipe(
-          swiperUserId: profile.userId,
-          swiperProfileId: profile.id,
           targetProfileId: person.id,
           direction: AppConstants.swipeRight,
         );
@@ -51,8 +49,6 @@ class RoomNotifier extends AutoDisposeAsyncNotifier<RoomState> {
     if (profile == null) return;
     AppHaptics.swipeLeft();
     await ref.read(roomRepositoryProvider).recordSwipe(
-          swiperUserId: profile.userId,
-          swiperProfileId: profile.id,
           targetProfileId: person.id,
           direction: AppConstants.swipeLeft,
         );
@@ -64,8 +60,6 @@ class RoomNotifier extends AutoDisposeAsyncNotifier<RoomState> {
     if (profile == null) return;
     AppHaptics.superLike();
     final result = await ref.read(roomRepositoryProvider).recordSwipe(
-          swiperUserId: profile.userId,
-          swiperProfileId: profile.id,
           targetProfileId: person.id,
           direction: AppConstants.superLike,
         );

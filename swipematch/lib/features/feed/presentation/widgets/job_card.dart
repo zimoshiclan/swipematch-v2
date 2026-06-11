@@ -4,7 +4,6 @@ import '../../../../shared/constants/app_constants.dart';
 import '../../../../shared/theme/app_colors.dart';
 import '../../../../shared/theme/app_spacing.dart';
 import '../../../../shared/theme/app_text_styles.dart';
-import '../../../../shared/utils/currency_utils.dart';
 import '../../../../shared/widgets/ghost_score_badge.dart';
 import '../../../../shared/widgets/match_score_badge.dart';
 import '../../../../shared/widgets/skill_tag.dart';
@@ -148,11 +147,6 @@ class _JobInfo extends StatelessWidget {
           style: AppTextStyles.headlineLg,
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
-        ),
-        const SizedBox(height: AppSpacing.xs),
-        Text(
-          CurrencyUtils.formatRange(job.salaryMin, job.salaryMax),
-          style: AppTextStyles.bodyMd.copyWith(color: AppColors.accent),
         ),
       ],
     );

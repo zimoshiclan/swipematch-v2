@@ -84,9 +84,9 @@ class OnboardingWelcomeScreen extends HookConsumerWidget {
                       end: Alignment.bottomRight,
                     ),
                     icon: Icons.rocket_launch_rounded,
-                    title: 'Become who\nyou\'re working\ntoward.',
+                    title: 'For people\nbuilding\nsomething.',
                     body:
-                        'This isn\'t a job board. It\'s a community for people who want their work to mean something.',
+                        'Students, founders, and creators — the network for ambitious people who want their work to mean something. Not a job board.',
                   ),
                   _WelcomePage(
                     gradient: LinearGradient(
@@ -94,10 +94,10 @@ class OnboardingWelcomeScreen extends HookConsumerWidget {
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
-                    icon: Icons.groups_rounded,
-                    title: 'Build\nconnections\nthat last.',
+                    icon: Icons.videocam_rounded,
+                    title: 'See the\nperson, not\nthe résumé.',
                     body:
-                        'Connect with peers, mentors, and companies that share your values — not just your skill set.',
+                        'Every profile is a 60-second intro video. Meet real people in their own words before you ever connect.',
                   ),
                   _WelcomePage(
                     gradient: LinearGradient(
@@ -105,10 +105,10 @@ class OnboardingWelcomeScreen extends HookConsumerWidget {
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
-                    icon: Icons.balance_rounded,
-                    title: 'Work\nhonestly.',
+                    icon: Icons.handshake_rounded,
+                    title: 'Connect by\nwhat you\'re\nafter.',
                     body:
-                        'Real salary data. Honest company culture. A community that says what LinkedIn won\'t.',
+                        'Tell us what you want — a cofounder, a mentor, collaborators — and meet people who actually fit. Honest, not whoever\'s nearby.',
                   ),
                   _WelcomePage(
                     gradient: LinearGradient(
@@ -119,7 +119,7 @@ class OnboardingWelcomeScreen extends HookConsumerWidget {
                     icon: Icons.auto_graph_rounded,
                     title: 'Grow\nevery\nday.',
                     body:
-                        'Your AI Readiness score, a personalized growth path, and an AI coach — whatever your field.',
+                        'A personalized growth path, an AI coach, and streaks that keep you moving — whatever you\'re building.',
                   ),
                 ],
               ),

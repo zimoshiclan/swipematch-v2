@@ -12,7 +12,6 @@ import '../../pitch/presentation/pitch_preview_screen.dart';
 import '../../../shared/theme/app_colors.dart';
 import '../../../shared/theme/app_spacing.dart';
 import '../../../shared/theme/app_text_styles.dart';
-import '../../../shared/utils/currency_utils.dart';
 import '../../../shared/widgets/ai_readiness_badge.dart';
 import '../../../shared/widgets/skill_tag.dart';
 import 'profile_edit_sheet.dart';
@@ -245,11 +244,8 @@ class _StatsRow extends StatelessWidget {
       if (profile.experienceYears != null)
         ('${profile.experienceYears}', 'years exp'),
       if (profile.workStyle != null) (_workLabel(profile.workStyle!), 'work style'),
-      if (profile.salaryMin != null && profile.salaryMax != null)
-        (
-          CurrencyUtils.formatRange(profile.salaryMin!, profile.salaryMax!),
-          'salary',
-        ),
+      if (profile.city != null && profile.city!.isNotEmpty)
+        (profile.city!, 'location'),
     ];
 
     if (stats.isEmpty) return const SizedBox.shrink();
@@ -475,15 +471,6 @@ class _PreferencesSection extends StatelessWidget {
                 trailing: const Icon(Icons.chevron_right_rounded,
                     color: AppColors.textSecondary),
                 onTap: () => context.push('/notifications'),
-              ),
-              const Divider(color: AppColors.card, height: 1, indent: 52),
-              _PreferenceRow(
-                icon: Icons.bar_chart_rounded,
-                title: 'Salary Truth',
-                subtitle: 'Real pay data — contributed anonymously',
-                trailing: const Icon(Icons.chevron_right_rounded,
-                    color: AppColors.textSecondary),
-                onTap: () => context.push('/salary'),
               ),
               const Divider(color: AppColors.card, height: 1, indent: 52),
               _PreferenceRow(

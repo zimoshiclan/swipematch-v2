@@ -15,7 +15,6 @@ import '../features/onboarding/presentation/candidate_onboarding_screen.dart';
 import '../features/onboarding/presentation/employer_onboarding_screen.dart';
 import '../features/onboarding/presentation/onboarding_welcome_screen.dart';
 import '../features/profile/domain/profile_providers.dart';
-import '../features/salary/presentation/salary_truth_screen.dart';
 
 class AppRoutes {
   static const String auth = '/auth';
@@ -27,7 +26,6 @@ class AppRoutes {
   static const String matchReveal = '/match/:id';
   static const String chat = '/match/:id/chat';
   static const String matchDetail = '/match/:id/detail';
-  static const String salary = '/salary';
   static const String notifications = '/notifications';
 
   // Legacy aliases — all navigate back to the shell
@@ -127,10 +125,6 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.home,
         builder: (context, state) => const MainShell(),
-      ),
-      GoRoute(
-        path: AppRoutes.salary,
-        builder: (context, state) => const SalaryTruthScreen(),
       ),
       GoRoute(
         path: AppRoutes.notifications,

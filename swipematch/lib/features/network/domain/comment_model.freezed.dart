@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'post_model.dart';
+part of 'comment_model.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,13 +14,16 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-PostModel _$PostModelFromJson(Map<String, dynamic> json) {
-  return _PostModel.fromJson(json);
+CommentModel _$CommentModelFromJson(Map<String, dynamic> json) {
+  return _CommentModel.fromJson(json);
 }
 
 /// @nodoc
-mixin _$PostModel {
+mixin _$CommentModel {
   String get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'post_id')
+  String get postId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'author_id')
   String get authorId => throw _privateConstructorUsedError;
   @JsonKey(name: 'author_name')
   String get authorName => throw _privateConstructorUsedError;
@@ -28,93 +31,80 @@ mixin _$PostModel {
   String? get authorAvatarUrl => throw _privateConstructorUsedError;
   @JsonKey(name: 'author_ai_readiness_score')
   int? get authorAiReadinessScore => throw _privateConstructorUsedError;
-  String get type => throw _privateConstructorUsedError;
-  String get title => throw _privateConstructorUsedError;
+  @JsonKey(name: 'parent_id')
+  String? get parentId => throw _privateConstructorUsedError;
   String get content => throw _privateConstructorUsedError;
-  @JsonKey(name: 'media_url')
-  String? get mediaUrl => throw _privateConstructorUsedError;
-  @JsonKey(name: 'media_type')
-  String? get mediaType => throw _privateConstructorUsedError;
-  List<String> get tags => throw _privateConstructorUsedError;
   @JsonKey(name: 'likes_count')
   int get likesCount => throw _privateConstructorUsedError;
-  @JsonKey(name: 'comments_count')
-  int get commentsCount => throw _privateConstructorUsedError;
   bool get isLikedByMe => throw _privateConstructorUsedError;
-  bool get isBookmarkedByMe => throw _privateConstructorUsedError;
   @JsonKey(name: 'created_at')
   DateTime get createdAt => throw _privateConstructorUsedError;
 
-  /// Serializes this PostModel to a JSON map.
+  /// Serializes this CommentModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
-  /// Create a copy of PostModel
+  /// Create a copy of CommentModel
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $PostModelCopyWith<PostModel> get copyWith =>
+  $CommentModelCopyWith<CommentModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $PostModelCopyWith<$Res> {
-  factory $PostModelCopyWith(PostModel value, $Res Function(PostModel) then) =
-      _$PostModelCopyWithImpl<$Res, PostModel>;
+abstract class $CommentModelCopyWith<$Res> {
+  factory $CommentModelCopyWith(
+          CommentModel value, $Res Function(CommentModel) then) =
+      _$CommentModelCopyWithImpl<$Res, CommentModel>;
   @useResult
   $Res call(
       {String id,
-      String authorId,
+      @JsonKey(name: 'post_id') String postId,
+      @JsonKey(name: 'author_id') String authorId,
       @JsonKey(name: 'author_name') String authorName,
       @JsonKey(name: 'author_avatar_url') String? authorAvatarUrl,
       @JsonKey(name: 'author_ai_readiness_score') int? authorAiReadinessScore,
-      String type,
-      String title,
+      @JsonKey(name: 'parent_id') String? parentId,
       String content,
-      @JsonKey(name: 'media_url') String? mediaUrl,
-      @JsonKey(name: 'media_type') String? mediaType,
-      List<String> tags,
       @JsonKey(name: 'likes_count') int likesCount,
-      @JsonKey(name: 'comments_count') int commentsCount,
       bool isLikedByMe,
-      bool isBookmarkedByMe,
       @JsonKey(name: 'created_at') DateTime createdAt});
 }
 
 /// @nodoc
-class _$PostModelCopyWithImpl<$Res, $Val extends PostModel>
-    implements $PostModelCopyWith<$Res> {
-  _$PostModelCopyWithImpl(this._value, this._then);
+class _$CommentModelCopyWithImpl<$Res, $Val extends CommentModel>
+    implements $CommentModelCopyWith<$Res> {
+  _$CommentModelCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of PostModel
+  /// Create a copy of CommentModel
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? id = null,
+    Object? postId = null,
     Object? authorId = null,
     Object? authorName = null,
     Object? authorAvatarUrl = freezed,
     Object? authorAiReadinessScore = freezed,
-    Object? type = null,
-    Object? title = null,
+    Object? parentId = freezed,
     Object? content = null,
-    Object? mediaUrl = freezed,
-    Object? mediaType = freezed,
-    Object? tags = null,
     Object? likesCount = null,
-    Object? commentsCount = null,
     Object? isLikedByMe = null,
-    Object? isBookmarkedByMe = null,
     Object? createdAt = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      postId: null == postId
+          ? _value.postId
+          : postId // ignore: cast_nullable_to_non_nullable
               as String,
       authorId: null == authorId
           ? _value.authorId
@@ -132,45 +122,21 @@ class _$PostModelCopyWithImpl<$Res, $Val extends PostModel>
           ? _value.authorAiReadinessScore
           : authorAiReadinessScore // ignore: cast_nullable_to_non_nullable
               as int?,
-      type: null == type
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as String,
-      title: null == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
-              as String,
+      parentId: freezed == parentId
+          ? _value.parentId
+          : parentId // ignore: cast_nullable_to_non_nullable
+              as String?,
       content: null == content
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
               as String,
-      mediaUrl: freezed == mediaUrl
-          ? _value.mediaUrl
-          : mediaUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
-      mediaType: freezed == mediaType
-          ? _value.mediaType
-          : mediaType // ignore: cast_nullable_to_non_nullable
-              as String?,
-      tags: null == tags
-          ? _value.tags
-          : tags // ignore: cast_nullable_to_non_nullable
-              as List<String>,
       likesCount: null == likesCount
           ? _value.likesCount
           : likesCount // ignore: cast_nullable_to_non_nullable
               as int,
-      commentsCount: null == commentsCount
-          ? _value.commentsCount
-          : commentsCount // ignore: cast_nullable_to_non_nullable
-              as int,
       isLikedByMe: null == isLikedByMe
           ? _value.isLikedByMe
           : isLikedByMe // ignore: cast_nullable_to_non_nullable
-              as bool,
-      isBookmarkedByMe: null == isBookmarkedByMe
-          ? _value.isBookmarkedByMe
-          : isBookmarkedByMe // ignore: cast_nullable_to_non_nullable
               as bool,
       createdAt: null == createdAt
           ? _value.createdAt
@@ -181,66 +147,60 @@ class _$PostModelCopyWithImpl<$Res, $Val extends PostModel>
 }
 
 /// @nodoc
-abstract class _$$PostModelImplCopyWith<$Res>
-    implements $PostModelCopyWith<$Res> {
-  factory _$$PostModelImplCopyWith(
-          _$PostModelImpl value, $Res Function(_$PostModelImpl) then) =
-      __$$PostModelImplCopyWithImpl<$Res>;
+abstract class _$$CommentModelImplCopyWith<$Res>
+    implements $CommentModelCopyWith<$Res> {
+  factory _$$CommentModelImplCopyWith(
+          _$CommentModelImpl value, $Res Function(_$CommentModelImpl) then) =
+      __$$CommentModelImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
       {String id,
-      String authorId,
+      @JsonKey(name: 'post_id') String postId,
+      @JsonKey(name: 'author_id') String authorId,
       @JsonKey(name: 'author_name') String authorName,
       @JsonKey(name: 'author_avatar_url') String? authorAvatarUrl,
       @JsonKey(name: 'author_ai_readiness_score') int? authorAiReadinessScore,
-      String type,
-      String title,
+      @JsonKey(name: 'parent_id') String? parentId,
       String content,
-      @JsonKey(name: 'media_url') String? mediaUrl,
-      @JsonKey(name: 'media_type') String? mediaType,
-      List<String> tags,
       @JsonKey(name: 'likes_count') int likesCount,
-      @JsonKey(name: 'comments_count') int commentsCount,
       bool isLikedByMe,
-      bool isBookmarkedByMe,
       @JsonKey(name: 'created_at') DateTime createdAt});
 }
 
 /// @nodoc
-class __$$PostModelImplCopyWithImpl<$Res>
-    extends _$PostModelCopyWithImpl<$Res, _$PostModelImpl>
-    implements _$$PostModelImplCopyWith<$Res> {
-  __$$PostModelImplCopyWithImpl(
-      _$PostModelImpl _value, $Res Function(_$PostModelImpl) _then)
+class __$$CommentModelImplCopyWithImpl<$Res>
+    extends _$CommentModelCopyWithImpl<$Res, _$CommentModelImpl>
+    implements _$$CommentModelImplCopyWith<$Res> {
+  __$$CommentModelImplCopyWithImpl(
+      _$CommentModelImpl _value, $Res Function(_$CommentModelImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of PostModel
+  /// Create a copy of CommentModel
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? id = null,
+    Object? postId = null,
     Object? authorId = null,
     Object? authorName = null,
     Object? authorAvatarUrl = freezed,
     Object? authorAiReadinessScore = freezed,
-    Object? type = null,
-    Object? title = null,
+    Object? parentId = freezed,
     Object? content = null,
-    Object? mediaUrl = freezed,
-    Object? mediaType = freezed,
-    Object? tags = null,
     Object? likesCount = null,
-    Object? commentsCount = null,
     Object? isLikedByMe = null,
-    Object? isBookmarkedByMe = null,
     Object? createdAt = null,
   }) {
-    return _then(_$PostModelImpl(
+    return _then(_$CommentModelImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      postId: null == postId
+          ? _value.postId
+          : postId // ignore: cast_nullable_to_non_nullable
               as String,
       authorId: null == authorId
           ? _value.authorId
@@ -258,45 +218,21 @@ class __$$PostModelImplCopyWithImpl<$Res>
           ? _value.authorAiReadinessScore
           : authorAiReadinessScore // ignore: cast_nullable_to_non_nullable
               as int?,
-      type: null == type
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as String,
-      title: null == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
-              as String,
+      parentId: freezed == parentId
+          ? _value.parentId
+          : parentId // ignore: cast_nullable_to_non_nullable
+              as String?,
       content: null == content
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
               as String,
-      mediaUrl: freezed == mediaUrl
-          ? _value.mediaUrl
-          : mediaUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
-      mediaType: freezed == mediaType
-          ? _value.mediaType
-          : mediaType // ignore: cast_nullable_to_non_nullable
-              as String?,
-      tags: null == tags
-          ? _value._tags
-          : tags // ignore: cast_nullable_to_non_nullable
-              as List<String>,
       likesCount: null == likesCount
           ? _value.likesCount
           : likesCount // ignore: cast_nullable_to_non_nullable
               as int,
-      commentsCount: null == commentsCount
-          ? _value.commentsCount
-          : commentsCount // ignore: cast_nullable_to_non_nullable
-              as int,
       isLikedByMe: null == isLikedByMe
           ? _value.isLikedByMe
           : isLikedByMe // ignore: cast_nullable_to_non_nullable
-              as bool,
-      isBookmarkedByMe: null == isBookmarkedByMe
-          ? _value.isBookmarkedByMe
-          : isBookmarkedByMe // ignore: cast_nullable_to_non_nullable
               as bool,
       createdAt: null == createdAt
           ? _value.createdAt
@@ -308,32 +244,30 @@ class __$$PostModelImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$PostModelImpl implements _PostModel {
-  const _$PostModelImpl(
+class _$CommentModelImpl implements _CommentModel {
+  const _$CommentModelImpl(
       {required this.id,
-      required this.authorId,
+      @JsonKey(name: 'post_id') required this.postId,
+      @JsonKey(name: 'author_id') required this.authorId,
       @JsonKey(name: 'author_name') required this.authorName,
       @JsonKey(name: 'author_avatar_url') this.authorAvatarUrl,
       @JsonKey(name: 'author_ai_readiness_score') this.authorAiReadinessScore,
-      required this.type,
-      required this.title,
+      @JsonKey(name: 'parent_id') this.parentId,
       required this.content,
-      @JsonKey(name: 'media_url') this.mediaUrl,
-      @JsonKey(name: 'media_type') this.mediaType,
-      final List<String> tags = const [],
       @JsonKey(name: 'likes_count') this.likesCount = 0,
-      @JsonKey(name: 'comments_count') this.commentsCount = 0,
       this.isLikedByMe = false,
-      this.isBookmarkedByMe = false,
-      @JsonKey(name: 'created_at') required this.createdAt})
-      : _tags = tags;
+      @JsonKey(name: 'created_at') required this.createdAt});
 
-  factory _$PostModelImpl.fromJson(Map<String, dynamic> json) =>
-      _$$PostModelImplFromJson(json);
+  factory _$CommentModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$CommentModelImplFromJson(json);
 
   @override
   final String id;
   @override
+  @JsonKey(name: 'post_id')
+  final String postId;
+  @override
+  @JsonKey(name: 'author_id')
   final String authorId;
   @override
   @JsonKey(name: 'author_name')
@@ -345,53 +279,32 @@ class _$PostModelImpl implements _PostModel {
   @JsonKey(name: 'author_ai_readiness_score')
   final int? authorAiReadinessScore;
   @override
-  final String type;
-  @override
-  final String title;
+  @JsonKey(name: 'parent_id')
+  final String? parentId;
   @override
   final String content;
-  @override
-  @JsonKey(name: 'media_url')
-  final String? mediaUrl;
-  @override
-  @JsonKey(name: 'media_type')
-  final String? mediaType;
-  final List<String> _tags;
-  @override
-  @JsonKey()
-  List<String> get tags {
-    if (_tags is EqualUnmodifiableListView) return _tags;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_tags);
-  }
-
   @override
   @JsonKey(name: 'likes_count')
   final int likesCount;
   @override
-  @JsonKey(name: 'comments_count')
-  final int commentsCount;
-  @override
   @JsonKey()
   final bool isLikedByMe;
-  @override
-  @JsonKey()
-  final bool isBookmarkedByMe;
   @override
   @JsonKey(name: 'created_at')
   final DateTime createdAt;
 
   @override
   String toString() {
-    return 'PostModel(id: $id, authorId: $authorId, authorName: $authorName, authorAvatarUrl: $authorAvatarUrl, authorAiReadinessScore: $authorAiReadinessScore, type: $type, title: $title, content: $content, mediaUrl: $mediaUrl, mediaType: $mediaType, tags: $tags, likesCount: $likesCount, commentsCount: $commentsCount, isLikedByMe: $isLikedByMe, isBookmarkedByMe: $isBookmarkedByMe, createdAt: $createdAt)';
+    return 'CommentModel(id: $id, postId: $postId, authorId: $authorId, authorName: $authorName, authorAvatarUrl: $authorAvatarUrl, authorAiReadinessScore: $authorAiReadinessScore, parentId: $parentId, content: $content, likesCount: $likesCount, isLikedByMe: $isLikedByMe, createdAt: $createdAt)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PostModelImpl &&
+            other is _$CommentModelImpl &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.postId, postId) || other.postId == postId) &&
             (identical(other.authorId, authorId) ||
                 other.authorId == authorId) &&
             (identical(other.authorName, authorName) ||
@@ -400,22 +313,13 @@ class _$PostModelImpl implements _PostModel {
                 other.authorAvatarUrl == authorAvatarUrl) &&
             (identical(other.authorAiReadinessScore, authorAiReadinessScore) ||
                 other.authorAiReadinessScore == authorAiReadinessScore) &&
-            (identical(other.type, type) || other.type == type) &&
-            (identical(other.title, title) || other.title == title) &&
+            (identical(other.parentId, parentId) ||
+                other.parentId == parentId) &&
             (identical(other.content, content) || other.content == content) &&
-            (identical(other.mediaUrl, mediaUrl) ||
-                other.mediaUrl == mediaUrl) &&
-            (identical(other.mediaType, mediaType) ||
-                other.mediaType == mediaType) &&
-            const DeepCollectionEquality().equals(other._tags, _tags) &&
             (identical(other.likesCount, likesCount) ||
                 other.likesCount == likesCount) &&
-            (identical(other.commentsCount, commentsCount) ||
-                other.commentsCount == commentsCount) &&
             (identical(other.isLikedByMe, isLikedByMe) ||
                 other.isLikedByMe == isLikedByMe) &&
-            (identical(other.isBookmarkedByMe, isBookmarkedByMe) ||
-                other.isBookmarkedByMe == isBookmarkedByMe) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt));
   }
@@ -425,65 +329,59 @@ class _$PostModelImpl implements _PostModel {
   int get hashCode => Object.hash(
       runtimeType,
       id,
+      postId,
       authorId,
       authorName,
       authorAvatarUrl,
       authorAiReadinessScore,
-      type,
-      title,
+      parentId,
       content,
-      mediaUrl,
-      mediaType,
-      const DeepCollectionEquality().hash(_tags),
       likesCount,
-      commentsCount,
       isLikedByMe,
-      isBookmarkedByMe,
       createdAt);
 
-  /// Create a copy of PostModel
+  /// Create a copy of CommentModel
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$PostModelImplCopyWith<_$PostModelImpl> get copyWith =>
-      __$$PostModelImplCopyWithImpl<_$PostModelImpl>(this, _$identity);
+  _$$CommentModelImplCopyWith<_$CommentModelImpl> get copyWith =>
+      __$$CommentModelImplCopyWithImpl<_$CommentModelImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$PostModelImplToJson(
+    return _$$CommentModelImplToJson(
       this,
     );
   }
 }
 
-abstract class _PostModel implements PostModel {
-  const factory _PostModel(
+abstract class _CommentModel implements CommentModel {
+  const factory _CommentModel(
           {required final String id,
-          required final String authorId,
+          @JsonKey(name: 'post_id') required final String postId,
+          @JsonKey(name: 'author_id') required final String authorId,
           @JsonKey(name: 'author_name') required final String authorName,
           @JsonKey(name: 'author_avatar_url') final String? authorAvatarUrl,
           @JsonKey(name: 'author_ai_readiness_score')
           final int? authorAiReadinessScore,
-          required final String type,
-          required final String title,
+          @JsonKey(name: 'parent_id') final String? parentId,
           required final String content,
-          @JsonKey(name: 'media_url') final String? mediaUrl,
-          @JsonKey(name: 'media_type') final String? mediaType,
-          final List<String> tags,
           @JsonKey(name: 'likes_count') final int likesCount,
-          @JsonKey(name: 'comments_count') final int commentsCount,
           final bool isLikedByMe,
-          final bool isBookmarkedByMe,
           @JsonKey(name: 'created_at') required final DateTime createdAt}) =
-      _$PostModelImpl;
+      _$CommentModelImpl;
 
-  factory _PostModel.fromJson(Map<String, dynamic> json) =
-      _$PostModelImpl.fromJson;
+  factory _CommentModel.fromJson(Map<String, dynamic> json) =
+      _$CommentModelImpl.fromJson;
 
   @override
   String get id;
   @override
+  @JsonKey(name: 'post_id')
+  String get postId;
+  @override
+  @JsonKey(name: 'author_id')
   String get authorId;
   @override
   @JsonKey(name: 'author_name')
@@ -495,37 +393,23 @@ abstract class _PostModel implements PostModel {
   @JsonKey(name: 'author_ai_readiness_score')
   int? get authorAiReadinessScore;
   @override
-  String get type;
-  @override
-  String get title;
+  @JsonKey(name: 'parent_id')
+  String? get parentId;
   @override
   String get content;
-  @override
-  @JsonKey(name: 'media_url')
-  String? get mediaUrl;
-  @override
-  @JsonKey(name: 'media_type')
-  String? get mediaType;
-  @override
-  List<String> get tags;
   @override
   @JsonKey(name: 'likes_count')
   int get likesCount;
   @override
-  @JsonKey(name: 'comments_count')
-  int get commentsCount;
-  @override
   bool get isLikedByMe;
-  @override
-  bool get isBookmarkedByMe;
   @override
   @JsonKey(name: 'created_at')
   DateTime get createdAt;
 
-  /// Create a copy of PostModel
+  /// Create a copy of CommentModel
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$PostModelImplCopyWith<_$PostModelImpl> get copyWith =>
+  _$$CommentModelImplCopyWith<_$CommentModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

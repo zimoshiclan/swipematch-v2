@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../../../features/profile/domain/profile_model.dart';
+import '../../../../shared/constants/app_constants.dart';
 import '../../../../shared/theme/app_colors.dart';
 import '../../../../shared/theme/app_spacing.dart';
 import '../../../../shared/theme/app_text_styles.dart';
@@ -137,6 +138,13 @@ class PersonSwipeCard extends StatelessWidget {
                           left: AppSpacing.sm,
                           child: _PitchBadge(),
                         ),
+                      // Serendipity wildcard badge bottom-left of hero
+                      if (person.isSerendipity)
+                        Positioned(
+                          bottom: AppSpacing.sm,
+                          left: AppSpacing.sm,
+                          child: _SerendipityBadge(),
+                        ),
                     ],
                   ),
                 ),
@@ -198,13 +206,48 @@ class PersonSwipeCard extends StatelessWidget {
                                   ))
                               .toList(),
                         ),
-                      const Spacer(),
-                      if (person.experienceYears != null)
-                        Text(
-                          '${person.experienceYears} yrs experience',
-                          style: AppTextStyles.label
-                              .copyWith(color: AppColors.textSecondary),
+                      if (person.connectionIntents.isNotEmpty) ...[
+                        const SizedBox(height: AppSpacing.xs),
+                        Wrap(
+                          spacing: 4,
+                          runSpacing: 4,
+                          children: person.connectionIntents
+                              .take(3)
+                              .map((i) => _MiniChip(
+                                    label: AppConstants
+                                            .connectionIntents[i] ??
+                                        i,
+                                    color: grad[1],
+                                  ))
+                              .toList(),
                         ),
+                      ],
+                      const Spacer(),
+                      Row(
+                        children: [
+                          if (_location(person) != null) ...[
+                            const Icon(Icons.place_outlined,
+                                size: 13, color: AppColors.textSecondary),
+                            const SizedBox(width: 3),
+                            Flexible(
+                              child: Text(
+                                _location(person)!,
+                                style: AppTextStyles.label.copyWith(
+                                    color: AppColors.textSecondary),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            const Spacer(),
+                          ],
+                          if (person.experienceYears != null)
+                            Text(
+                              '${person.experienceYears} yrs',
+                              style: AppTextStyles.label
+                                  .copyWith(color: AppColors.textSecondary),
+                            ),
+                        ],
+                      ),
                     ],
                   ),
                 ),
@@ -240,6 +283,14 @@ class PersonSwipeCard extends StatelessWidget {
   }
 }
 
+String? _location(ProfileModel p) {
+  final parts = [p.city, p.country]
+      .where((s) => s != null && s.trim().isNotEmpty)
+      .map((s) => s!.trim())
+      .toList();
+  return parts.isEmpty ? null : parts.join(', ');
+}
+
 class _PitchBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -255,6 +306,29 @@ class _PitchBadge extends StatelessWidget {
           const Icon(Icons.play_circle_rounded, color: Colors.white, size: 14),
           const SizedBox(width: 4),
           Text('Pitch', style: AppTextStyles.label.copyWith(color: Colors.white)),
+        ],
+      ),
+    );
+  }
+}
+
+class _SerendipityBadge extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: Colors.black.withValues(alpha: 0.45),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(Icons.auto_awesome_rounded,
+              color: Colors.white, size: 14),
+          const SizedBox(width: 4),
+          Text('Serendipity',
+              style: AppTextStyles.label.copyWith(color: Colors.white)),
         ],
       ),
     );

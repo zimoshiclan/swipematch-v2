@@ -29,7 +29,7 @@ class CandidateOnboardingScreen extends HookConsumerWidget {
     final workingTowardCtrl = useTextEditingController();
     final selectedWorkValues = useState<List<String>>([]);
 
-    // 7 pages: Roles | Skills | Becoming | Status | Salary | Work prefs | AI Readiness
+    // 7 pages: Persona | Skills | Becoming | Status | Location+Intent | Work prefs | AI Readiness
     const totalPages = 7;
 
     Future<void> advance() async {
@@ -87,11 +87,11 @@ class CandidateOnboardingScreen extends HookConsumerWidget {
 
     bool canAdvance() {
       return switch (state.currentPage) {
-        0 => state.selectedRoles.isNotEmpty,
+        0 => state.persona != null,
         1 => state.skills.length >= AppConstants.minSkillsRequired,
         2 => true, // Becoming is optional
         3 => state.status != null,
-        4 => state.salaryMin != null && state.salaryMax != null,
+        4 => state.connectionIntents.isNotEmpty,
         5 => state.workStyle != null,
         6 => state.aiReadinessAnswers.length ==
             AppConstants.aiReadinessQuestions.length,
@@ -114,10 +114,10 @@ class CandidateOnboardingScreen extends HookConsumerWidget {
                 controller: pageController,
                 physics: const NeverScrollableScrollPhysics(),
                 children: [
-                  // 0 — Field / role
-                  _Page1Roles(
-                    selected: state.selectedRoles,
-                    onToggle: notifier.toggleRole,
+                  // 0 — Persona
+                  _PagePersona(
+                    selected: state.persona,
+                    onSelect: notifier.setPersona,
                   ),
                   // 1 — Skills
                   _Page2Skills(
@@ -144,12 +144,14 @@ class CandidateOnboardingScreen extends HookConsumerWidget {
                     selected: state.status,
                     onSelect: notifier.setStatus,
                   ),
-                  // 4 — Salary
-                  _Page5Salary(
-                    salaryMin: state.salaryMin?.toDouble() ?? 60000,
-                    salaryMax: state.salaryMax?.toDouble() ?? 120000,
-                    onChanged: (min, max) =>
-                        notifier.setSalaryRange(min.toInt(), max.toInt()),
+                  // 4 — Location + connection intent
+                  _Page5Region(
+                    intents: state.connectionIntents,
+                    city: state.city,
+                    country: state.country,
+                    onToggleIntent: notifier.toggleConnectionIntent,
+                    onCity: notifier.setCity,
+                    onCountry: notifier.setCountry,
                   ),
                   // 5 — Work preferences
                   _Page6WorkStyle(
@@ -295,26 +297,26 @@ class _Footer extends StatelessWidget {
 }
 
 // ──────────────────────────────────────────────────────────
-// Page 1 — Field / role categories
+// Page 1 — Persona (who are you?)
 // ──────────────────────────────────────────────────────────
-class _Page1Roles extends StatelessWidget {
-  const _Page1Roles({required this.selected, required this.onToggle});
+class _PagePersona extends StatelessWidget {
+  const _PagePersona({required this.selected, required this.onSelect});
 
-  final List<String> selected;
-  final void Function(String) onToggle;
+  final String? selected;
+  final void Function(String) onSelect;
 
   @override
   Widget build(BuildContext context) {
     return _PageWrapper(
-      title: 'What\'s your field?',
-      subtitle: 'We\'ll personalize everything from here',
+      title: 'Who are you?',
+      subtitle: 'This is for everyone — pick what fits you best',
       child: Wrap(
         spacing: AppSpacing.sm,
         runSpacing: AppSpacing.sm,
-        children: AppConstants.roleCategories.map((role) {
-          final isSelected = selected.contains(role);
+        children: AppConstants.personas.map((persona) {
+          final isSelected = selected == persona;
           return GestureDetector(
-            onTap: () => onToggle(role),
+            onTap: () => onSelect(persona),
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 200),
               padding: const EdgeInsets.symmetric(
@@ -327,7 +329,7 @@ class _Page1Roles extends StatelessWidget {
                 ),
               ),
               child: Text(
-                role,
+                persona,
                 style: AppTextStyles.bodyMd.copyWith(
                   color: isSelected
                       ? AppColors.textPrimary
@@ -336,8 +338,7 @@ class _Page1Roles extends StatelessWidget {
                       isSelected ? FontWeight.w600 : FontWeight.w400,
                 ),
               ),
-            ).animate(
-                  delay: (AppConstants.roleCategories.indexOf(role) * 40).ms)
+            ).animate(delay: (AppConstants.personas.indexOf(persona) * 40).ms)
                 .fadeIn(duration: 300.ms)
                 .scale(begin: const Offset(0.9, 0.9)),
           );
@@ -669,84 +670,97 @@ class _Page4Status extends StatelessWidget {
 }
 
 // ──────────────────────────────────────────────────────────
-// Page 5 — Salary range
+// Page 5 — Location + connection intent
 // ──────────────────────────────────────────────────────────
-class _Page5Salary extends HookWidget {
-  const _Page5Salary({
-    required this.salaryMin,
-    required this.salaryMax,
-    required this.onChanged,
+class _Page5Region extends HookWidget {
+  const _Page5Region({
+    required this.intents,
+    required this.city,
+    required this.country,
+    required this.onToggleIntent,
+    required this.onCity,
+    required this.onCountry,
   });
 
-  final double salaryMin;
-  final double salaryMax;
-  final void Function(double, double) onChanged;
-
-  String _fmt(double v) {
-    if (v >= 1000) return '\$${(v / 1000).toStringAsFixed(0)}k';
-    return '\$${v.toInt()}';
-  }
+  final List<String> intents;
+  final String? city;
+  final String? country;
+  final void Function(String) onToggleIntent;
+  final void Function(String) onCity;
+  final void Function(String) onCountry;
 
   @override
   Widget build(BuildContext context) {
-    final range = useState(RangeValues(salaryMin, salaryMax));
+    final cityCtrl = useTextEditingController(text: city ?? '');
+    final countryCtrl = useTextEditingController(text: country ?? '');
 
     return _PageWrapper(
-      title: 'What\'s your\nrange?',
-      subtitle: 'Annual salary — never shown without your consent',
+      title: 'Where are you &\nwhat are you after?',
+      subtitle: 'We use this to introduce you to the right people nearby',
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: AppSpacing.lg),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Minimum', style: AppTextStyles.bodyMd),
-                  Text(_fmt(range.value.start),
-                      style: AppTextStyles.headlineLg),
-                ],
+              Expanded(
+                child: TextField(
+                  controller: cityCtrl,
+                  style: AppTextStyles.bodyMd,
+                  textInputAction: TextInputAction.next,
+                  onChanged: onCity,
+                  decoration: const InputDecoration(hintText: 'City'),
+                ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text('Maximum', style: AppTextStyles.bodyMd),
-                  Text(_fmt(range.value.end),
-                      style: AppTextStyles.headlineLg),
-                ],
+              const SizedBox(width: AppSpacing.sm),
+              Expanded(
+                child: TextField(
+                  controller: countryCtrl,
+                  style: AppTextStyles.bodyMd,
+                  textInputAction: TextInputAction.done,
+                  onChanged: onCountry,
+                  decoration: const InputDecoration(hintText: 'Country'),
+                ),
               ),
             ],
           ),
-          const SizedBox(height: AppSpacing.lg),
-          SliderTheme(
-            data: SliderThemeData(
-              activeTrackColor: AppColors.primary,
-              inactiveTrackColor: AppColors.surface,
-              thumbColor: AppColors.primary,
-              overlayColor: AppColors.primary.withValues(alpha: 0.2),
-              rangeThumbShape:
-                  const RoundRangeSliderThumbShape(enabledThumbRadius: 14),
-              trackHeight: 4,
-            ),
-            child: RangeSlider(
-              values: range.value,
-              min: 0,
-              max: 500000,
-              divisions: 100,
-              onChanged: (v) {
-                range.value = v;
-                onChanged(v.start, v.end);
-              },
-            ),
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('\$0', style: AppTextStyles.label),
-              Text('\$500k', style: AppTextStyles.label),
-            ],
+          const SizedBox(height: AppSpacing.xl),
+          Text('What kind of connections are you looking for?',
+              style: AppTextStyles.bodyMd),
+          const SizedBox(height: AppSpacing.xs),
+          Text('Pick any — "Surprise me" mixes in serendipitous matches',
+              style:
+                  AppTextStyles.label.copyWith(color: AppColors.textSecondary)),
+          const SizedBox(height: AppSpacing.md),
+          Wrap(
+            spacing: AppSpacing.sm,
+            runSpacing: AppSpacing.sm,
+            children: AppConstants.connectionIntents.entries.map((entry) {
+              final selected = intents.contains(entry.key);
+              return GestureDetector(
+                onTap: () => onToggleIntent(entry.key),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 150),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.md, vertical: AppSpacing.sm),
+                  decoration: BoxDecoration(
+                    color: selected ? AppColors.primary : AppColors.surface,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: selected ? AppColors.primary : AppColors.card,
+                    ),
+                  ),
+                  child: Text(
+                    entry.value,
+                    style: AppTextStyles.label.copyWith(
+                      color:
+                          selected ? Colors.white : AppColors.textSecondary,
+                      fontWeight:
+                          selected ? FontWeight.w600 : FontWeight.normal,
+                    ),
+                  ),
+                ),
+              );
+            }).toList(),
           ),
         ],
       ),

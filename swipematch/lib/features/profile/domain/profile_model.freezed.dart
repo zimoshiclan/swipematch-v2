@@ -28,9 +28,10 @@ mixin _$ProfileModel {
   String? get avatarUrl => throw _privateConstructorUsedError;
   String? get bio => throw _privateConstructorUsedError;
   List<String> get skills => throw _privateConstructorUsedError;
-  int? get salaryMin => throw _privateConstructorUsedError;
-  int? get salaryMax => throw _privateConstructorUsedError;
-  String get currency => throw _privateConstructorUsedError;
+  String? get persona => throw _privateConstructorUsedError;
+  List<String> get connectionIntents => throw _privateConstructorUsedError;
+  String? get city => throw _privateConstructorUsedError;
+  String? get country => throw _privateConstructorUsedError;
   String? get workStyle => throw _privateConstructorUsedError;
   List<String> get cultureTags => throw _privateConstructorUsedError;
   int? get experienceYears => throw _privateConstructorUsedError;
@@ -45,7 +46,11 @@ mixin _$ProfileModel {
   String? get workingToward => throw _privateConstructorUsedError;
   String? get currentlyLearning => throw _privateConstructorUsedError;
   List<String> get workValues => throw _privateConstructorUsedError;
-  DateTime get createdAt => throw _privateConstructorUsedError;
+  DateTime get createdAt =>
+      throw _privateConstructorUsedError; // Transient UI-only flag: set by the Room when this card is a serendipity
+// "wildcard" pick. Never read from / written to the database.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  bool get isSerendipity => throw _privateConstructorUsedError;
 
   /// Serializes this ProfileModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -72,9 +77,10 @@ abstract class $ProfileModelCopyWith<$Res> {
       String? avatarUrl,
       String? bio,
       List<String> skills,
-      int? salaryMin,
-      int? salaryMax,
-      String currency,
+      String? persona,
+      List<String> connectionIntents,
+      String? city,
+      String? country,
       String? workStyle,
       List<String> cultureTags,
       int? experienceYears,
@@ -89,7 +95,9 @@ abstract class $ProfileModelCopyWith<$Res> {
       String? workingToward,
       String? currentlyLearning,
       List<String> workValues,
-      DateTime createdAt});
+      DateTime createdAt,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      bool isSerendipity});
 }
 
 /// @nodoc
@@ -115,9 +123,10 @@ class _$ProfileModelCopyWithImpl<$Res, $Val extends ProfileModel>
     Object? avatarUrl = freezed,
     Object? bio = freezed,
     Object? skills = null,
-    Object? salaryMin = freezed,
-    Object? salaryMax = freezed,
-    Object? currency = null,
+    Object? persona = freezed,
+    Object? connectionIntents = null,
+    Object? city = freezed,
+    Object? country = freezed,
     Object? workStyle = freezed,
     Object? cultureTags = null,
     Object? experienceYears = freezed,
@@ -133,6 +142,7 @@ class _$ProfileModelCopyWithImpl<$Res, $Val extends ProfileModel>
     Object? currentlyLearning = freezed,
     Object? workValues = null,
     Object? createdAt = null,
+    Object? isSerendipity = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -167,18 +177,22 @@ class _$ProfileModelCopyWithImpl<$Res, $Val extends ProfileModel>
           ? _value.skills
           : skills // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      salaryMin: freezed == salaryMin
-          ? _value.salaryMin
-          : salaryMin // ignore: cast_nullable_to_non_nullable
-              as int?,
-      salaryMax: freezed == salaryMax
-          ? _value.salaryMax
-          : salaryMax // ignore: cast_nullable_to_non_nullable
-              as int?,
-      currency: null == currency
-          ? _value.currency
-          : currency // ignore: cast_nullable_to_non_nullable
-              as String,
+      persona: freezed == persona
+          ? _value.persona
+          : persona // ignore: cast_nullable_to_non_nullable
+              as String?,
+      connectionIntents: null == connectionIntents
+          ? _value.connectionIntents
+          : connectionIntents // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      city: freezed == city
+          ? _value.city
+          : city // ignore: cast_nullable_to_non_nullable
+              as String?,
+      country: freezed == country
+          ? _value.country
+          : country // ignore: cast_nullable_to_non_nullable
+              as String?,
       workStyle: freezed == workStyle
           ? _value.workStyle
           : workStyle // ignore: cast_nullable_to_non_nullable
@@ -239,6 +253,10 @@ class _$ProfileModelCopyWithImpl<$Res, $Val extends ProfileModel>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      isSerendipity: null == isSerendipity
+          ? _value.isSerendipity
+          : isSerendipity // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -260,9 +278,10 @@ abstract class _$$ProfileModelImplCopyWith<$Res>
       String? avatarUrl,
       String? bio,
       List<String> skills,
-      int? salaryMin,
-      int? salaryMax,
-      String currency,
+      String? persona,
+      List<String> connectionIntents,
+      String? city,
+      String? country,
       String? workStyle,
       List<String> cultureTags,
       int? experienceYears,
@@ -277,7 +296,9 @@ abstract class _$$ProfileModelImplCopyWith<$Res>
       String? workingToward,
       String? currentlyLearning,
       List<String> workValues,
-      DateTime createdAt});
+      DateTime createdAt,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      bool isSerendipity});
 }
 
 /// @nodoc
@@ -301,9 +322,10 @@ class __$$ProfileModelImplCopyWithImpl<$Res>
     Object? avatarUrl = freezed,
     Object? bio = freezed,
     Object? skills = null,
-    Object? salaryMin = freezed,
-    Object? salaryMax = freezed,
-    Object? currency = null,
+    Object? persona = freezed,
+    Object? connectionIntents = null,
+    Object? city = freezed,
+    Object? country = freezed,
     Object? workStyle = freezed,
     Object? cultureTags = null,
     Object? experienceYears = freezed,
@@ -319,6 +341,7 @@ class __$$ProfileModelImplCopyWithImpl<$Res>
     Object? currentlyLearning = freezed,
     Object? workValues = null,
     Object? createdAt = null,
+    Object? isSerendipity = null,
   }) {
     return _then(_$ProfileModelImpl(
       id: null == id
@@ -353,18 +376,22 @@ class __$$ProfileModelImplCopyWithImpl<$Res>
           ? _value._skills
           : skills // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      salaryMin: freezed == salaryMin
-          ? _value.salaryMin
-          : salaryMin // ignore: cast_nullable_to_non_nullable
-              as int?,
-      salaryMax: freezed == salaryMax
-          ? _value.salaryMax
-          : salaryMax // ignore: cast_nullable_to_non_nullable
-              as int?,
-      currency: null == currency
-          ? _value.currency
-          : currency // ignore: cast_nullable_to_non_nullable
-              as String,
+      persona: freezed == persona
+          ? _value.persona
+          : persona // ignore: cast_nullable_to_non_nullable
+              as String?,
+      connectionIntents: null == connectionIntents
+          ? _value._connectionIntents
+          : connectionIntents // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      city: freezed == city
+          ? _value.city
+          : city // ignore: cast_nullable_to_non_nullable
+              as String?,
+      country: freezed == country
+          ? _value.country
+          : country // ignore: cast_nullable_to_non_nullable
+              as String?,
       workStyle: freezed == workStyle
           ? _value.workStyle
           : workStyle // ignore: cast_nullable_to_non_nullable
@@ -425,6 +452,10 @@ class __$$ProfileModelImplCopyWithImpl<$Res>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      isSerendipity: null == isSerendipity
+          ? _value.isSerendipity
+          : isSerendipity // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -441,9 +472,10 @@ class _$ProfileModelImpl implements _ProfileModel {
       this.avatarUrl,
       this.bio,
       final List<String> skills = const [],
-      this.salaryMin,
-      this.salaryMax,
-      this.currency = 'USD',
+      this.persona,
+      final List<String> connectionIntents = const [],
+      this.city,
+      this.country,
       this.workStyle,
       final List<String> cultureTags = const [],
       this.experienceYears,
@@ -458,8 +490,11 @@ class _$ProfileModelImpl implements _ProfileModel {
       this.workingToward,
       this.currentlyLearning,
       final List<String> workValues = const [],
-      required this.createdAt})
+      required this.createdAt,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      this.isSerendipity = false})
       : _skills = skills,
+        _connectionIntents = connectionIntents,
         _cultureTags = cultureTags,
         _workValues = workValues;
 
@@ -490,12 +525,21 @@ class _$ProfileModelImpl implements _ProfileModel {
   }
 
   @override
-  final int? salaryMin;
-  @override
-  final int? salaryMax;
+  final String? persona;
+  final List<String> _connectionIntents;
   @override
   @JsonKey()
-  final String currency;
+  List<String> get connectionIntents {
+    if (_connectionIntents is EqualUnmodifiableListView)
+      return _connectionIntents;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_connectionIntents);
+  }
+
+  @override
+  final String? city;
+  @override
+  final String? country;
   @override
   final String? workStyle;
   final List<String> _cultureTags;
@@ -543,10 +587,15 @@ class _$ProfileModelImpl implements _ProfileModel {
 
   @override
   final DateTime createdAt;
+// Transient UI-only flag: set by the Room when this card is a serendipity
+// "wildcard" pick. Never read from / written to the database.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  final bool isSerendipity;
 
   @override
   String toString() {
-    return 'ProfileModel(id: $id, userId: $userId, role: $role, name: $name, headline: $headline, avatarUrl: $avatarUrl, bio: $bio, skills: $skills, salaryMin: $salaryMin, salaryMax: $salaryMax, currency: $currency, workStyle: $workStyle, cultureTags: $cultureTags, experienceYears: $experienceYears, streakCount: $streakCount, lastActiveDate: $lastActiveDate, passiveMode: $passiveMode, profileCompletion: $profileCompletion, jobSearchTimeline: $jobSearchTimeline, videoPitchUrl: $videoPitchUrl, videoPitchTranscript: $videoPitchTranscript, aiReadinessScore: $aiReadinessScore, workingToward: $workingToward, currentlyLearning: $currentlyLearning, workValues: $workValues, createdAt: $createdAt)';
+    return 'ProfileModel(id: $id, userId: $userId, role: $role, name: $name, headline: $headline, avatarUrl: $avatarUrl, bio: $bio, skills: $skills, persona: $persona, connectionIntents: $connectionIntents, city: $city, country: $country, workStyle: $workStyle, cultureTags: $cultureTags, experienceYears: $experienceYears, streakCount: $streakCount, lastActiveDate: $lastActiveDate, passiveMode: $passiveMode, profileCompletion: $profileCompletion, jobSearchTimeline: $jobSearchTimeline, videoPitchUrl: $videoPitchUrl, videoPitchTranscript: $videoPitchTranscript, aiReadinessScore: $aiReadinessScore, workingToward: $workingToward, currentlyLearning: $currentlyLearning, workValues: $workValues, createdAt: $createdAt, isSerendipity: $isSerendipity)';
   }
 
   @override
@@ -564,12 +613,11 @@ class _$ProfileModelImpl implements _ProfileModel {
                 other.avatarUrl == avatarUrl) &&
             (identical(other.bio, bio) || other.bio == bio) &&
             const DeepCollectionEquality().equals(other._skills, _skills) &&
-            (identical(other.salaryMin, salaryMin) ||
-                other.salaryMin == salaryMin) &&
-            (identical(other.salaryMax, salaryMax) ||
-                other.salaryMax == salaryMax) &&
-            (identical(other.currency, currency) ||
-                other.currency == currency) &&
+            (identical(other.persona, persona) || other.persona == persona) &&
+            const DeepCollectionEquality()
+                .equals(other._connectionIntents, _connectionIntents) &&
+            (identical(other.city, city) || other.city == city) &&
+            (identical(other.country, country) || other.country == country) &&
             (identical(other.workStyle, workStyle) ||
                 other.workStyle == workStyle) &&
             const DeepCollectionEquality()
@@ -599,7 +647,9 @@ class _$ProfileModelImpl implements _ProfileModel {
             const DeepCollectionEquality()
                 .equals(other._workValues, _workValues) &&
             (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt));
+                other.createdAt == createdAt) &&
+            (identical(other.isSerendipity, isSerendipity) ||
+                other.isSerendipity == isSerendipity));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -614,9 +664,10 @@ class _$ProfileModelImpl implements _ProfileModel {
         avatarUrl,
         bio,
         const DeepCollectionEquality().hash(_skills),
-        salaryMin,
-        salaryMax,
-        currency,
+        persona,
+        const DeepCollectionEquality().hash(_connectionIntents),
+        city,
+        country,
         workStyle,
         const DeepCollectionEquality().hash(_cultureTags),
         experienceYears,
@@ -631,7 +682,8 @@ class _$ProfileModelImpl implements _ProfileModel {
         workingToward,
         currentlyLearning,
         const DeepCollectionEquality().hash(_workValues),
-        createdAt
+        createdAt,
+        isSerendipity
       ]);
 
   /// Create a copy of ProfileModel
@@ -660,9 +712,10 @@ abstract class _ProfileModel implements ProfileModel {
       final String? avatarUrl,
       final String? bio,
       final List<String> skills,
-      final int? salaryMin,
-      final int? salaryMax,
-      final String currency,
+      final String? persona,
+      final List<String> connectionIntents,
+      final String? city,
+      final String? country,
       final String? workStyle,
       final List<String> cultureTags,
       final int? experienceYears,
@@ -677,7 +730,9 @@ abstract class _ProfileModel implements ProfileModel {
       final String? workingToward,
       final String? currentlyLearning,
       final List<String> workValues,
-      required final DateTime createdAt}) = _$ProfileModelImpl;
+      required final DateTime createdAt,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      final bool isSerendipity}) = _$ProfileModelImpl;
 
   factory _ProfileModel.fromJson(Map<String, dynamic> json) =
       _$ProfileModelImpl.fromJson;
@@ -699,11 +754,13 @@ abstract class _ProfileModel implements ProfileModel {
   @override
   List<String> get skills;
   @override
-  int? get salaryMin;
+  String? get persona;
   @override
-  int? get salaryMax;
+  List<String> get connectionIntents;
   @override
-  String get currency;
+  String? get city;
+  @override
+  String? get country;
   @override
   String? get workStyle;
   @override
@@ -733,7 +790,12 @@ abstract class _ProfileModel implements ProfileModel {
   @override
   List<String> get workValues;
   @override
-  DateTime get createdAt;
+  DateTime
+      get createdAt; // Transient UI-only flag: set by the Room when this card is a serendipity
+// "wildcard" pick. Never read from / written to the database.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  bool get isSerendipity;
 
   /// Create a copy of ProfileModel
   /// with the given fields replaced by the non-null parameter values.

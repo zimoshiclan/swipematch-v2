@@ -14,9 +14,10 @@ class ProfileModel with _$ProfileModel {
     String? avatarUrl,
     String? bio,
     @Default([]) List<String> skills,
-    int? salaryMin,
-    int? salaryMax,
-    @Default('USD') String currency,
+    String? persona,
+    @Default([]) List<String> connectionIntents,
+    String? city,
+    String? country,
     String? workStyle,
     @Default([]) List<String> cultureTags,
     int? experienceYears,
@@ -32,6 +33,11 @@ class ProfileModel with _$ProfileModel {
     String? currentlyLearning,
     @Default([]) List<String> workValues,
     required DateTime createdAt,
+    // Transient UI-only flag: set by the Room when this card is a serendipity
+    // "wildcard" pick. Never read from / written to the database.
+    @JsonKey(includeFromJson: false, includeToJson: false)
+    @Default(false)
+    bool isSerendipity,
   }) = _ProfileModel;
 
   factory ProfileModel.fromJson(Map<String, dynamic> json) => _$ProfileModelFromJson(json);

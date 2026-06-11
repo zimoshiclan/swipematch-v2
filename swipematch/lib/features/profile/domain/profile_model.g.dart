@@ -19,9 +19,13 @@ _$ProfileModelImpl _$$ProfileModelImplFromJson(Map<String, dynamic> json) =>
               ?.map((e) => e as String)
               .toList() ??
           const [],
-      salaryMin: (json['salary_min'] as num?)?.toInt(),
-      salaryMax: (json['salary_max'] as num?)?.toInt(),
-      currency: json['currency'] as String? ?? 'USD',
+      persona: json['persona'] as String?,
+      connectionIntents: (json['connection_intents'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
+      city: json['city'] as String?,
+      country: json['country'] as String?,
       workStyle: json['work_style'] as String?,
       cultureTags: (json['culture_tags'] as List<dynamic>?)
               ?.map((e) => e as String)
@@ -57,9 +61,10 @@ Map<String, dynamic> _$$ProfileModelImplToJson(_$ProfileModelImpl instance) =>
       'avatar_url': instance.avatarUrl,
       'bio': instance.bio,
       'skills': instance.skills,
-      'salary_min': instance.salaryMin,
-      'salary_max': instance.salaryMax,
-      'currency': instance.currency,
+      'persona': instance.persona,
+      'connection_intents': instance.connectionIntents,
+      'city': instance.city,
+      'country': instance.country,
       'work_style': instance.workStyle,
       'culture_tags': instance.cultureTags,
       'experience_years': instance.experienceYears,

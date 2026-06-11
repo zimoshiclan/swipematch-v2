@@ -20,12 +20,6 @@ class OnboardingNotifier extends AutoDisposeNotifier<OnboardingState> {
   void nextPage() => state = state.copyWith(currentPage: state.currentPage + 1);
   void prevPage() => state = state.copyWith(currentPage: state.currentPage - 1);
 
-  void toggleRole(String role) {
-    final roles = List<String>.from(state.selectedRoles);
-    roles.contains(role) ? roles.remove(role) : roles.add(role);
-    state = state.copyWith(selectedRoles: roles);
-  }
-
   void addSkill(String skill) {
     if (state.skills.contains(skill)) return;
     state = state.copyWith(skills: [...state.skills, skill]);
@@ -38,8 +32,16 @@ class OnboardingNotifier extends AutoDisposeNotifier<OnboardingState> {
 
   void setStatus(String status) => state = state.copyWith(status: status);
 
-  void setSalaryRange(int min, int max) =>
-      state = state.copyWith(salaryMin: min, salaryMax: max);
+  void setPersona(String persona) => state = state.copyWith(persona: persona);
+
+  void toggleConnectionIntent(String intent) {
+    final intents = List<String>.from(state.connectionIntents);
+    intents.contains(intent) ? intents.remove(intent) : intents.add(intent);
+    state = state.copyWith(connectionIntents: intents);
+  }
+
+  void setCity(String city) => state = state.copyWith(city: city);
+  void setCountry(String country) => state = state.copyWith(country: country);
 
   void setWorkStyle(String style) => state = state.copyWith(workStyle: style);
 
@@ -82,7 +84,7 @@ class OnboardingNotifier extends AutoDisposeNotifier<OnboardingState> {
     final repo = ref.read(onboardingRepositoryProvider);
     switch (page) {
       case 0:
-        break; // role categories are local-only
+        await repo.savePartial(profileId, {'persona': state.persona});
       case 1:
         await repo.savePartial(profileId, {'skills': state.skills});
       // page 2 (Becoming) is saved via saveBecoming() before advance
@@ -92,8 +94,10 @@ class OnboardingNotifier extends AutoDisposeNotifier<OnboardingState> {
         });
       case 4:
         await repo.savePartial(profileId, {
-          'salary_min': state.salaryMin ?? 0,
-          'salary_max': state.salaryMax ?? 100000,
+          'connection_intents': state.connectionIntents,
+          'city': (state.city?.trim().isEmpty ?? true) ? null : state.city!.trim(),
+          'country':
+              (state.country?.trim().isEmpty ?? true) ? null : state.country!.trim(),
         });
     }
   }
@@ -109,11 +113,13 @@ class OnboardingNotifier extends AutoDisposeNotifier<OnboardingState> {
     };
     await repo.saveComplete(
       profileId: profileId,
+      persona: state.persona,
       skills: state.skills,
       status: dbStatus,
-      salaryMin: state.salaryMin ?? 60000,
-      salaryMax: state.salaryMax ?? 120000,
-      currency: 'USD',
+      connectionIntents: state.connectionIntents,
+      city: (state.city?.trim().isEmpty ?? true) ? null : state.city!.trim(),
+      country:
+          (state.country?.trim().isEmpty ?? true) ? null : state.country!.trim(),
       workStyle: state.workStyle ?? 'remote',
       cultureTags: state.cultureTags,
       jobSearchTimeline: state.jobSearchTimeline ?? 'exploring',

@@ -23,7 +23,6 @@ class SupabaseConstants {
   static const String swipes = 'swipes';
   static const String matches = 'matches';
   static const String messages = 'messages';
-  static const String salaryReports = 'salary_reports';
   static const String interviewIntel = 'interview_intel';
   static const String skillsScores = 'skills_scores';
   static const String posts = 'posts';

@@ -35,7 +35,7 @@ class AppConstants {
   static const int completionAvatar = 15;
   static const int completionBio = 10;
   static const int completionSkills = 20;
-  static const int completionSalary = 15;
+  static const int completionLocation = 15;
   static const int completionWorkStyle = 10;
   static const int completionCultureTags = 10;
   static const int completionExperience = 10;
@@ -47,8 +47,8 @@ class AppConstants {
   static const String itsAMatch = "It's a Match!";
   static const String keepSwiping = "Keep Swiping";
   static const String sendMessage = "Send a Message";
-  static const String deckEmptyTitle = "You're all caught up!";
-  static const String deckEmptySubtitle = "New deck arrives at 8am";
+  static const String deckEmptyTitle = "You've met everyone today";
+  static const String deckEmptySubtitle = "New people arrive at 8am";
   static const String missedMatchesMessage =
       "You missed 3 matches last week because your deck expired.";
   static const String momentumMessage = "You're on a roll!";
@@ -70,9 +70,9 @@ class AppConstants {
 
   // Onboarding
   static const String onboardingSkipLabel = 'Skip setup — explore now';
-  static const String onboardingAiReadinessTitle = 'Your AI Readiness';
+  static const String onboardingAiReadinessTitle = 'Your growth score';
   static const String onboardingAiReadinessSubtitle =
-      'Every field is changing. See where you stand and how to move faster.';
+      'Every field is changing. See where you stand and how to grow faster.';
 
   // Community
   static const String postsTabLabel = 'Posts';
@@ -107,6 +107,31 @@ class AppConstants {
   static const String timeline3Months = '3_months';
   static const String timeline6Months = '6_months';
   static const String timelineExploring = 'exploring';
+
+  // Open-networking personas — single-select in onboarding. The app is for
+  // everyone (students, founders, creators, politicians…), not just job seekers.
+  static const List<String> personas = [
+    'Student',
+    'Founder',
+    'Creator',
+    'Professional',
+    'Investor',
+    'Politician',
+    'Researcher',
+    'Other',
+  ];
+
+  // Connection intents — DB value → display label. 'random' drives the
+  // serendipity / "surprise me" matching path.
+  static const Map<String, String> connectionIntents = {
+    'mentorship': 'Mentorship',
+    'collaborators': 'Collaborators',
+    'investors': 'Investors',
+    'hiring': 'Hiring / Jobs',
+    'friends': 'Friends',
+    'knowledge': 'Knowledge share',
+    'random': 'Surprise me',
+  };
 
   // Career streams — all fields, not just tech
   static const List<String> roleCategories = [
@@ -229,13 +254,6 @@ class AppConstants {
   static const String statusInterview = 'interview_scheduled';
   static const String statusOffer = 'offer_sent';
   static const String statusHired = 'hired';
-
-  // Salary truth
-  static const String salaryTruthBannerTitle = 'See what people really get paid';
-  static const String salaryTruthBannerSubtitle =
-      'Verified, anonymized salaries. The data LinkedIn hides.';
-  static const String salaryTruthEmpty =
-      'No salary reports yet for this search. Be the first to add one — anonymously.';
 
   // AI Readiness — scored 0–100 (5 questions × 20pts max)
   static const List<AiReadinessQuestion> aiReadinessQuestions = [

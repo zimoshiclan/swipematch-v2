@@ -145,10 +145,9 @@ class EmployerRepository {
 
   Map<String, dynamic> _defaultReason(int score) => {
         'overall_score': score,
-        'skills': {'score': (score * 0.4).round(), 'reason': 'Skills align'},
-        'salary': {'score': (score * 0.25).round(), 'reason': 'Salary fits'},
-        'work_style': {'score': (score * 0.2).round(), 'reason': 'Style matches'},
-        'experience': {'score': (score * 0.15).round(), 'reason': 'Experience ok'},
+        'skills': {'score': (score * 0.5).round(), 'reason': 'Skills align'},
+        'work_style': {'score': (score * 0.3).round(), 'reason': 'Style matches'},
+        'experience': {'score': (score * 0.2).round(), 'reason': 'Experience ok'},
         'coaching_tip': '',
         'match_summary': '',
       };

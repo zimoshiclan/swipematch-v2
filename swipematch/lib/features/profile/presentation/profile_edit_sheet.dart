@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../domain/profile_model.dart';
 import '../domain/profile_providers.dart';
+import '../../../shared/constants/app_constants.dart';
 import '../../../shared/theme/app_colors.dart';
 import '../../../shared/theme/app_spacing.dart';
 import '../../../shared/theme/app_text_styles.dart';
@@ -22,10 +23,8 @@ class ProfileEditSheet extends HookConsumerWidget {
     final skillInputCtrl = useTextEditingController();
     final expCtrl = useTextEditingController(
         text: profile.experienceYears?.toString() ?? '');
-    final salaryMinCtrl =
-        useTextEditingController(text: profile.salaryMin?.toString() ?? '');
-    final salaryMaxCtrl =
-        useTextEditingController(text: profile.salaryMax?.toString() ?? '');
+    final cityCtrl = useTextEditingController(text: profile.city ?? '');
+    final countryCtrl = useTextEditingController(text: profile.country ?? '');
 
     final workingTowardCtrl =
         useTextEditingController(text: profile.workingToward ?? '');
@@ -34,15 +33,15 @@ class ProfileEditSheet extends HookConsumerWidget {
 
     final skills = useState<List<String>>(List.from(profile.skills));
     final workValues = useState<List<String>>(List.from(profile.workValues));
+    final connectionIntents =
+        useState<List<String>>(List.from(profile.connectionIntents));
     final workStyle = useState<String>(
       ['remote', 'hybrid', 'on_site'].contains(profile.workStyle)
           ? profile.workStyle!
           : '',
     );
-    final currency = useState<String>(
-      ['USD', 'EUR', 'GBP', 'SAR', 'AED'].contains(profile.currency)
-          ? profile.currency
-          : 'USD',
+    final persona = useState<String>(
+      AppConstants.personas.contains(profile.persona) ? profile.persona! : '',
     );
     final timeline = useState<String>(profile.jobSearchTimeline ?? '');
     final saving = useState(false);
@@ -60,8 +59,10 @@ class ProfileEditSheet extends HookConsumerWidget {
       saving.value = true;
       try {
         final expYears = int.tryParse(expCtrl.text.trim());
-        final salMin = int.tryParse(salaryMinCtrl.text.trim());
-        final salMax = int.tryParse(salaryMaxCtrl.text.trim());
+        final city =
+            cityCtrl.text.trim().isEmpty ? null : cityCtrl.text.trim();
+        final country =
+            countryCtrl.text.trim().isEmpty ? null : countryCtrl.text.trim();
 
         int score = 0;
         if (name.isNotEmpty) score += 20;
@@ -69,7 +70,7 @@ class ProfileEditSheet extends HookConsumerWidget {
             bioCtrl.text.trim().isEmpty ? null : bioCtrl.text.trim();
         if (bio != null) score += 15;
         if (skills.value.isNotEmpty) score += 20;
-        if (salMin != null && salMax != null) score += 15;
+        if (city != null || country != null) score += 15;
         if (workStyle.value.isNotEmpty) score += 15;
         if (expYears != null) score += 15;
 
@@ -90,9 +91,10 @@ class ProfileEditSheet extends HookConsumerWidget {
             'bio': bio,
             'skills': skills.value,
             'experience_years': expYears,
-            'salary_min': salMin,
-            'salary_max': salMax,
-            'currency': currency.value,
+            'persona': persona.value.isEmpty ? null : persona.value,
+            'connection_intents': connectionIntents.value,
+            'city': city,
+            'country': country,
             'work_style':
                 workStyle.value.isEmpty ? null : workStyle.value,
             'job_search_timeline':
@@ -272,41 +274,41 @@ class ProfileEditSheet extends HookConsumerWidget {
                         keyboardType: TextInputType.number,
                       ),
                       const SizedBox(height: AppSpacing.lg),
-                      _SectionLabel('Compensation'),
+                      _SectionLabel('Location & connections'),
                       const SizedBox(height: AppSpacing.sm),
                       Row(
                         children: [
                           Expanded(
                             child: _Field(
-                              ctrl: salaryMinCtrl,
-                              label: 'Min salary',
-                              hint: '50000',
-                              keyboardType: TextInputType.number,
+                              ctrl: cityCtrl,
+                              label: 'City',
+                              hint: 'e.g. Dubai',
                             ),
                           ),
                           const SizedBox(width: AppSpacing.sm),
                           Expanded(
                             child: _Field(
-                              ctrl: salaryMaxCtrl,
-                              label: 'Max salary',
-                              hint: '100000',
-                              keyboardType: TextInputType.number,
+                              ctrl: countryCtrl,
+                              label: 'Country',
+                              hint: 'e.g. UAE',
                             ),
                           ),
                         ],
                       ),
                       const SizedBox(height: AppSpacing.sm),
                       _DropdownField(
-                        label: 'Currency',
-                        value: currency.value,
-                        items: const {
-                          'USD': 'USD — US Dollar',
-                          'EUR': 'EUR — Euro',
-                          'GBP': 'GBP — British Pound',
-                          'SAR': 'SAR — Saudi Riyal',
-                          'AED': 'AED — UAE Dirham',
+                        label: 'I am a…',
+                        value: persona.value,
+                        items: {
+                          '': 'Select persona',
+                          for (final p in AppConstants.personas) p: p,
                         },
-                        onChanged: (v) => currency.value = v ?? 'USD',
+                        onChanged: (v) => persona.value = v ?? '',
+                      ),
+                      const SizedBox(height: AppSpacing.sm),
+                      _IntentField(
+                        selected: connectionIntents.value,
+                        onChanged: (v) => connectionIntents.value = v,
                       ),
                       const SizedBox(height: AppSpacing.lg),
                       _SectionLabel('Work preferences'),
@@ -514,6 +516,64 @@ class _WorkValuesField extends StatelessWidget {
                     color: selected ? Colors.white : AppColors.textSecondary,
                     fontWeight:
                         selected ? FontWeight.w600 : FontWeight.normal,
+                  ),
+                ),
+              ),
+            );
+          }).toList(),
+        ),
+      ],
+    );
+  }
+}
+
+class _IntentField extends StatelessWidget {
+  const _IntentField({required this.selected, required this.onChanged});
+  final List<String> selected;
+  final void Function(List<String>) onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'What I\'m looking for',
+          style: AppTextStyles.label.copyWith(color: AppColors.textSecondary),
+        ),
+        const SizedBox(height: AppSpacing.xs),
+        Wrap(
+          spacing: AppSpacing.xs,
+          runSpacing: AppSpacing.xs,
+          children: AppConstants.connectionIntents.entries.map((entry) {
+            final isSelected = selected.contains(entry.key);
+            return GestureDetector(
+              onTap: () {
+                if (isSelected) {
+                  onChanged(selected.where((x) => x != entry.key).toList());
+                } else {
+                  onChanged([...selected, entry.key]);
+                }
+              },
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 150),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.sm, vertical: 5),
+                decoration: BoxDecoration(
+                  color: isSelected ? AppColors.primary : AppColors.surface,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: isSelected ? AppColors.primary : AppColors.card,
+                    width: 1,
+                  ),
+                ),
+                child: Text(
+                  entry.value,
+                  style: AppTextStyles.label.copyWith(
+                    color:
+                        isSelected ? Colors.white : AppColors.textSecondary,
+                    fontWeight:
+                        isSelected ? FontWeight.w600 : FontWeight.normal,
                   ),
                 ),
               ),

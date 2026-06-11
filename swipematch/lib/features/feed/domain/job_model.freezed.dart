@@ -25,8 +25,6 @@ mixin _$JobModel {
   String get title => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
   List<String> get requiredSkills => throw _privateConstructorUsedError;
-  int get salaryMin => throw _privateConstructorUsedError;
-  int get salaryMax => throw _privateConstructorUsedError;
   String get workStyle => throw _privateConstructorUsedError;
   int get experienceYears => throw _privateConstructorUsedError;
   bool get isActive => throw _privateConstructorUsedError;
@@ -65,8 +63,6 @@ abstract class $JobModelCopyWith<$Res> {
       String title,
       String description,
       List<String> requiredSkills,
-      int salaryMin,
-      int salaryMax,
       String workStyle,
       int experienceYears,
       bool isActive,
@@ -103,8 +99,6 @@ class _$JobModelCopyWithImpl<$Res, $Val extends JobModel>
     Object? title = null,
     Object? description = null,
     Object? requiredSkills = null,
-    Object? salaryMin = null,
-    Object? salaryMax = null,
     Object? workStyle = null,
     Object? experienceYears = null,
     Object? isActive = null,
@@ -141,14 +135,6 @@ class _$JobModelCopyWithImpl<$Res, $Val extends JobModel>
           ? _value.requiredSkills
           : requiredSkills // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      salaryMin: null == salaryMin
-          ? _value.salaryMin
-          : salaryMin // ignore: cast_nullable_to_non_nullable
-              as int,
-      salaryMax: null == salaryMax
-          ? _value.salaryMax
-          : salaryMax // ignore: cast_nullable_to_non_nullable
-              as int,
       workStyle: null == workStyle
           ? _value.workStyle
           : workStyle // ignore: cast_nullable_to_non_nullable
@@ -223,8 +209,6 @@ abstract class _$$JobModelImplCopyWith<$Res>
       String title,
       String description,
       List<String> requiredSkills,
-      int salaryMin,
-      int salaryMax,
       String workStyle,
       int experienceYears,
       bool isActive,
@@ -259,8 +243,6 @@ class __$$JobModelImplCopyWithImpl<$Res>
     Object? title = null,
     Object? description = null,
     Object? requiredSkills = null,
-    Object? salaryMin = null,
-    Object? salaryMax = null,
     Object? workStyle = null,
     Object? experienceYears = null,
     Object? isActive = null,
@@ -297,14 +279,6 @@ class __$$JobModelImplCopyWithImpl<$Res>
           ? _value._requiredSkills
           : requiredSkills // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      salaryMin: null == salaryMin
-          ? _value.salaryMin
-          : salaryMin // ignore: cast_nullable_to_non_nullable
-              as int,
-      salaryMax: null == salaryMax
-          ? _value.salaryMax
-          : salaryMax // ignore: cast_nullable_to_non_nullable
-              as int,
       workStyle: null == workStyle
           ? _value.workStyle
           : workStyle // ignore: cast_nullable_to_non_nullable
@@ -374,8 +348,6 @@ class _$JobModelImpl implements _JobModel {
       required this.title,
       required this.description,
       required final List<String> requiredSkills,
-      required this.salaryMin,
-      required this.salaryMax,
       required this.workStyle,
       required this.experienceYears,
       this.isActive = true,
@@ -412,10 +384,6 @@ class _$JobModelImpl implements _JobModel {
     return EqualUnmodifiableListView(_requiredSkills);
   }
 
-  @override
-  final int salaryMin;
-  @override
-  final int salaryMax;
   @override
   final String workStyle;
   @override
@@ -461,7 +429,7 @@ class _$JobModelImpl implements _JobModel {
 
   @override
   String toString() {
-    return 'JobModel(id: $id, companyId: $companyId, title: $title, description: $description, requiredSkills: $requiredSkills, salaryMin: $salaryMin, salaryMax: $salaryMax, workStyle: $workStyle, experienceYears: $experienceYears, isActive: $isActive, expiresAt: $expiresAt, matchScore: $matchScore, matchReasons: $matchReasons, matchSummary: $matchSummary, applicantCount: $applicantCount, isHot: $isHot, companyName: $companyName, companyLogoUrl: $companyLogoUrl, companyColor: $companyColor, companyGhostScore: $companyGhostScore, createdAt: $createdAt)';
+    return 'JobModel(id: $id, companyId: $companyId, title: $title, description: $description, requiredSkills: $requiredSkills, workStyle: $workStyle, experienceYears: $experienceYears, isActive: $isActive, expiresAt: $expiresAt, matchScore: $matchScore, matchReasons: $matchReasons, matchSummary: $matchSummary, applicantCount: $applicantCount, isHot: $isHot, companyName: $companyName, companyLogoUrl: $companyLogoUrl, companyColor: $companyColor, companyGhostScore: $companyGhostScore, createdAt: $createdAt)';
   }
 
   @override
@@ -477,10 +445,6 @@ class _$JobModelImpl implements _JobModel {
                 other.description == description) &&
             const DeepCollectionEquality()
                 .equals(other._requiredSkills, _requiredSkills) &&
-            (identical(other.salaryMin, salaryMin) ||
-                other.salaryMin == salaryMin) &&
-            (identical(other.salaryMax, salaryMax) ||
-                other.salaryMax == salaryMax) &&
             (identical(other.workStyle, workStyle) ||
                 other.workStyle == workStyle) &&
             (identical(other.experienceYears, experienceYears) ||
@@ -519,8 +483,6 @@ class _$JobModelImpl implements _JobModel {
         title,
         description,
         const DeepCollectionEquality().hash(_requiredSkills),
-        salaryMin,
-        salaryMax,
         workStyle,
         experienceYears,
         isActive,
@@ -560,8 +522,6 @@ abstract class _JobModel implements JobModel {
       required final String title,
       required final String description,
       required final List<String> requiredSkills,
-      required final int salaryMin,
-      required final int salaryMax,
       required final String workStyle,
       required final int experienceYears,
       final bool isActive,
@@ -590,10 +550,6 @@ abstract class _JobModel implements JobModel {
   String get description;
   @override
   List<String> get requiredSkills;
-  @override
-  int get salaryMin;
-  @override
-  int get salaryMax;
   @override
   String get workStyle;
   @override

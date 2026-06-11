@@ -26,13 +26,13 @@ Deno.serve(async (req: Request) => {
     const [{ data: candidate }, { data: job }] = await Promise.all([
       supabase
         .from("profiles")
-        .select("name, skills, salary_min, salary_max, work_style, experience_years")
+        .select("name, skills, work_style, experience_years")
         .eq("id", candidateId)
         .single(),
       supabase
         .from("jobs")
         .select(
-          "title, required_skills, salary_min, salary_max, work_style, experience_years, company_id, companies(name)"
+          "title, required_skills, work_style, experience_years, company_id, companies(name)"
         )
         .eq("id", jobId)
         .single(),
@@ -52,31 +52,27 @@ Deno.serve(async (req: Request) => {
 
 CANDIDATE:
 - Skills: ${(candidate.skills ?? []).join(", ")}
-- Salary expectation: $${candidate.salary_min ?? 0}–$${candidate.salary_max ?? 0}
 - Work style: ${candidate.work_style ?? "any"}
 - Experience: ${candidate.experience_years ?? 0} years
 
 JOB at ${companyName}:
 - Title: ${job.title}
 - Required skills: ${(job.required_skills ?? []).join(", ")}
-- Salary offered: $${job.salary_min}–$${job.salary_max}
 - Work style: ${job.work_style}
 - Required experience: ${job.experience_years} years
 
 Scoring (exact maxima):
-- skills: max 40 pts — count overlapping skills divided by required skills, multiply by 40
-- salary: max 25 pts — full if ranges overlap, partial if within 20% gap, zero if no overlap
-- work_style: max 20 pts — 20 if exact match, 10 if hybrid↔remote, 0 if on_site mismatch
-- experience: max 15 pts — 15 if within 1yr, 10 within 2yr, 5 within 3yr, 0 beyond
+- skills: max 50 pts — count overlapping skills divided by required skills, multiply by 50
+- work_style: max 30 pts — 30 if exact match, 15 if hybrid↔remote, 0 if on_site mismatch
+- experience: max 20 pts — 20 if within 1yr, 13 within 2yr, 7 within 3yr, 0 beyond
 
 Return ONLY valid JSON, no markdown fences:
 {
   "overall_score": <integer 0-100>,
   "dimensions": {
-    "skills": { "score": <0-40>, "reason": "<1 sentence>" },
-    "salary": { "score": <0-25>, "reason": "<1 sentence>" },
-    "work_style": { "score": <0-20>, "reason": "<1 sentence>" },
-    "experience": { "score": <0-15>, "reason": "<1 sentence>" }
+    "skills": { "score": <0-50>, "reason": "<1 sentence>" },
+    "work_style": { "score": <0-30>, "reason": "<1 sentence>" },
+    "experience": { "score": <0-20>, "reason": "<1 sentence>" }
   },
   "coaching_tip": "<1-2 sentences of actionable advice for the candidate>",
   "match_summary": "<2 sentences explaining this match>"
@@ -86,7 +82,6 @@ Return ONLY valid JSON, no markdown fences:
       overall_score: number;
       dimensions: {
         skills: { score: number; reason: string };
-        salary: { score: number; reason: string };
         work_style: { score: number; reason: string };
         experience: { score: number; reason: string };
       };
@@ -112,7 +107,6 @@ Return ONLY valid JSON, no markdown fences:
     const matchReason = {
       overall_score: scoreData.overall_score,
       skills: scoreData.dimensions.skills,
-      salary: scoreData.dimensions.salary,
       work_style: scoreData.dimensions.work_style,
       experience: scoreData.dimensions.experience,
       coaching_tip: scoreData.coaching_tip,
@@ -184,16 +178,12 @@ function json(body: unknown, status = 200) {
 
 interface CandidateLike {
   skills?: string[];
-  salary_min?: number;
-  salary_max?: number;
   work_style?: string;
   experience_years?: number;
 }
 
 interface JobLike {
   required_skills?: string[];
-  salary_min?: number;
-  salary_max?: number;
   work_style?: string;
   experience_years?: number;
 }
@@ -207,56 +197,33 @@ function computeFallback(candidate: CandidateLike, job: JobLike) {
   const skillsScore =
     reqSkills.length === 0
       ? 0
-      : Math.min(40, Math.round((overlap.length / reqSkills.length) * 40));
+      : Math.min(50, Math.round((overlap.length / reqSkills.length) * 50));
 
-  // Salary fit: overlap range gives full 25, partial gives 12, else 0.
-  let salaryScore = 0;
-  if (
-    candidate.salary_min != null &&
-    candidate.salary_max != null &&
-    job.salary_min != null &&
-    job.salary_max != null
-  ) {
-    const overlapsRange =
-      candidate.salary_min <= job.salary_max &&
-      candidate.salary_max >= job.salary_min;
-    if (overlapsRange) {
-      salaryScore = 25;
-    } else {
-      const gap = Math.min(
-        Math.abs(candidate.salary_min - job.salary_max),
-        Math.abs(job.salary_min - candidate.salary_max)
-      );
-      const midJob = (job.salary_min + job.salary_max) / 2;
-      if (midJob > 0 && gap / midJob <= 0.2) salaryScore = 12;
-    }
-  }
-
-  // Work style: exact = 20, remote↔hybrid = 10, on_site mismatch = 0.
+  // Work style: exact = 30, remote↔hybrid = 15, on_site mismatch = 0.
   let workScore = 0;
   const cw = candidate.work_style;
   const jw = job.work_style;
   if (cw && jw) {
     if (cw === jw) {
-      workScore = 20;
+      workScore = 30;
     } else if (
       (cw === "remote" && jw === "hybrid") ||
       (cw === "hybrid" && jw === "remote")
     ) {
-      workScore = 10;
+      workScore = 15;
     }
   }
 
-  // Experience: within 1y full 15, within 2y 10, within 3y 5, else 0.
+  // Experience: within 1y full 20, within 2y 13, within 3y 7, else 0.
   let expScore = 0;
   const ce = candidate.experience_years ?? 0;
   const je = job.experience_years ?? 0;
   const diff = Math.abs(ce - je);
-  if (diff <= 1) expScore = 15;
-  else if (diff <= 2) expScore = 10;
-  else if (diff <= 3) expScore = 5;
+  if (diff <= 1) expScore = 20;
+  else if (diff <= 2) expScore = 13;
+  else if (diff <= 3) expScore = 7;
 
-  const total = skillsScore + salaryScore + workScore + expScore;
+  const total = skillsScore + workScore + expScore;
 
   return {
     overall_score: total,
@@ -265,19 +232,11 @@ function computeFallback(candidate: CandidateLike, job: JobLike) {
         score: skillsScore,
         reason: `${overlap.length}/${reqSkills.length} required skills matched`,
       },
-      salary: {
-        score: salaryScore,
-        reason: salaryScore === 25
-          ? "Salary expectations overlap with offer"
-          : salaryScore === 12
-            ? "Salary ranges within 20% of each other"
-            : "Salary expectations do not overlap",
-      },
       work_style: {
         score: workScore,
-        reason: workScore === 20
+        reason: workScore === 30
           ? "Work style is an exact match"
-          : workScore === 10
+          : workScore === 15
             ? "Work style is flexible-compatible"
             : "Work style mismatch",
       },

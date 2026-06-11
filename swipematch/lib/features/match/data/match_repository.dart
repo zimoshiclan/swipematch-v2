@@ -106,19 +106,15 @@ class MatchRepository {
   Map<String, dynamic> _defaultMatchReason(int score) => {
         'overall_score': score,
         'skills': {
-          'score': (score * 0.4).round(),
+          'score': (score * 0.5).round(),
           'reason': 'Good skills alignment',
         },
-        'salary': {
-          'score': (score * 0.25).round(),
-          'reason': 'Salary within range',
-        },
         'work_style': {
-          'score': (score * 0.2).round(),
+          'score': (score * 0.3).round(),
           'reason': 'Work style compatible',
         },
         'experience': {
-          'score': (score * 0.15).round(),
+          'score': (score * 0.2).round(),
           'reason': 'Experience level matches',
         },
         'coaching_tip': 'Highlight your key skills in your application.',

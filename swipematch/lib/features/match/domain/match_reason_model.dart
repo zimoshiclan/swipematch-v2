@@ -18,7 +18,6 @@ class MatchReasonModel with _$MatchReasonModel {
   const factory MatchReasonModel({
     required int overallScore,
     required DimensionScore skills,
-    required DimensionScore salary,
     required DimensionScore workStyle,
     required DimensionScore experience,
     required String coachingTip,

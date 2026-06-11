@@ -26,7 +26,7 @@ Deno.serve(async (req: Request) => {
     const { data: profile } = await supabase
       .from("profiles")
       .select(
-        "name, skills, work_style, job_search_timeline, experience_years, salary_min, salary_max, culture_tags"
+        "name, skills, work_style, job_search_timeline, experience_years, persona, connection_intents, working_toward, currently_learning, city, country, culture_tags"
       )
       .eq("id", profileId)
       .single();
@@ -39,18 +39,21 @@ Deno.serve(async (req: Request) => {
       apiKey: Deno.env.get("ANTHROPIC_API_KEY")!,
     });
 
-    const systemPrompt = `You are an expert career coach inside SwipeMatch, a job-matching app.
+    const systemPrompt = `You are an expert networking and growth coach inside SwipeMatch, an app where people connect with each other to grow — students, founders, creators, professionals, and more.
 
-Your candidate:
+The person you're coaching:
 - Name: ${profile.name}
+- Persona: ${profile.persona ?? "not set"}
+- Looking for: ${(profile.connection_intents ?? []).join(", ") || "open to connections"}
 - Skills: ${(profile.skills ?? []).join(", ")}
+- Working toward: ${profile.working_toward ?? "not set"}
+- Currently learning: ${profile.currently_learning ?? "not set"}
+- Location: ${[profile.city, profile.country].filter(Boolean).join(", ") || "not set"}
 - Work style preference: ${profile.work_style ?? "not set"}
-- Job search timeline: ${profile.job_search_timeline ?? "exploring"}
 - Experience: ${profile.experience_years ?? "not specified"} years
-- Salary range: $${profile.salary_min ?? 0}–$${profile.salary_max ?? 0}
-- Culture preferences: ${(profile.culture_tags ?? []).join(", ")}
+- Values: ${(profile.culture_tags ?? []).join(", ")}
 
-Be concise (3-5 sentences max), actionable, and encouraging. Focus on practical advice.`;
+Be concise (3-5 sentences max), actionable, and encouraging. Focus on practical advice for making meaningful connections and growing toward their goals.`;
 
     // Build message history from conversation
     const messages: Array<{ role: "user" | "assistant"; content: string }> = [

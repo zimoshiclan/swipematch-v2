@@ -190,7 +190,6 @@ MatchReasonModel _$MatchReasonModelFromJson(Map<String, dynamic> json) {
 mixin _$MatchReasonModel {
   int get overallScore => throw _privateConstructorUsedError;
   DimensionScore get skills => throw _privateConstructorUsedError;
-  DimensionScore get salary => throw _privateConstructorUsedError;
   DimensionScore get workStyle => throw _privateConstructorUsedError;
   DimensionScore get experience => throw _privateConstructorUsedError;
   String get coachingTip => throw _privateConstructorUsedError;
@@ -215,14 +214,12 @@ abstract class $MatchReasonModelCopyWith<$Res> {
   $Res call(
       {int overallScore,
       DimensionScore skills,
-      DimensionScore salary,
       DimensionScore workStyle,
       DimensionScore experience,
       String coachingTip,
       String matchSummary});
 
   $DimensionScoreCopyWith<$Res> get skills;
-  $DimensionScoreCopyWith<$Res> get salary;
   $DimensionScoreCopyWith<$Res> get workStyle;
   $DimensionScoreCopyWith<$Res> get experience;
 }
@@ -244,7 +241,6 @@ class _$MatchReasonModelCopyWithImpl<$Res, $Val extends MatchReasonModel>
   $Res call({
     Object? overallScore = null,
     Object? skills = null,
-    Object? salary = null,
     Object? workStyle = null,
     Object? experience = null,
     Object? coachingTip = null,
@@ -258,10 +254,6 @@ class _$MatchReasonModelCopyWithImpl<$Res, $Val extends MatchReasonModel>
       skills: null == skills
           ? _value.skills
           : skills // ignore: cast_nullable_to_non_nullable
-              as DimensionScore,
-      salary: null == salary
-          ? _value.salary
-          : salary // ignore: cast_nullable_to_non_nullable
               as DimensionScore,
       workStyle: null == workStyle
           ? _value.workStyle
@@ -289,16 +281,6 @@ class _$MatchReasonModelCopyWithImpl<$Res, $Val extends MatchReasonModel>
   $DimensionScoreCopyWith<$Res> get skills {
     return $DimensionScoreCopyWith<$Res>(_value.skills, (value) {
       return _then(_value.copyWith(skills: value) as $Val);
-    });
-  }
-
-  /// Create a copy of MatchReasonModel
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $DimensionScoreCopyWith<$Res> get salary {
-    return $DimensionScoreCopyWith<$Res>(_value.salary, (value) {
-      return _then(_value.copyWith(salary: value) as $Val);
     });
   }
 
@@ -334,7 +316,6 @@ abstract class _$$MatchReasonModelImplCopyWith<$Res>
   $Res call(
       {int overallScore,
       DimensionScore skills,
-      DimensionScore salary,
       DimensionScore workStyle,
       DimensionScore experience,
       String coachingTip,
@@ -342,8 +323,6 @@ abstract class _$$MatchReasonModelImplCopyWith<$Res>
 
   @override
   $DimensionScoreCopyWith<$Res> get skills;
-  @override
-  $DimensionScoreCopyWith<$Res> get salary;
   @override
   $DimensionScoreCopyWith<$Res> get workStyle;
   @override
@@ -365,7 +344,6 @@ class __$$MatchReasonModelImplCopyWithImpl<$Res>
   $Res call({
     Object? overallScore = null,
     Object? skills = null,
-    Object? salary = null,
     Object? workStyle = null,
     Object? experience = null,
     Object? coachingTip = null,
@@ -379,10 +357,6 @@ class __$$MatchReasonModelImplCopyWithImpl<$Res>
       skills: null == skills
           ? _value.skills
           : skills // ignore: cast_nullable_to_non_nullable
-              as DimensionScore,
-      salary: null == salary
-          ? _value.salary
-          : salary // ignore: cast_nullable_to_non_nullable
               as DimensionScore,
       workStyle: null == workStyle
           ? _value.workStyle
@@ -410,7 +384,6 @@ class _$MatchReasonModelImpl implements _MatchReasonModel {
   const _$MatchReasonModelImpl(
       {required this.overallScore,
       required this.skills,
-      required this.salary,
       required this.workStyle,
       required this.experience,
       required this.coachingTip,
@@ -424,8 +397,6 @@ class _$MatchReasonModelImpl implements _MatchReasonModel {
   @override
   final DimensionScore skills;
   @override
-  final DimensionScore salary;
-  @override
   final DimensionScore workStyle;
   @override
   final DimensionScore experience;
@@ -436,7 +407,7 @@ class _$MatchReasonModelImpl implements _MatchReasonModel {
 
   @override
   String toString() {
-    return 'MatchReasonModel(overallScore: $overallScore, skills: $skills, salary: $salary, workStyle: $workStyle, experience: $experience, coachingTip: $coachingTip, matchSummary: $matchSummary)';
+    return 'MatchReasonModel(overallScore: $overallScore, skills: $skills, workStyle: $workStyle, experience: $experience, coachingTip: $coachingTip, matchSummary: $matchSummary)';
   }
 
   @override
@@ -447,7 +418,6 @@ class _$MatchReasonModelImpl implements _MatchReasonModel {
             (identical(other.overallScore, overallScore) ||
                 other.overallScore == overallScore) &&
             (identical(other.skills, skills) || other.skills == skills) &&
-            (identical(other.salary, salary) || other.salary == salary) &&
             (identical(other.workStyle, workStyle) ||
                 other.workStyle == workStyle) &&
             (identical(other.experience, experience) ||
@@ -460,8 +430,8 @@ class _$MatchReasonModelImpl implements _MatchReasonModel {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, overallScore, skills, salary,
-      workStyle, experience, coachingTip, matchSummary);
+  int get hashCode => Object.hash(runtimeType, overallScore, skills, workStyle,
+      experience, coachingTip, matchSummary);
 
   /// Create a copy of MatchReasonModel
   /// with the given fields replaced by the non-null parameter values.
@@ -484,7 +454,6 @@ abstract class _MatchReasonModel implements MatchReasonModel {
   const factory _MatchReasonModel(
       {required final int overallScore,
       required final DimensionScore skills,
-      required final DimensionScore salary,
       required final DimensionScore workStyle,
       required final DimensionScore experience,
       required final String coachingTip,
@@ -497,8 +466,6 @@ abstract class _MatchReasonModel implements MatchReasonModel {
   int get overallScore;
   @override
   DimensionScore get skills;
-  @override
-  DimensionScore get salary;
   @override
   DimensionScore get workStyle;
   @override

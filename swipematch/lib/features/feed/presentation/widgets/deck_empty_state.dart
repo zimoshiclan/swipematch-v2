@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:go_router/go_router.dart';
-import '../../../../router/app_router.dart';
 import '../../../../shared/constants/app_constants.dart';
 import '../../../../shared/theme/app_colors.dart';
 import '../../../../shared/theme/app_spacing.dart';
@@ -57,11 +55,6 @@ class DeckEmptyState extends StatelessWidget {
                 .animate(delay: 300.ms)
                 .fadeIn(duration: 400.ms)
                 .slideY(begin: 0.1),
-            const SizedBox(height: AppSpacing.md),
-            _SalaryTruthBanner()
-                .animate(delay: 400.ms)
-                .fadeIn(duration: 400.ms)
-                .slideY(begin: 0.1),
           ],
         ),
       ),
@@ -78,54 +71,6 @@ class DeckEmptyState extends StatelessWidget {
     final h = diff.inHours;
     final m = diff.inMinutes % 60;
     return h > 0 ? '${h}h ${m}m' : '${m}m';
-  }
-}
-
-class _SalaryTruthBanner extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => context.push(AppRoutes.salary),
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(AppSpacing.md),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              AppColors.accent.withValues(alpha: 0.15),
-              AppColors.primary.withValues(alpha: 0.10),
-            ],
-          ),
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: AppColors.accent.withValues(alpha: 0.4)),
-        ),
-        child: Row(
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    AppConstants.salaryTruthBannerTitle,
-                    style: AppTextStyles.bodyMd.copyWith(
-                      color: AppColors.textPrimary,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    AppConstants.salaryTruthBannerSubtitle,
-                    style: AppTextStyles.bodyMd,
-                  ),
-                ],
-              ),
-            ),
-            const Icon(Icons.chevron_right_rounded,
-                color: AppColors.accent, size: 24),
-          ],
-        ),
-      ),
-    );
   }
 }
 

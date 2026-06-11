@@ -88,6 +88,26 @@ class PostsRepository {
     return rows.map((r) => _mapRow(r, likedIds, bookmarkedIds)).toList();
   }
 
+  /// A person's own recent posts — used as the Room/Reels fallback when they
+  /// have no intro video. Achievements/wins/insights surface first.
+  Future<List<PostModel>> getPostsByAuthor(String authorId, {int limit = 5}) async {
+    final rows = await _supabase
+        .from(SupabaseConstants.posts)
+        .select('*, profiles!author_id(name, avatar_url, ai_readiness_score)')
+        .eq('author_id', authorId)
+        .order('created_at', ascending: false)
+        .limit(limit) as List;
+
+    const highlight = {'achievement', 'win', 'insight'};
+    final posts = rows.map((r) => _mapRow(r, const {}, const {})).toList();
+    posts.sort((a, b) {
+      final ah = highlight.contains(a.type) ? 0 : 1;
+      final bh = highlight.contains(b.type) ? 0 : 1;
+      return ah != bh ? ah - bh : b.createdAt.compareTo(a.createdAt);
+    });
+    return posts;
+  }
+
   /// Posts the given profile has bookmarked, newest-saved first.
   Future<List<PostModel>> getBookmarkedPosts(String profileId) async {
     final bookmarkRows = await _supabase

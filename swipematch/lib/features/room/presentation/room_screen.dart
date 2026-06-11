@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../domain/room_providers.dart';
 import '../domain/room_state.dart';
 import 'widgets/person_swipe_card.dart';
+import '../../reels/presentation/reels_view.dart';
 import '../../profile/domain/profile_model.dart';
 import '../../profile/domain/profile_providers.dart';
 import '../../profile/presentation/widgets/completion_bar.dart';
@@ -28,6 +29,7 @@ class RoomScreen extends HookConsumerWidget {
     final roomAsync  = ref.watch(roomNotifierProvider);
     final profileAsync = ref.watch(currentProfileProvider);
     final pending    = ref.watch(pendingConnectionProvider);
+    final reelsMode  = useState(true);
 
     // Show connection reveal sheet when a mutual connection happens
     useEffect(() {
@@ -56,6 +58,11 @@ class RoomScreen extends HookConsumerWidget {
               ),
             ),
             const SizedBox(height: AppSpacing.xs),
+            _ViewToggle(
+              reelsMode: reelsMode.value,
+              onChanged: (v) => reelsMode.value = v,
+            ),
+            const SizedBox(height: AppSpacing.xs),
             Expanded(
               child: roomAsync.when(
                 loading: () => const Center(
@@ -64,11 +71,13 @@ class RoomScreen extends HookConsumerWidget {
                     onRetry: () => ref.invalidate(roomNotifierProvider)),
                 data: (roomState) => roomState.isDeckEmpty || roomState.deck.isEmpty
                     ? const _RoomEmptyState()
-                    : _DeckView(
-                        roomState: roomState,
-                        controller: controller,
-                        ref: ref,
-                      ),
+                    : reelsMode.value
+                        ? ReelsView(deck: roomState.deck)
+                        : _DeckView(
+                            roomState: roomState,
+                            controller: controller,
+                            ref: ref,
+                          ),
               ),
             ),
           ],
@@ -123,7 +132,7 @@ class _TopBar extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('The Room', style: AppTextStyles.headlineSm),
-              Text("Today's people",
+              Text("People building things",
                   style: AppTextStyles.label
                       .copyWith(color: AppColors.textSecondary)),
             ],
@@ -131,6 +140,68 @@ class _TopBar extends StatelessWidget {
           const Spacer(),
           if (profile != null) StreakBadge(count: profile.streakCount),
         ],
+      ),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────
+// Cards ⇄ Reels toggle
+// ─────────────────────────────────────────────────────────
+
+class _ViewToggle extends StatelessWidget {
+  const _ViewToggle({required this.reelsMode, required this.onChanged});
+  final bool reelsMode;
+  final void Function(bool) onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+      padding: const EdgeInsets.all(3),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        children: [
+          _seg('Reels', Icons.play_circle_fill_rounded, reelsMode,
+              () => onChanged(true)),
+          _seg('Cards', Icons.style_rounded, !reelsMode, () => onChanged(false)),
+        ],
+      ),
+    );
+  }
+
+  Widget _seg(String label, IconData icon, bool active, VoidCallback onTap) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: onTap,
+        behavior: HitTestBehavior.opaque,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          decoration: BoxDecoration(
+            color: active ? AppColors.primary : Colors.transparent,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon,
+                  size: 16,
+                  color: active ? Colors.white : AppColors.textSecondary),
+              const SizedBox(width: 6),
+              Text(
+                label,
+                style: AppTextStyles.label.copyWith(
+                  color: active ? Colors.white : AppColors.textSecondary,
+                  fontWeight: active ? FontWeight.w600 : FontWeight.normal,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

@@ -11,8 +11,6 @@ class JobModel with _$JobModel {
     required String title,
     required String description,
     required List<String> requiredSkills,
-    required int salaryMin,
-    required int salaryMax,
     required String workStyle,
     required int experienceYears,
     @Default(true) bool isActive,

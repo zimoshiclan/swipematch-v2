@@ -6,12 +6,17 @@ enum SwipeAction { left, right, superLike }
 class SwipeActionButton extends StatelessWidget {
   const SwipeActionButton({
     super.key,
-    required this.action,
+    this.action,
+    this.icon,
+    this.color,
     required this.onTap,
     this.size = 56,
-  });
+  }) : assert(action != null || (icon != null && color != null),
+            'Provide either an action or an icon+color override');
 
-  final SwipeAction action;
+  final SwipeAction? action;
+  final IconData? icon;
+  final Color? color;
   final VoidCallback onTap;
   final double size;
 
@@ -32,13 +37,17 @@ class SwipeActionButton extends StatelessWidget {
     );
   }
 
-  Color get _color => switch (action) {
+  Color get _color =>
+      color ??
+      switch (action!) {
         SwipeAction.left => AppColors.danger,
         SwipeAction.right => AppColors.accent,
         SwipeAction.superLike => AppColors.superLike,
       };
 
-  IconData get _icon => switch (action) {
+  IconData get _icon =>
+      icon ??
+      switch (action!) {
         SwipeAction.left => Icons.close_rounded,
         SwipeAction.right => Icons.favorite_rounded,
         SwipeAction.superLike => Icons.bolt_rounded,

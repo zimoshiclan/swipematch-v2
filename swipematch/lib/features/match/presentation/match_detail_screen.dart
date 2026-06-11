@@ -185,10 +185,9 @@ class _BreakdownSection extends StatelessWidget {
           Text(reason.matchSummary, style: AppTextStyles.bodyMd),
           const SizedBox(height: AppSpacing.md),
         ],
-        _DimRow('Skills', reason.skills, 40, AppColors.primary, 400.ms),
-        _DimRow('Salary', reason.salary, 25, AppColors.accent, 500.ms),
-        _DimRow('Work Style', reason.workStyle, 20, AppColors.matchGold, 600.ms),
-        _DimRow('Experience', reason.experience, 15, AppColors.superLike, 700.ms),
+        _DimRow('Skills', reason.skills, 50, AppColors.primary, 400.ms),
+        _DimRow('Work Style', reason.workStyle, 30, AppColors.matchGold, 600.ms),
+        _DimRow('Experience', reason.experience, 20, AppColors.superLike, 700.ms),
       ],
     ).animate(delay: 300.ms).fadeIn(duration: 400.ms);
   }

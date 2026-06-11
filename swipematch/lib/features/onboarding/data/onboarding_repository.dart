@@ -15,11 +15,12 @@ class OnboardingRepository {
 
   Future<void> saveComplete({
     required String profileId,
+    required String? persona,
     required List<String> skills,
     required String status,
-    required int salaryMin,
-    required int salaryMax,
-    required String currency,
+    required List<String> connectionIntents,
+    required String? city,
+    required String? country,
     required String workStyle,
     required List<String> cultureTags,
     required String jobSearchTimeline,
@@ -27,7 +28,8 @@ class OnboardingRepository {
   }) async {
     final completion = _computeCompletion(
       hasSkills: skills.length >= 3,
-      hasSalary: true,
+      hasLocation: (city != null && city.isNotEmpty) ||
+          (country != null && country.isNotEmpty),
       hasWorkStyle: true,
       hasCultureTags: cultureTags.isNotEmpty,
       hasTimeline: true,
@@ -35,11 +37,12 @@ class OnboardingRepository {
     );
 
     final updates = <String, dynamic>{
+      'persona': persona,
       'skills': skills,
       'passive_mode': status == 'exploring',
-      'salary_min': salaryMin,
-      'salary_max': salaryMax,
-      'currency': currency,
+      'connection_intents': connectionIntents,
+      'city': city,
+      'country': country,
       'work_style': workStyle,
       'culture_tags': cultureTags,
       'job_search_timeline': jobSearchTimeline,
@@ -57,7 +60,7 @@ class OnboardingRepository {
 
   int _computeCompletion({
     required bool hasSkills,
-    required bool hasSalary,
+    required bool hasLocation,
     required bool hasWorkStyle,
     required bool hasCultureTags,
     required bool hasTimeline,
@@ -65,7 +68,7 @@ class OnboardingRepository {
   }) {
     int score = 20; // base: name set on account creation
     if (hasSkills) score += 20;
-    if (hasSalary) score += 15;
+    if (hasLocation) score += 15;
     if (hasWorkStyle) score += 10;
     if (hasCultureTags) score += 10;
     if (hasTimeline) score += 10;

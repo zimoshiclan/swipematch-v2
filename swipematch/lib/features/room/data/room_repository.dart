@@ -6,37 +6,25 @@ class RoomRepository {
   RoomRepository(this._supabase);
   final SupabaseClient _supabase;
 
-  // Fetch today's room — profiles this user hasn't swiped on yet, sorted by
-  // profile completion so more complete profiles surface first.
+  // Fetch today's room via the get_room_deck RPC (migration 019). The server
+  // derives the viewer from auth.uid() and ranks by region (same city →
+  // country) → shared connection-intent overlap → profile completion, then
+  // appends a couple of random "serendipity" wildcards. Already-swiped and
+  // passive profiles are excluded server-side.
   Future<List<ProfileModel>> getDailyRoom(String myProfileId, String myUserId) async {
-    // Get profile IDs already swiped today
-    final today = DateTime.now();
-    final dayStart = DateTime(today.year, today.month, today.day).toIso8601String();
+    final rows = await _supabase.rpc(
+      'get_room_deck',
+      params: {'p_limit': 15},
+    ) as List;
 
-    final swiped = await _supabase
-        .from(SupabaseConstants.swipes)
-        .select('target_id')
-        .eq('user_id', myUserId)
-        .eq('target_type', 'person')
-        .gte('created_at', dayStart) as List;
-
-    final swipedIds = <String>{
-      myProfileId,
-      ...swiped.map((s) => s['target_id'] as String),
-    };
-
-    // Fetch candidate profiles (limit 50, filter client-side to 15 after exclusions)
-    final rows = await _supabase
-        .from(SupabaseConstants.profiles)
-        .select()
-        .order('profile_completion', ascending: false)
-        .limit(50) as List;
-
-    return rows
-        .where((r) => !swipedIds.contains(r['id'] as String))
-        .take(15)
-        .map((r) => ProfileModel.fromJson(r as Map<String, dynamic>))
-        .toList();
+    return rows.map((r) {
+      final row = r as Map<String, dynamic>;
+      final profile =
+          ProfileModel.fromJson(row['profile'] as Map<String, dynamic>);
+      return profile.copyWith(
+        isSerendipity: row['is_wildcard'] as bool? ?? false,
+      );
+    }).toList();
   }
 
   // Record the swipe via the SECURITY DEFINER RPC and return whether a

@@ -136,7 +136,7 @@ class _AiReadinessCard extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      'AI Readiness',
+                      'Growth Score',
                       style: AppTextStyles.headlineSm,
                     ),
                     if (isReady) ...[
@@ -148,7 +148,7 @@ class _AiReadinessCard extends StatelessWidget {
                 const SizedBox(height: AppSpacing.xs),
                 Text(
                   isReady
-                      ? 'You\'re prepared for the AI era! Keep growing.'
+                      ? 'You\'re growing fast and AI-ready. Keep the momentum!'
                       : 'Add $missing more AI skill${missing == 1 ? '' : 's'} to unlock the AI Ready badge.',
                   style: AppTextStyles.bodyMd
                       .copyWith(color: AppColors.textSecondary),

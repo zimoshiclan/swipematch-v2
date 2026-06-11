@@ -15,8 +15,6 @@ _$JobModelImpl _$$JobModelImplFromJson(Map<String, dynamic> json) =>
       requiredSkills: (json['required_skills'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
-      salaryMin: (json['salary_min'] as num).toInt(),
-      salaryMax: (json['salary_max'] as num).toInt(),
       workStyle: json['work_style'] as String,
       experienceYears: (json['experience_years'] as num).toInt(),
       isActive: json['is_active'] as bool? ?? true,
@@ -45,8 +43,6 @@ Map<String, dynamic> _$$JobModelImplToJson(_$JobModelImpl instance) =>
       'title': instance.title,
       'description': instance.description,
       'required_skills': instance.requiredSkills,
-      'salary_min': instance.salaryMin,
-      'salary_max': instance.salaryMax,
       'work_style': instance.workStyle,
       'experience_years': instance.experienceYears,
       'is_active': instance.isActive,

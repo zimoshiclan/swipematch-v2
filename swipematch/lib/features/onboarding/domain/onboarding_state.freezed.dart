@@ -17,14 +17,20 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$OnboardingState {
   int get currentPage => throw _privateConstructorUsedError;
-  List<String> get selectedRoles => throw _privateConstructorUsedError;
   List<String> get skills => throw _privateConstructorUsedError;
-  String? get status => throw _privateConstructorUsedError;
-  int? get salaryMin => throw _privateConstructorUsedError;
-  int? get salaryMax => throw _privateConstructorUsedError;
+  String? get status =>
+      throw _privateConstructorUsedError; // Open-networking fields (replaces the candidate/employer + salary model)
+  String? get persona => throw _privateConstructorUsedError;
+  List<String> get connectionIntents => throw _privateConstructorUsedError;
+  String? get city => throw _privateConstructorUsedError;
+  String? get country => throw _privateConstructorUsedError;
+  String? get workingToward => throw _privateConstructorUsedError;
+  String? get currentlyLearning => throw _privateConstructorUsedError;
   String? get workStyle => throw _privateConstructorUsedError;
   List<String> get cultureTags => throw _privateConstructorUsedError;
-  String? get jobSearchTimeline => throw _privateConstructorUsedError;
+  List<String> get workValues => throw _privateConstructorUsedError;
+  String? get jobSearchTimeline =>
+      throw _privateConstructorUsedError; // question_id → selected score (0–20 each, 5 questions = 100 max)
   Map<String, int> get aiReadinessAnswers => throw _privateConstructorUsedError;
 
   /// Create a copy of OnboardingState
@@ -42,13 +48,17 @@ abstract class $OnboardingStateCopyWith<$Res> {
   @useResult
   $Res call(
       {int currentPage,
-      List<String> selectedRoles,
       List<String> skills,
       String? status,
-      int? salaryMin,
-      int? salaryMax,
+      String? persona,
+      List<String> connectionIntents,
+      String? city,
+      String? country,
+      String? workingToward,
+      String? currentlyLearning,
       String? workStyle,
       List<String> cultureTags,
+      List<String> workValues,
       String? jobSearchTimeline,
       Map<String, int> aiReadinessAnswers});
 }
@@ -69,13 +79,17 @@ class _$OnboardingStateCopyWithImpl<$Res, $Val extends OnboardingState>
   @override
   $Res call({
     Object? currentPage = null,
-    Object? selectedRoles = null,
     Object? skills = null,
     Object? status = freezed,
-    Object? salaryMin = freezed,
-    Object? salaryMax = freezed,
+    Object? persona = freezed,
+    Object? connectionIntents = null,
+    Object? city = freezed,
+    Object? country = freezed,
+    Object? workingToward = freezed,
+    Object? currentlyLearning = freezed,
     Object? workStyle = freezed,
     Object? cultureTags = null,
+    Object? workValues = null,
     Object? jobSearchTimeline = freezed,
     Object? aiReadinessAnswers = null,
   }) {
@@ -84,10 +98,6 @@ class _$OnboardingStateCopyWithImpl<$Res, $Val extends OnboardingState>
           ? _value.currentPage
           : currentPage // ignore: cast_nullable_to_non_nullable
               as int,
-      selectedRoles: null == selectedRoles
-          ? _value.selectedRoles
-          : selectedRoles // ignore: cast_nullable_to_non_nullable
-              as List<String>,
       skills: null == skills
           ? _value.skills
           : skills // ignore: cast_nullable_to_non_nullable
@@ -96,14 +106,30 @@ class _$OnboardingStateCopyWithImpl<$Res, $Val extends OnboardingState>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as String?,
-      salaryMin: freezed == salaryMin
-          ? _value.salaryMin
-          : salaryMin // ignore: cast_nullable_to_non_nullable
-              as int?,
-      salaryMax: freezed == salaryMax
-          ? _value.salaryMax
-          : salaryMax // ignore: cast_nullable_to_non_nullable
-              as int?,
+      persona: freezed == persona
+          ? _value.persona
+          : persona // ignore: cast_nullable_to_non_nullable
+              as String?,
+      connectionIntents: null == connectionIntents
+          ? _value.connectionIntents
+          : connectionIntents // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      city: freezed == city
+          ? _value.city
+          : city // ignore: cast_nullable_to_non_nullable
+              as String?,
+      country: freezed == country
+          ? _value.country
+          : country // ignore: cast_nullable_to_non_nullable
+              as String?,
+      workingToward: freezed == workingToward
+          ? _value.workingToward
+          : workingToward // ignore: cast_nullable_to_non_nullable
+              as String?,
+      currentlyLearning: freezed == currentlyLearning
+          ? _value.currentlyLearning
+          : currentlyLearning // ignore: cast_nullable_to_non_nullable
+              as String?,
       workStyle: freezed == workStyle
           ? _value.workStyle
           : workStyle // ignore: cast_nullable_to_non_nullable
@@ -111,6 +137,10 @@ class _$OnboardingStateCopyWithImpl<$Res, $Val extends OnboardingState>
       cultureTags: null == cultureTags
           ? _value.cultureTags
           : cultureTags // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      workValues: null == workValues
+          ? _value.workValues
+          : workValues // ignore: cast_nullable_to_non_nullable
               as List<String>,
       jobSearchTimeline: freezed == jobSearchTimeline
           ? _value.jobSearchTimeline
@@ -134,13 +164,17 @@ abstract class _$$OnboardingStateImplCopyWith<$Res>
   @useResult
   $Res call(
       {int currentPage,
-      List<String> selectedRoles,
       List<String> skills,
       String? status,
-      int? salaryMin,
-      int? salaryMax,
+      String? persona,
+      List<String> connectionIntents,
+      String? city,
+      String? country,
+      String? workingToward,
+      String? currentlyLearning,
       String? workStyle,
       List<String> cultureTags,
+      List<String> workValues,
       String? jobSearchTimeline,
       Map<String, int> aiReadinessAnswers});
 }
@@ -159,13 +193,17 @@ class __$$OnboardingStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? currentPage = null,
-    Object? selectedRoles = null,
     Object? skills = null,
     Object? status = freezed,
-    Object? salaryMin = freezed,
-    Object? salaryMax = freezed,
+    Object? persona = freezed,
+    Object? connectionIntents = null,
+    Object? city = freezed,
+    Object? country = freezed,
+    Object? workingToward = freezed,
+    Object? currentlyLearning = freezed,
     Object? workStyle = freezed,
     Object? cultureTags = null,
+    Object? workValues = null,
     Object? jobSearchTimeline = freezed,
     Object? aiReadinessAnswers = null,
   }) {
@@ -174,10 +212,6 @@ class __$$OnboardingStateImplCopyWithImpl<$Res>
           ? _value.currentPage
           : currentPage // ignore: cast_nullable_to_non_nullable
               as int,
-      selectedRoles: null == selectedRoles
-          ? _value._selectedRoles
-          : selectedRoles // ignore: cast_nullable_to_non_nullable
-              as List<String>,
       skills: null == skills
           ? _value._skills
           : skills // ignore: cast_nullable_to_non_nullable
@@ -186,14 +220,30 @@ class __$$OnboardingStateImplCopyWithImpl<$Res>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as String?,
-      salaryMin: freezed == salaryMin
-          ? _value.salaryMin
-          : salaryMin // ignore: cast_nullable_to_non_nullable
-              as int?,
-      salaryMax: freezed == salaryMax
-          ? _value.salaryMax
-          : salaryMax // ignore: cast_nullable_to_non_nullable
-              as int?,
+      persona: freezed == persona
+          ? _value.persona
+          : persona // ignore: cast_nullable_to_non_nullable
+              as String?,
+      connectionIntents: null == connectionIntents
+          ? _value._connectionIntents
+          : connectionIntents // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      city: freezed == city
+          ? _value.city
+          : city // ignore: cast_nullable_to_non_nullable
+              as String?,
+      country: freezed == country
+          ? _value.country
+          : country // ignore: cast_nullable_to_non_nullable
+              as String?,
+      workingToward: freezed == workingToward
+          ? _value.workingToward
+          : workingToward // ignore: cast_nullable_to_non_nullable
+              as String?,
+      currentlyLearning: freezed == currentlyLearning
+          ? _value.currentlyLearning
+          : currentlyLearning // ignore: cast_nullable_to_non_nullable
+              as String?,
       workStyle: freezed == workStyle
           ? _value.workStyle
           : workStyle // ignore: cast_nullable_to_non_nullable
@@ -201,6 +251,10 @@ class __$$OnboardingStateImplCopyWithImpl<$Res>
       cultureTags: null == cultureTags
           ? _value._cultureTags
           : cultureTags // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      workValues: null == workValues
+          ? _value._workValues
+          : workValues // ignore: cast_nullable_to_non_nullable
               as List<String>,
       jobSearchTimeline: freezed == jobSearchTimeline
           ? _value.jobSearchTimeline
@@ -219,32 +273,28 @@ class __$$OnboardingStateImplCopyWithImpl<$Res>
 class _$OnboardingStateImpl implements _OnboardingState {
   const _$OnboardingStateImpl(
       {this.currentPage = 0,
-      final List<String> selectedRoles = const [],
       final List<String> skills = const [],
       this.status,
-      this.salaryMin,
-      this.salaryMax,
+      this.persona,
+      final List<String> connectionIntents = const [],
+      this.city,
+      this.country,
+      this.workingToward,
+      this.currentlyLearning,
       this.workStyle,
       final List<String> cultureTags = const [],
+      final List<String> workValues = const [],
       this.jobSearchTimeline,
       final Map<String, int> aiReadinessAnswers = const {}})
-      : _selectedRoles = selectedRoles,
-        _skills = skills,
+      : _skills = skills,
+        _connectionIntents = connectionIntents,
         _cultureTags = cultureTags,
+        _workValues = workValues,
         _aiReadinessAnswers = aiReadinessAnswers;
 
   @override
   @JsonKey()
   final int currentPage;
-  final List<String> _selectedRoles;
-  @override
-  @JsonKey()
-  List<String> get selectedRoles {
-    if (_selectedRoles is EqualUnmodifiableListView) return _selectedRoles;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_selectedRoles);
-  }
-
   final List<String> _skills;
   @override
   @JsonKey()
@@ -256,10 +306,27 @@ class _$OnboardingStateImpl implements _OnboardingState {
 
   @override
   final String? status;
+// Open-networking fields (replaces the candidate/employer + salary model)
   @override
-  final int? salaryMin;
+  final String? persona;
+  final List<String> _connectionIntents;
   @override
-  final int? salaryMax;
+  @JsonKey()
+  List<String> get connectionIntents {
+    if (_connectionIntents is EqualUnmodifiableListView)
+      return _connectionIntents;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_connectionIntents);
+  }
+
+  @override
+  final String? city;
+  @override
+  final String? country;
+  @override
+  final String? workingToward;
+  @override
+  final String? currentlyLearning;
   @override
   final String? workStyle;
   final List<String> _cultureTags;
@@ -271,9 +338,20 @@ class _$OnboardingStateImpl implements _OnboardingState {
     return EqualUnmodifiableListView(_cultureTags);
   }
 
+  final List<String> _workValues;
+  @override
+  @JsonKey()
+  List<String> get workValues {
+    if (_workValues is EqualUnmodifiableListView) return _workValues;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_workValues);
+  }
+
   @override
   final String? jobSearchTimeline;
+// question_id → selected score (0–20 each, 5 questions = 100 max)
   final Map<String, int> _aiReadinessAnswers;
+// question_id → selected score (0–20 each, 5 questions = 100 max)
   @override
   @JsonKey()
   Map<String, int> get aiReadinessAnswers {
@@ -285,7 +363,7 @@ class _$OnboardingStateImpl implements _OnboardingState {
 
   @override
   String toString() {
-    return 'OnboardingState(currentPage: $currentPage, selectedRoles: $selectedRoles, skills: $skills, status: $status, salaryMin: $salaryMin, salaryMax: $salaryMax, workStyle: $workStyle, cultureTags: $cultureTags, jobSearchTimeline: $jobSearchTimeline, aiReadinessAnswers: $aiReadinessAnswers)';
+    return 'OnboardingState(currentPage: $currentPage, skills: $skills, status: $status, persona: $persona, connectionIntents: $connectionIntents, city: $city, country: $country, workingToward: $workingToward, currentlyLearning: $currentlyLearning, workStyle: $workStyle, cultureTags: $cultureTags, workValues: $workValues, jobSearchTimeline: $jobSearchTimeline, aiReadinessAnswers: $aiReadinessAnswers)';
   }
 
   @override
@@ -295,18 +373,23 @@ class _$OnboardingStateImpl implements _OnboardingState {
             other is _$OnboardingStateImpl &&
             (identical(other.currentPage, currentPage) ||
                 other.currentPage == currentPage) &&
-            const DeepCollectionEquality()
-                .equals(other._selectedRoles, _selectedRoles) &&
             const DeepCollectionEquality().equals(other._skills, _skills) &&
             (identical(other.status, status) || other.status == status) &&
-            (identical(other.salaryMin, salaryMin) ||
-                other.salaryMin == salaryMin) &&
-            (identical(other.salaryMax, salaryMax) ||
-                other.salaryMax == salaryMax) &&
+            (identical(other.persona, persona) || other.persona == persona) &&
+            const DeepCollectionEquality()
+                .equals(other._connectionIntents, _connectionIntents) &&
+            (identical(other.city, city) || other.city == city) &&
+            (identical(other.country, country) || other.country == country) &&
+            (identical(other.workingToward, workingToward) ||
+                other.workingToward == workingToward) &&
+            (identical(other.currentlyLearning, currentlyLearning) ||
+                other.currentlyLearning == currentlyLearning) &&
             (identical(other.workStyle, workStyle) ||
                 other.workStyle == workStyle) &&
             const DeepCollectionEquality()
                 .equals(other._cultureTags, _cultureTags) &&
+            const DeepCollectionEquality()
+                .equals(other._workValues, _workValues) &&
             (identical(other.jobSearchTimeline, jobSearchTimeline) ||
                 other.jobSearchTimeline == jobSearchTimeline) &&
             const DeepCollectionEquality()
@@ -317,13 +400,17 @@ class _$OnboardingStateImpl implements _OnboardingState {
   int get hashCode => Object.hash(
       runtimeType,
       currentPage,
-      const DeepCollectionEquality().hash(_selectedRoles),
       const DeepCollectionEquality().hash(_skills),
       status,
-      salaryMin,
-      salaryMax,
+      persona,
+      const DeepCollectionEquality().hash(_connectionIntents),
+      city,
+      country,
+      workingToward,
+      currentlyLearning,
       workStyle,
       const DeepCollectionEquality().hash(_cultureTags),
+      const DeepCollectionEquality().hash(_workValues),
       jobSearchTimeline,
       const DeepCollectionEquality().hash(_aiReadinessAnswers));
 
@@ -340,34 +427,48 @@ class _$OnboardingStateImpl implements _OnboardingState {
 abstract class _OnboardingState implements OnboardingState {
   const factory _OnboardingState(
       {final int currentPage,
-      final List<String> selectedRoles,
       final List<String> skills,
       final String? status,
-      final int? salaryMin,
-      final int? salaryMax,
+      final String? persona,
+      final List<String> connectionIntents,
+      final String? city,
+      final String? country,
+      final String? workingToward,
+      final String? currentlyLearning,
       final String? workStyle,
       final List<String> cultureTags,
+      final List<String> workValues,
       final String? jobSearchTimeline,
       final Map<String, int> aiReadinessAnswers}) = _$OnboardingStateImpl;
 
   @override
   int get currentPage;
   @override
-  List<String> get selectedRoles;
-  @override
   List<String> get skills;
   @override
-  String? get status;
+  String?
+      get status; // Open-networking fields (replaces the candidate/employer + salary model)
   @override
-  int? get salaryMin;
+  String? get persona;
   @override
-  int? get salaryMax;
+  List<String> get connectionIntents;
+  @override
+  String? get city;
+  @override
+  String? get country;
+  @override
+  String? get workingToward;
+  @override
+  String? get currentlyLearning;
   @override
   String? get workStyle;
   @override
   List<String> get cultureTags;
   @override
-  String? get jobSearchTimeline;
+  List<String> get workValues;
+  @override
+  String?
+      get jobSearchTimeline; // question_id → selected score (0–20 each, 5 questions = 100 max)
   @override
   Map<String, int> get aiReadinessAnswers;
 

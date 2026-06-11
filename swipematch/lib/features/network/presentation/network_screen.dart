@@ -1520,12 +1520,12 @@ class _MediaPreview extends StatelessWidget {
                   height: 160,
                   width: double.infinity,
                   color: AppColors.card,
-                  child: const Column(
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.movie_creation_outlined,
+                      const Icon(Icons.movie_creation_outlined,
                           color: AppColors.primary, size: 36),
-                      SizedBox(height: AppSpacing.xs),
+                      const SizedBox(height: AppSpacing.xs),
                       Text('Video ready to share',
                           style: AppTextStyles.label),
                     ],

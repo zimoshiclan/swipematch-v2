@@ -24,7 +24,6 @@ _$MatchReasonModelImpl _$$MatchReasonModelImplFromJson(
     _$MatchReasonModelImpl(
       overallScore: (json['overall_score'] as num).toInt(),
       skills: DimensionScore.fromJson(json['skills'] as Map<String, dynamic>),
-      salary: DimensionScore.fromJson(json['salary'] as Map<String, dynamic>),
       workStyle:
           DimensionScore.fromJson(json['work_style'] as Map<String, dynamic>),
       experience:
@@ -38,7 +37,6 @@ Map<String, dynamic> _$$MatchReasonModelImplToJson(
     <String, dynamic>{
       'overall_score': instance.overallScore,
       'skills': instance.skills.toJson(),
-      'salary': instance.salary.toJson(),
       'work_style': instance.workStyle.toJson(),
       'experience': instance.experience.toJson(),
       'coaching_tip': instance.coachingTip,
